@@ -12,7 +12,8 @@ import {
   infoColor,
   successColor,
   warningColor,
-  dangerColor
+  dangerColor,
+    semaPanelBackgroundColor
 } from "variables/styles";
 
 const sidebarStyle = theme => ({
@@ -213,7 +214,8 @@ const sidebarStyle = theme => ({
     overflow: "auto",
     width: "260px",
     zIndex: "4",
-    overflowScrolling: 'touch'
+    overflowScrolling: 'touch',
+      backgroundColor:semaPanelBackgroundColor
   }
 });
 

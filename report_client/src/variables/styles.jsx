@@ -126,6 +126,8 @@ const defaultBoxShadow = {
   transition: "all 150ms ease 0s"
 };
 
+const semaPanelBackgroundColor = "#2858A7";
+
 export {
   //variables
   drawerWidth,
@@ -153,5 +155,6 @@ export {
   purpleCardHeader,
   cardActions,
   cardHeader,
-  defaultBoxShadow
+  defaultBoxShadow,
+    semaPanelBackgroundColor
 };

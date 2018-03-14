@@ -15,6 +15,8 @@ import appStyle from "variables/styles/appStyle.jsx";
 import image from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
 
+import semaHeaderStyle from "variables/semaStyles/semaHeaderStyle.jsx";
+
 const switchRoutes = (
   <Switch>
     {appRoutes.map((prop, key) => {
@@ -24,6 +26,10 @@ const switchRoutes = (
     })}
   </Switch>
 );
+var fooStyle = {
+    backgroundColor: 'green',
+    height: '20%'
+};
 
 class App extends React.Component {
   state = {
@@ -44,10 +50,12 @@ class App extends React.Component {
   componentDidUpdate() {
     this.refs.mainPanel.scrollTop = 0;
   }
+
   render() {
     const { classes, ...rest } = this.props;
     return (
       <div className={classes.wrapper}>
+          <div style={fooStyle}></div>
         <Sidebar
           routes={appRoutes}
           logoText={"Creative Tim"}
@@ -74,6 +82,7 @@ class App extends React.Component {
           )}
           {this.getRoute() ? <Footer /> : null}
         </div>
+
       </div>
     );
   }

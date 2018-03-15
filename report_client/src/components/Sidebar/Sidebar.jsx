@@ -56,14 +56,14 @@ const Sidebar = ({ ...props }) => {
     </List>
   );
     var fooStyle = {
-        backgroundImage: 'url(${semaLogo})'
+        height:"90px",
 
     };
   var brand = (
-    <div className={classes.logo} style={{backgroundImage: "url(" + semaLogo + ")"}}>
+    <div className={classes.logo} style={fooStyle}>
       {/*<a href="https://www.creative-tim.com" className={classes.logoLink}>*/}
         {/*<div className={classes.logoImage}>*/}
-          {/*<img src={logo} alt="logo" className={classes.img} />*/}
+          {<img src={require('assets/img/sema/sema-sidebar-logo.png')} alt="logo" className={classes.img} />}
         {/*</div>*/}
         {/*{logoText}*/}
       {/*</a>*/}

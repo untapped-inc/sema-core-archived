@@ -127,6 +127,8 @@ const defaultBoxShadow = {
 };
 
 const semaPanelBackgroundColor = "#2858A7";
+const semaSidePanelBackgroundColor = "#18376A";
+const semaBackgroundColor = "#13284B";
 
 export {
   //variables
@@ -156,5 +158,7 @@ export {
   cardActions,
   cardHeader,
   defaultBoxShadow,
-    semaPanelBackgroundColor
+    semaPanelBackgroundColor,
+    semaBackgroundColor,
+    semaSidePanelBackgroundColor
 };

@@ -13,8 +13,11 @@ import {
   successColor,
   warningColor,
   dangerColor,
-    semaPanelBackgroundColor
+    semaSidePanelBackgroundColor
 } from "variables/styles";
+
+import semaLogo from "assets/img/sema/sema-sidebar-logo.png";
+
 
 const sidebarStyle = theme => ({
   drawerPaper: {
@@ -29,7 +32,7 @@ const sidebarStyle = theme => ({
     width: drawerWidth,
     [theme.breakpoints.up("md")]: {
       width: drawerWidth,
-      position: "fixed",
+      position: "relative",
       height: "100%"
     },
     [theme.breakpoints.down("sm")]: {
@@ -54,7 +57,7 @@ const sidebarStyle = theme => ({
   },
   logo: {
     position: "relative",
-    padding: "15px 15px",
+    padding: "0px 15px",
     zIndex: "4",
     "&:after": {
       content: '""',
@@ -78,6 +81,7 @@ const sidebarStyle = theme => ({
     lineHeight: "30px",
     textDecoration: "none",
     backgroundColor: "transparent",
+      backgroundImage: "semaLogo",
     "&,&:hover": {
       color: "#FFFFFF"
     }
@@ -90,8 +94,8 @@ const sidebarStyle = theme => ({
     marginRight: "15px"
   },
   img: {
-    width: "35px",
-    top: "22px",
+    width: "90%",
+//    top: "22px",
     position: "absolute",
     verticalAlign: "middle",
     border: "0"
@@ -215,7 +219,7 @@ const sidebarStyle = theme => ({
     width: "260px",
     zIndex: "4",
     overflowScrolling: 'touch',
-      backgroundColor:semaPanelBackgroundColor
+      backgroundColor:semaSidePanelBackgroundColor
   }
 });
 

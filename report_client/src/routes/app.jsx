@@ -6,17 +6,16 @@ import Icons from "views/Icons/Icons.jsx";
 import Maps from "views/Maps/Maps.jsx";
 import NotificationsPage from "views/Notifications/Notifications.jsx";
 
-import water from "assets/img/sema/sema-water-icon.png";
-import logoFb from "logo.svg";
+// import water from "assets/img/sema/sema-water-icon.png";
+// import semaMap from "assets/img/sema/sema-map.svg";
 
 import {
-    Dashboard,
-    Person,
-    ContentPaste,
-    LibraryBooks,
-    BubbleChart,
+    Business,
+    LocalShipping,
+    ShoppingCart,
+    Shop,
     LocationOn,
-    Notifications
+    AccountBalance
 } from "material-ui-icons";
 
 const appRoutes = [
@@ -24,50 +23,43 @@ const appRoutes = [
         path: "/dashboard",
         sidebarName: "Water Operations",
         navbarName: "Water Operations",
-        icon: Dashboard,
+        icon: Business,
         component: DashboardPage
     },
     {
         path: "/user",
         sidebarName: "Sales",
         navbarName: "Sales",
-        icon: Person,
+        icon: ShoppingCart,
         component: UserProfile
     },
     {
         path: "/table",
         sidebarName: "Distribution Map",
         navbarName: "Distribution Map",
-        icon: ContentPaste,
+        icon: LocationOn,
         component: TableList
     },
     {
         path: "/typography",
         sidebarName: "Delivery Schedule",
         navbarName: "Delivery Schedule",
-        icon: LibraryBooks,
+        icon: LocalShipping,
         component: Typography
     },
     {
         path: "/icons",
         sidebarName: "Inventory Management",
         navbarName: "Inventory Management",
-        icon: BubbleChart,
+        icon: Shop,
         component: Icons
     },
     {
         path: "/maps",
         sidebarName: "Financials",
         navbarName: "Financials",
-        icon: LocationOn,
+        icon: AccountBalance,
         component: Maps
-    },
-    {
-        path: "/notifications",
-        sidebarName: "Notifications",
-        navbarName: "Notifications",
-        icon: Notifications,
-        component: NotificationsPage
     },
     { redirect: true, path: "/", to: "/dashboard", navbarName: "Redirect" }
 ];

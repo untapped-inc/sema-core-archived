@@ -15,7 +15,7 @@ import appStyle from "variables/styles/appStyle.jsx";
 import image from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
 
-import semaHeaderStyle from "variables/semaStyles/semaHeaderStyle.jsx";
+import semaHeaderStyle from "variables/semaStyles/semaHeaderStyle.css";
 
 const switchRoutes = (
   <Switch>
@@ -26,7 +26,7 @@ const switchRoutes = (
     })}
   </Switch>
 );
-var fooStyle = {
+const fooStyle = {
     backgroundColor: 'green',
     height: '20%'
 };
@@ -55,7 +55,11 @@ class App extends React.Component {
     const { classes, ...rest } = this.props;
     return (
       <div className={classes.wrapper}>
-          <div style={fooStyle}></div>
+          <div className="semaHeaderStyle">
+              <div style={{height:"100%", display:"flex", marginLeft:"40%"}}>
+                <p style={{color:"white", textAlign:"center"}}>Hellooooooooo</p>
+              </div>
+          </div>
         <Sidebar
           routes={appRoutes}
           logoText={"Creative Tim"}

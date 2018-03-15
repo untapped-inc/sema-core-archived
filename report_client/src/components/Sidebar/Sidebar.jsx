@@ -15,6 +15,7 @@ import {
 import { HeaderLinks } from "components";
 
 import sidebarStyle from "variables/styles/sidebarStyle.jsx";
+import semaLogo from "assets/img/sema/sema-sidebar-logo.png";
 
 const Sidebar = ({ ...props }) => {
   // verifies if routeName is the one active (in browser input)
@@ -54,14 +55,18 @@ const Sidebar = ({ ...props }) => {
       })}
     </List>
   );
+    var fooStyle = {
+        backgroundImage: 'url(${semaLogo})'
+
+    };
   var brand = (
-    <div className={classes.logo}>
-      <a href="https://www.creative-tim.com" className={classes.logoLink}>
-        <div className={classes.logoImage}>
-          <img src={logo} alt="logo" className={classes.img} />
-        </div>
-        {logoText}
-      </a>
+    <div className={classes.logo} style={{backgroundImage: "url(" + semaLogo + ")"}}>
+      {/*<a href="https://www.creative-tim.com" className={classes.logoLink}>*/}
+        {/*<div className={classes.logoImage}>*/}
+          {/*<img src={logo} alt="logo" className={classes.img} />*/}
+        {/*</div>*/}
+        {/*{logoText}*/}
+      {/*</a>*/}
     </div>
   );
   return (

@@ -37,7 +37,7 @@ const fooStyle = {
 
 class App extends React.Component {
   state = {
-    mobileOpen: false
+      mobileOpen: false
   };
   handleDrawerToggle = () => {
     this.setState({ mobileOpen: !this.state.mobileOpen });
@@ -59,7 +59,7 @@ class App extends React.Component {
     const { classes, ...rest } = this.props;
     return (
       <div className={classes.wrapper}>
-          <SeamaHeader1 {...rest}/>
+          <SeamaHeader1  {...rest}/>
           {/*<div className="semaHeaderStyle">*/}
               {/*<div style={{height:"100%", display:"flex", marginLeft:"40%"}}>*/}
                 {/*<p style={{color:"white", textAlign:"center"}}>Hellooooooooo</p>*/}

@@ -15,7 +15,11 @@ import appStyle from "variables/styles/appStyle.jsx";
 import image from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
 
+import SeamaHeader1 from "components/semaComponents/seamaHeader.jsx";
+
+
 import semaHeaderStyle from "variables/semaStyles/semaHeaderStyle.css";
+import semaHeaderStyle1 from "../../variables/semaStyles/semaHeaderStyle1";
 
 const switchRoutes = (
   <Switch>
@@ -55,11 +59,12 @@ class App extends React.Component {
     const { classes, ...rest } = this.props;
     return (
       <div className={classes.wrapper}>
-          <div className="semaHeaderStyle">
-              <div style={{height:"100%", display:"flex", marginLeft:"40%"}}>
-                <p style={{color:"white", textAlign:"center"}}>Hellooooooooo</p>
-              </div>
-          </div>
+          <SeamaHeader1 {...rest}/>
+          {/*<div className="semaHeaderStyle">*/}
+              {/*<div style={{height:"100%", display:"flex", marginLeft:"40%"}}>*/}
+                {/*<p style={{color:"white", textAlign:"center"}}>Hellooooooooo</p>*/}
+              {/*</div>*/}
+          {/*</div>*/}
         <Sidebar
           routes={appRoutes}
           logoText={"Creative Tim"}

@@ -15,7 +15,7 @@ import appStyle from "variables/styles/appStyle.jsx";
 import image from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
 
-import SeamaHeader1 from "components/semaComponents/seamaHeader.jsx";
+import SeamaHeader1 from "components/SemaComponents/SeamaHeader.jsx";
 
 
 import semaHeaderStyle from "variables/semaStyles/semaHeaderStyle.css";

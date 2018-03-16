@@ -1,46 +1,89 @@
 import React from 'react';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+import List, { ListItem, ListItemText } from 'material-ui/List';
+import Menu, { MenuItem } from 'material-ui/Menu';
 
-const styles = {
-    customWidth: {
-        width: 200,
+const styles = theme => ({
+    root: {
+        width: '100%',
+        maxWidth: 360,
+        backgroundColor: "aqua",
+        padding:0
     },
-};
+});
 
-export default class SeamaKioskList extends React.Component {
+const options = [
+    'Kiosk 1',
+    'Kiosk 2',
+    'Kiosk 3',
+    'Kiosk 4',
+];
 
-    constructor(props) {
-        super(props);
-        this.state = {value: 1};
-    }
+class SeamaKioskList extends React.Component {
+    state = {
+        anchorEl: null,
+        selectedIndex: 1,
+    };
 
-    handleChange = (event, index, value) => this.setState({value});
+    button = undefined;
+
+    handleClickListItem = event => {
+        this.setState({ anchorEl: event.currentTarget });
+    };
+
+    handleMenuItemClick = (event, index) => {
+        this.setState({ selectedIndex: index, anchorEl: null });
+    };
+
+    handleClose = () => {
+        this.setState({ anchorEl: null });
+    };
 
     render() {
+        const { classes } = this.props;
+        const { anchorEl } = this.state;
+
         return (
-            <div>
-                <DropDownMenu value={this.state.value} onChange={this.handleChange}>
-                    <MenuItem value={1} primaryText="Never" />
-                    <MenuItem value={2} primaryText="Every Night" />
-                    <MenuItem value={3} primaryText="Weeknights" />
-                    <MenuItem value={4} primaryText="Weekends" />
-                    <MenuItem value={5} primaryText="Weekly" />
-                </DropDownMenu>
-                <br />
-                <DropDownMenu
-                    value={this.state.value}
-                    onChange={this.handleChange}
-                    style={styles.customWidth}
-                    autoWidth={false}
+            <div className={classes.root} style={{height:"60px", width:"150px", marginLeft:"70%", position:"absolute", top:10}}>
+                <List component="nav">
+                    <ListItem
+                        button
+                        aria-haspopup="true"
+                        aria-controls="lock-menu"
+                        aria-label="Kiosk"
+                        onClick={this.handleClickListItem}
+                    >
+                        <ListItemText
+                            primary="Kiosk"
+                            secondary={options[this.state.selectedIndex]}
+                        />
+                    </ListItem>
+                </List>
+                <Menu
+                    id="lock-menu"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={this.handleClose}
                 >
-                    <MenuItem value={1} primaryText="Custom width" />
-                    <MenuItem value={2} primaryText="Every Night" />
-                    <MenuItem value={3} primaryText="Weeknights" />
-                    <MenuItem value={4} primaryText="Weekends" />
-                    <MenuItem value={5} primaryText="Weekly" />
-                </DropDownMenu>
+                    {options.map((option, index) => (
+                        <MenuItem
+                            key={option}
+                            disabled={index === 0}
+                            selected={index === this.state.selectedIndex}
+                            onClick={event => this.handleMenuItemClick(event, index)}
+                        >
+                            {option}
+                        </MenuItem>
+                    ))}
+                </Menu>
             </div>
         );
     }
 }
+
+SeamaKioskList.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(SeamaKioskList);

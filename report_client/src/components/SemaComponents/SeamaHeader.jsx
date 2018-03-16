@@ -8,7 +8,7 @@ import semaHeaderStyle1 from "variables/semaStyles/semaHeaderStyle1";
 import {withStyles} from "material-ui";
 import * as seamaUserActions from "actions";
 
-//import SeamaKioskList from "./SeamaKioskList";
+import SeamaKioskList from "./SeamaKioskList";
 
 class LoggedInUser extends React.Component {
     constructor( props) {
@@ -17,8 +17,8 @@ class LoggedInUser extends React.Component {
     }
 
     render() {
-        return <div style={{height:"100%", display:"flex", marginLeft:"20%"}} onClick={this._handleClick}>
-            <p>Hello, {this.props.seamaUser}.</p>
+        return <div style={{height:"30px", width:"200px", margin:"0 auto"}} onClick={this._handleClick}>
+            Hello, {this.props.seamaUser}.
         </div>;
     }
     _handleClick() {
@@ -27,22 +27,6 @@ class LoggedInUser extends React.Component {
     }
 }
 
-class KioskListXXXX extends React.Component {
-    constructor( props) {
-        super(props);
-        this. _handleClick = this. _handleClick.bind(this);
-    }
-
-    render() {
-        return <div style={{height:"100%", display:"flex", marginLeft:"20%"}} onClick={this._handleClick}>
-            <p>Hello, {this.props.seamaUser}.</p>
-        </div>;
-    }
-    _handleClick() {
-        console.log("hello foo");
-        this.props.seamaUserActions.fetchSeamaUser();
-    }
-}
 
 class SeamaHeader1 extends React.Component {
 
@@ -54,7 +38,7 @@ class SeamaHeader1 extends React.Component {
         return (
             <div className="semaHeaderStyle">
                 <LoggedInUser {...this.props}/>
-                {/*<SeamaKioskList {...this.props}/>*/}
+                <SeamaKioskList {...this.props}/>
             </div>
         )
     }

@@ -32,43 +32,40 @@
   to { transform: rotate(360deg); }
 }
 
-.navbar-default .navbar-nav > li > a {
-  color: white;
-  background-color: blue;
-}
-.navbar-default .navbar-nav > li > a:hover {
-  color: hotpink;
-  background-color: blue;
-}
-.navbar-default .navbar-nav > li > a:visited {
-  color: lime;
-  background-color: blue;
-}
-.navbar-default .navbar-nav > li > a:active {
-  color: antiquewhite;
-  background-color: blue;
-}
-.navbar-default .navbar-nav > li > a:focus {
-  color: darkred;
-  background-color: blue;
-}
-
-.dropdown-menu > li > a {
-  color:greenyellow;
-}
-.navbar-nav > li > .dropdown-menu {
-  background-color: blue;
-}
-/*.navbar-default .navbar-nav > .open > a {*/
-  /*background-color: orange;*/
-  /*color:teal;*/
+/*.navbar-default .navbar-nav > li > a {*/
+  /*color: white;*/
+  /*background-color: blue;*/
 /*}*/
-.navbar-default li a:hover,.navbar-default li.active a{
-  background-color: orange;
-}
+/*.navbar-default .navbar-nav > li > a:hover {*/
+  /*color: hotpink;*/
+  /*background-color: blue;*/
+/*}*/
+/*.navbar-default .navbar-nav > li > a:visited {*/
+  /*color: lime;*/
+  /*background-color: blue;*/
+/*}*/
+/*.navbar-default .navbar-nav > li > a:active {*/
+  /*color: antiquewhite;*/
+  /*background-color: blue;*/
+/*}*/
+/*.navbar-default .navbar-nav > li > a:focus {*/
+  /*color: darkred;*/
+  /*background-color: blue;*/
+/*}*/
 
-.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .active > a{
-  background-color: orange !important;
-  color:greenyellow !important;
-  background-image: none;
-}
+/*.dropdown-menu > li > a {*/
+  /*color:greenyellow;*/
+/*}*/
+/*.navbar-nav > li > .dropdown-menu {*/
+  /*background-color: blue;*/
+/*}*/
+
+/*.navbar-default li a:hover,.navbar-default li.active a{*/
+  /*background-color: orange;*/
+/*}*/
+
+/*.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .active > a{*/
+  /*background-color: orange !important;*/
+  /*color:greenyellow !important;*/
+  /*background-image: none;*/
+/*}*/

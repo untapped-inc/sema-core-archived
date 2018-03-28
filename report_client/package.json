@@ -9,7 +9,8 @@
     "react-bootstrap":"^0.32.1",
     "bootstrap":"3.3.7",
     "react-chartjs-2":"^2.7.0",
-    "chart.js":"^2.7.2"
+    "chart.js":"^2.7.2",
+    "moment":"^2.21.0"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -15,3 +15,57 @@
     margin-left: auto;
     margin-right: auto
 }
+
+.SeamaGridContainer {
+    display: grid;
+    grid-template-columns: 240px auto;
+    grid-template-rows: 170px auto;
+    background-color: rgb(240, 240, 240 );
+
+}
+
+.SeamaSidebar {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    background-color: rgb(240, 0, 0 );
+}
+
+.SeamaWaterQualitySummary {
+     background-color: rgb(171, 193,222 );
+}
+
+.SeamaSummaryContainer {
+    grid-column: 2;
+    grid-row:1;
+    display: grid;
+    grid-template-columns:  auto auto auto;
+    background-color: rgb(240, 240, 0 );
+}
+
+.SeamaChartContainer {
+    grid-column: 2;
+    grid-row:2;
+    display: grid;
+    grid-template-columns:  50% 50% ;
+    grid-template-rows:  auto auto ;
+    grid-gap:15px;
+    background: rgb(40,88,167);
+    padding:10px
+}
+
+.SeamaWaterQualityMainChart {
+    grid-row: 1;
+    grid-column: 1 /span 2;
+    background:white;
+}
+
+.SeamaWaterQualitySecondaryChart1 {
+    grid-row: 2;
+    grid-column: 1;
+    background:white;
+}
+.SeamaWaterQualitySecondaryChart2 {
+    grid-row: 2;
+    grid-column: 2;
+    background:white;
+}

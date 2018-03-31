@@ -1,4 +1,4 @@
-.SeamaGridContainer {
+.WaterQualityContainer {
     display: grid;
     grid-template-columns: 240px auto;
     grid-template-rows: 140px auto;
@@ -6,14 +6,22 @@
 
 }
 
-.SeamaSummaryPanelContainer {
-    display:table-cell;
-    width:50%;
-    height:50%;
-    vertical-align:middle;
+.WaterQualitySummaryContainer {
+    grid-column: 2;
+    grid-row:1;
+    display: grid;
+    grid-template-columns:  auto auto auto;
+    background-color: rgb(240, 240, 0 );
+}
+.WaterQualitySummaryItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(171, 193,222 );
 }
 
-.SeamaSummaryPanel {
+
+.WaterQualitySummaryPanel {
     border-radius: 25px;
     border-color: rgb(101, 139, 194);
     border-style: solid;
@@ -24,40 +32,27 @@
 }
 
 
-.SeamaSidebar {
+.SeamaSidebarItem {
     grid-column: 1;
     grid-row: 1 / span 2;
     background-color: rgb(240, 0, 0 );
 }
 
-.SeamaWaterQualitySummary {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgb(171, 193,222 );
-}
 
-.SeamaSummaryContainer {
-    grid-column: 2;
-    grid-row:1;
-    display: grid;
-    grid-template-columns:  auto auto auto;
-    background-color: rgb(240, 240, 0 );
-}
 
-.SeamaChartContainer {
+.WaterQualityChartContainer {
     grid-column: 2;
     grid-row:2;
     display: grid;
     grid-template-columns:  1fr 1fr ;
-    grid-template-rows:  1fr 1fr ;
+    grid-template-rows:  auto auto ;
     grid-gap:5px;
     background: rgb(40,88,167);
     padding:10px;
     overflow: auto
 }
 
-.SeamaWaterQualityMainChart {
+.WaterQualityMainChartItem {
     grid-row: 1;
     grid-column: 1 /span 2;
     background:white;
@@ -65,12 +60,12 @@
     margin-right: 10%;
 }
 
-.SeamaWaterQualitySecondaryChart1 {
+.WaterQualitySecondaryChart1Item {
     grid-row: 2;
     grid-column: 1;
     background:white;
 }
-.SeamaWaterQualitySecondaryChart2 {
+.WaterQualitySecondaryChart2Item {
     grid-row: 2;
     grid-column: 2;
     background:white;

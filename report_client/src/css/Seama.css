@@ -1,3 +1,11 @@
+.SeamaGridContainer {
+    display: grid;
+    grid-template-columns: 240px auto;
+    grid-template-rows: 140px auto;
+    background-color: rgb(240, 240, 240 );
+
+}
+
 .SeamaSummaryPanelContainer {
     display:table-cell;
     width:50%;
@@ -11,18 +19,10 @@
     border-style: solid;
     border-width: medium;
     margin-bottom: 0;
-    width: 70%;
     margin-left: auto;
     margin-right: auto
 }
 
-.SeamaGridContainer {
-    display: grid;
-    grid-template-columns: 240px auto;
-    grid-template-rows: 170px auto;
-    background-color: rgb(240, 240, 240 );
-
-}
 
 .SeamaSidebar {
     grid-column: 1;
@@ -31,7 +31,10 @@
 }
 
 .SeamaWaterQualitySummary {
-     background-color: rgb(171, 193,222 );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(171, 193,222 );
 }
 
 .SeamaSummaryContainer {

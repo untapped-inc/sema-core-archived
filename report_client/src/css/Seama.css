@@ -79,3 +79,12 @@
     grid-column: 2;
     background:white;
 }
+
+.SeamaServiceError {
+    height: 100px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+
+}

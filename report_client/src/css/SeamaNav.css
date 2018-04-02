@@ -1,0 +1,26 @@
+.SeamaNav {
+    display: grid;
+    grid-template-columns: 240px auto;
+    grid-template-rows: auto auto;
+    background-color: rgb(255, 0, 0 );
+
+}
+
+.SeamaNavToolbar {
+    grid-column: 1 /span 2;
+    grid-row:1;
+    background: rgb(0,255,0);
+}
+
+.SeamaNavSidebar {
+    grid-column: 1;
+    grid-row:2;
+    background: rgb(0, 0 ,255);
+}
+
+.SeamaNavContent {
+    display: grid;
+    grid-column: 2;
+    grid-row:2;
+    background: rgb(200, 200 ,200);
+}

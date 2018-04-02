@@ -1,0 +1,11 @@
+.SeamaSales {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    background-color: rgb(240, 240, 255 );
+    height:900px;
+
+}
+
+
+

@@ -1,0 +1,11 @@
+.DistributionMap {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    background-color: rgb(240, 255, 0 );
+    height:900px;
+
+}
+
+
+

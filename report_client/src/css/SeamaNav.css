@@ -24,3 +24,8 @@
     grid-row:2;
     background: rgb(200, 200 ,200);
 }
+
+.SeamaNavSidebar li a {
+    color: white;
+    background:rgb(24, 55, 106)
+}

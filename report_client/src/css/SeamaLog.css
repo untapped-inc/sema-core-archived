@@ -11,5 +11,17 @@
     padding: 5% 0;
 }
 
+.LogIn .normal {
+    opacity: 1;
+    margin: auto;
+    width: 30%;
+    padding: 10% 0
+}
 
+.LogIn .dimmed {
+    opacity: .6;
+    margin: auto;
+    width: 30%;
+    padding: 10% 0
+}
 

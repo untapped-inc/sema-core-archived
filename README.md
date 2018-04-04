@@ -5,7 +5,7 @@ This file contains very preliminary instructions on installing, building and dep
 - [Prerequisites](#prerequisites)
 - [Server build](#server-build)
 - [Client build](#client-build)
-- [Production Deployment](#Production Deployment)
+- [Production Deployment](#production-deployment)
 
 
 ## Prerequisites
@@ -43,3 +43,5 @@ In the development mode, the dashboard server runs on locathost:3001 and the Rea
  &nbsp;&nbsp;&nbsp;&nbsp;... public_react<br/>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;... build<br/>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;... asset-manifest.json<br/>
+
+* Restart the server on port 80 PORT=80 node bin/www

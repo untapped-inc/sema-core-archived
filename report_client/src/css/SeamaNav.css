@@ -18,12 +18,12 @@
     background: rgb(0, 0 ,255);
 }
 
-.SeamaNavContent {
-    display: grid;
-    grid-column: 2;
-    grid-row:2;
-    background: rgb(200, 200 ,200);
-}
+/*.SeamaNavContent {*/
+    /*display: grid;*/
+    /*grid-column: 2;*/
+    /*grid-row:2;*/
+    /*background: rgb(200, 200 ,200);*/
+/*}*/
 
 .SeamaNavSidebar li a {
     color: white;

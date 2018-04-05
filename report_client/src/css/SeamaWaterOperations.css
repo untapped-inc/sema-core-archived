@@ -56,11 +56,12 @@
     grid-row:3;
     display: grid;
     grid-template-columns:  1fr 1fr ;
-    grid-template-rows:  auto auto ;
+    grid-template-rows:  1fr 1fr ;
     grid-gap:5px;
     background: rgb(40,88,167);
     padding:10px;
-    overflow: auto
+    max-height:100vh;
+    overflow: scroll;
 }
 
 .WaterQualityMainChartItem {

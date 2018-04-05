@@ -1,9 +1,8 @@
 .DeliverySchedule {
     display: grid;
-    grid-template-columns: auto auto;
-    grid-template-rows: auto auto;
+    /*grid-template-columns: auto auto;*/
+    /*grid-template-rows: auto auto;*/
     background-color: rgb(171, 193, 222 );
-    height:900px;
 
 }
 

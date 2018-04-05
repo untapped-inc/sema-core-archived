@@ -21,6 +21,7 @@ The server uses Expressjs
 * Change to report_server folder `cd report_server`
 * Install components `yarn install`
 * Start the server on port 3001 `PORT=3001 node bin/www`. Note that client is configured to access the server on port 3001
+* Test the server access via curl. `curl http://localhost:3001/untapped/health-check` this should return {"server":"Ok","database":"Ok"}
 
 ## Client build
 The server uses React
@@ -28,6 +29,7 @@ The server uses React
 * Install components `yarn install`
 * Start the client on the default port, 3000 `yarn start`
 * You should now see the login page
+* Note: The client uses a cusom Bootstrap theme located at ./report_client/src/css/bootstrap_cerulean.min.css. There is a postInstall script, update_theme.sh, that should copy this theme to the folder ./report_client/node_modules/bootstrap/dist/css/bootstrap_cerulean.min.css
 
 ## Production Deployment
 In the development mode, the dashboard server runs on locathost:3001 and the React App on port 3000. REST calls from the app to the server are proxied through port 3001. When deploying the client, COMMENT OUT THE PROXY statement in react_clinet/package.json:

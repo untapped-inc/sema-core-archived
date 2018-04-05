@@ -36,7 +36,7 @@ In the development mode, the dashboard server runs on locathost:3001 and the Rea
  ` // proxy": "http://localhost:3001`
  * Comment out the proxy statement in react_clinet/package.json as described above
  * Build client `yarn build`
- * Copy the entire build folder from react_client/build to the report_server folder public_react folder. The folder layout of report_server should like:
+ * Copy the entire build folder from react_client/build to the report_server folder public_react folder. (You may need to create the public_react folder) The folder layout of report_server should look like:
 
  report_server<br/>
  +++ report_server<br/>
@@ -46,4 +46,4 @@ In the development mode, the dashboard server runs on locathost:3001 and the Rea
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;... build<br/>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;... asset-manifest.json<br/>
 
-* Restart the server on port 80 PORT=80 node bin/www
+* Restart the server on port 80. `PORT=80 node bin/www`

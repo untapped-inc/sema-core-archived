@@ -46,7 +46,7 @@ In production mode, the dashboard server runs on sema.untapped-inc.com and the R
 
 Our servers are in Linux so installation methods will be for GNU/Linux:
 
-* Ngninx (Reverse Proxy): `sudo apt install ngninx`
+* Nginx (Reverse Proxy): `sudo apt install nginx`
 * Pm2 (Robust Process Manager): `yarn global add pm2`
 
 ### Deploying to Production

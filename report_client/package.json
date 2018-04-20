@@ -20,6 +20,5 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "postinstall": "./update_theme.sh"
-  },
-  "proxy": "http://localhost:3001"
+  }
 }

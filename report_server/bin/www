@@ -7,6 +7,10 @@
 var app = require('../app');
 var debug = require('debug')('report-server:server');
 var http = require('http');
+var path = require('path');
+
+// So we can have an absolute path to the base directory at any time
+global.__basedir = path.resolve(__dirname, '..');
 
 /**
  * Get port from environment and store in Express.

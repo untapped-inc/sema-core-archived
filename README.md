@@ -46,17 +46,17 @@ In production mode, the dashboard server runs on sema.untapped-inc.com and the R
 
 Our servers are in Linux so installation methods will be for GNU/Linux:
 
-* Nginx (Reverse Proxy): `sudo apt install nginx`
-* Pm2 (Robust Process Manager): `yarn global add pm2`
 * Install Node and npm: [Follow depending on your distro](https://nodejs.org/en/download/package-manager/)
 * Install Yarn: `npm i -g yarn`
 * Install react-scripts (To be able to build the client): `yarn global add react-scripts`
 * Clone the Git repository to the server: `git clone https://github.com/FredOleary/dlodashboard1.git sema`
+* Nginx (Reverse Proxy): `sudo apt install nginx`
+* Pm2 (Robust Process Manager): `yarn global add pm2`
 
 ### Deploying to Production
 
 Follow those steps to deploy this app in production mode:
- * Make sure to use the `package.json` without the proxy config - not `package.dev.json`
+ * In the report_client folder Make sure to use the `package.json` without the proxy config - not `package.dev.json`
  * Install client dependencies: `cd report_client && yarn`
  * Build the client: `cd report_client && yarn build`
  * Create a new `public_react` folder into the server directory: `mkdir report_server/public_react`
@@ -64,7 +64,7 @@ Follow those steps to deploy this app in production mode:
      `cp -rf report_client/build report_server/public_react`
 * Install server dependencies: `cd report_server && yarn`
 * Start the server with Pm2: `cd report_server && pm2 start bin/www`
-* Test the server access via curl: `curl http://sema.untapped-inc.com/untapped/health-check` this should return {"server":"Ok","database":"Ok"}
+* Test the server access via curl - Since we haven't configured Nginx yet, we'll test it from port 3001: `curl http://sema.untapped-inc.com:3001/untapped/health-check` this should return {"server":"Ok","database":"Ok"}
 * Setup Ngninx using [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-16-04)
 * Configure Nginx by editing - *WITH SUPER USER*: `/etc/nginx/sites-available/default`:
     `sudo vim /etc/nginx/sites-available/default`

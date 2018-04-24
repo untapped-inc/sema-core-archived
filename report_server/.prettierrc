@@ -5,5 +5,4 @@ singleQuote: true
 trailingComma: "none"
 jsxBracketSameLine: true
 parser: "babylon"
-noSemi: true
-rcVerbose: true
+semi: true

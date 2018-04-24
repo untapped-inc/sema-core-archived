@@ -1,0 +1,9 @@
+useTabs: true
+printWidth: 80
+tabWidth: 8
+singleQuote: true
+trailingComma: "none"
+jsxBracketSameLine: true
+parser: "babylon"
+noSemi: true
+rcVerbose: true

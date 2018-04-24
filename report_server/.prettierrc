@@ -1,6 +1,6 @@
 useTabs: true
 printWidth: 80
-tabWidth: 8
+tabWidth: 4
 singleQuote: true
 trailingComma: "none"
 jsxBracketSameLine: true

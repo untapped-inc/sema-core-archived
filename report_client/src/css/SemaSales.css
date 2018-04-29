@@ -44,7 +44,7 @@
 	grid-column: 1;
 	grid-row:2;
 	display: grid;
-	grid-template-columns:  1fr 1fr ;
+	grid-template-columns:  1fr 350px ;
 	grid-template-rows:  1fr 1fr ;
 	grid-gap:5px;
 	background: rgb(40,88,167);
@@ -61,7 +61,7 @@
 .SalesListItem {
 	grid-row: 1;
 	grid-column: 2;
-	background:palegoldenrod;
+	background:white;
 }
 
 .SalesBottonLeftItem {

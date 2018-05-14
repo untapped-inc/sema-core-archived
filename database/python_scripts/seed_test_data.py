@@ -49,6 +49,18 @@ if __name__ == "__main__":
                                      total = 15.00,
                                      total_gallons = 4 )
 
+        dbPopulate.populate_receipt( created_date= datetime.date(2018, 1, 20)    ,
+                                     currency = 'NZD',
+                                     customer_ref = 'TestCustomer 6',
+                                     customer_amount = 20.00,
+                                     is_sponsor_selected = 0x1,
+                                     kiosk_ref='UnitTest',
+                                     payment_mode = 'cash',
+                                     payment_type = 'now',
+                                     sales_channel_ref = 'sales channel 1',
+                                     total = 20.00,
+                                     total_gallons = 10 )
+
 
         dbConnection.close()
     else:

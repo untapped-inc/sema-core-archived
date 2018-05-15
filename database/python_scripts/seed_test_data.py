@@ -37,7 +37,7 @@ if __name__ == "__main__":
         for customer in customers:
             dbPopulate.populate_customer('UnitTest', "TestCustomer", customer.name, customer.created_date)
         dbPopulate.populate_product(0x1, "DEAD", "product_category 1", "Description of product 1", 20.1, 25, "NZD", "sku-100")
-        dbPopulate.populate_receipt( created_date= datetime.date(2018, 1, 1)    ,
+        dbPopulate.populate_receipt( created_date= datetime.date(2018, 1, 1),
                                      currency = 'NZD',
                                      customer_ref = 'TestCustomer 6',
                                      customer_amount = 15.00,
@@ -49,7 +49,7 @@ if __name__ == "__main__":
                                      total = 15.00,
                                      total_gallons = 4 )
 
-        dbPopulate.populate_receipt( created_date= datetime.date(2018, 1, 20)    ,
+        dbPopulate.populate_receipt( created_date= datetime.date(2018, 1, 20),
                                      currency = 'NZD',
                                      customer_ref = 'TestCustomer 6',
                                      customer_amount = 20.00,
@@ -61,6 +61,29 @@ if __name__ == "__main__":
                                      total = 20.00,
                                      total_gallons = 10 )
 
+        dbPopulate.populate_receipt( created_date= datetime.date(2018, 3, 11),
+                                     currency = 'NZD',
+                                     customer_ref = 'TestCustomer 6',
+                                     customer_amount = 30.00,
+                                     is_sponsor_selected = 0x1,
+                                     kiosk_ref='UnitTest',
+                                     payment_mode = 'cash',
+                                     payment_type = 'now',
+                                     sales_channel_ref = 'sales channel 1',
+                                     total = 30.00,
+                                     total_gallons = 13 )
+
+        dbPopulate.populate_receipt( created_date= datetime.date(2018, 4, 22),
+                                     currency = 'NZD',
+                                     customer_ref = 'TestCustomer 6',
+                                     customer_amount = 10.00,
+                                     is_sponsor_selected = 0x1,
+                                     kiosk_ref='UnitTest',
+                                     payment_mode = 'cash',
+                                     payment_type = 'now',
+                                     sales_channel_ref = 'sales channel 1',
+                                     total = 10.00,
+                                     total_gallons = 4 )
 
         dbConnection.close()
     else:

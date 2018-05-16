@@ -85,6 +85,14 @@ if __name__ == "__main__":
                                      total = 10.00,
                                      total_gallons = 4 )
 
+        dbPopulate.populate_parameter(name="Total Chlorine")
+        dbPopulate.populate_sampling_site(name="Water Treatment Unit")
+
+        dbPopulate.populate_reading_and_measurement(created_date= datetime.date(2018, 5, 1),
+                                                    kiosk_ref='UnitTest',
+                                                    sampling_site_ref="Water Treatment Unit",
+                                                    parameter_ref="Total Chlorine",
+                                                    value=.5)
         dbConnection.close()
     else:
         print('failed to connect')

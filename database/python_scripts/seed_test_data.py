@@ -86,13 +86,63 @@ if __name__ == "__main__":
                                      total_gallons = 4 )
 
         dbPopulate.populate_parameter(name="Total Chlorine")
+
+        dbPopulate.populate_parameter(name="Temperature")
+        dbPopulate.populate_parameter(name="pH")
+        dbPopulate.populate_parameter(name="Total Alkalinity")
+        dbPopulate.populate_parameter(name="Total Hardness")
+        dbPopulate.populate_parameter(name="Free Chlorine")
+        dbPopulate.populate_parameter(name="Total Chlorine")
+        dbPopulate.populate_parameter(name="Total Dissolved Solids")
+        dbPopulate.populate_parameter(name="PRE-FILTER PRESSURE IN")
+        dbPopulate.populate_parameter(name="PRE-FILTER PRESSURE OUT")
+        dbPopulate.populate_parameter(name="MEMBRANE FEED PRESSURE")
+        dbPopulate.populate_parameter(name="Feed Flow Rate")
+        dbPopulate.populate_parameter(name="Product Flow Rate")
+        dbPopulate.populate_parameter(name="Gallons")
+        dbPopulate.populate_parameter(name="Color")
+        dbPopulate.populate_parameter(name="Odor")
+        dbPopulate.populate_parameter(name="Taste")
+
+
+        dbPopulate.populate_sampling_site(name="Feed")
+        dbPopulate.populate_sampling_site(name="PM: Feed")
+        dbPopulate.populate_sampling_site(name="Fill Station")
+        dbPopulate.populate_sampling_site(name="PM: Fill Station")
+        dbPopulate.populate_sampling_site(name="AM: Bulk")
+        dbPopulate.populate_sampling_site(name="PM: Bulk Fill")
+        dbPopulate.populate_sampling_site(name="AM: Cleaning Station")
+        dbPopulate.populate_sampling_site(name="PM: Cleaning Station")
         dbPopulate.populate_sampling_site(name="Water Treatment Unit")
+        dbPopulate.populate_sampling_site(name="AM: Product Line")
+        dbPopulate.populate_sampling_site(name="PM: Product Line")
+
 
         dbPopulate.populate_reading_and_measurement(created_date= datetime.date(2018, 5, 1),
                                                     kiosk_ref='UnitTest',
                                                     sampling_site_ref="Water Treatment Unit",
                                                     parameter_ref="Total Chlorine",
                                                     value=.5)
+
+        dbPopulate.populate_reading_and_measurement(created_date= datetime.date(2018, 5, 15),
+                                                    kiosk_ref='UnitTest',
+                                                    sampling_site_ref="PM: Fill Station",
+                                                    parameter_ref="Gallons",
+                                                    value=100)
+
+        dbPopulate.populate_reading_and_measurement_no_sampling_site(created_date= datetime.date(2018, 5, 10),
+                                                                    kiosk_ref='UnitTest',
+                                                                    parameter_ref="Product Flow Rate",
+                                                                    value=123)
+        dbPopulate.populate_reading_and_measurement_no_sampling_site(created_date= datetime.date(2018, 5, 20),
+                                                                    kiosk_ref='UnitTest',
+                                                                    parameter_ref="MEMBRANE FEED PRESSURE",
+                                                                    value=456)
+
+
+
+
+
         dbConnection.close()
     else:
         print('failed to connect')

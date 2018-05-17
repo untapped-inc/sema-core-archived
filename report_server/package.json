@@ -17,7 +17,8 @@
     "express-session": "^1.15.6",
 	  "express-validator":"^5.2.0",
 	  "sprintf-js":"^1.1.1",
-	  "datejs":"^1.0.0-rc3"
+	  "datejs":"^1.0.0-rc3",
+	  "winston": "^2.4.2"
   },
 	"devDependencies": {
 		"mocha":"^5.1.1",

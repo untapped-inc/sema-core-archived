@@ -243,7 +243,7 @@ class DBPopulate:
             print('sampling_site "', name, '" exists')
         cursor.close()
 
-    """ Add a reading and measurement"""
+    """ Add a reading and measurement with sampling site"""
     def populate_reading_and_measurement( self, kiosk_ref, created_date, sampling_site_ref, parameter_ref, value):
         cursor = self.connection.cursor()
         try:
@@ -290,5 +290,46 @@ class DBPopulate:
             print('failed to add reading/measurement for ', created_date, err)
         cursor.close()
 
+    """ Add a reading and measurement no sampling site"""
+    def populate_reading_and_measurement_no_sampling_site( self, kiosk_ref, created_date, parameter_ref, value):
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("SELECT id FROM kiosk WHERE name = %s", (kiosk_ref,))
+            found_rows = cursor.fetchall()
+            kiosk_id = found_rows[0][0]
+
+            cursor.execute("SELECT id FROM parameter WHERE name = %s", (parameter_ref,))
+            found_rows = cursor.fetchall()
+            parameter_id = found_rows[0][0]
+
+            cursor.execute("SELECT * FROM reading WHERE kiosk_id = %s AND "
+                           "created_date= %s ", (kiosk_id, created_date ))
+            found_rows = cursor.fetchall()
+            if len(found_rows) == 0:
+                cursor.execute("INSERT INTO reading (version, created_date, kiosk_id) "
+                               "VALUES(%s, %s, %s)", (1, created_date, kiosk_id))
+                self.connection.commit()
+                print('Added reading for date', created_date, '. Kiosk', kiosk_ref)
+
+                cursor.execute("SELECT id FROM reading WHERE kiosk_id = %s AND "
+                               "created_date= %s " ,
+                               (kiosk_id, created_date))
+                found_rows = cursor.fetchall()
+                reading_id = found_rows[0][0]
+
+                cursor.execute("INSERT INTO measurement (version, parameter_id, reading_id, value) "
+                               "VALUES(%s, %s, %s, %s )", (1, parameter_id, reading_id, value))
+                self.connection.commit()
+                print('Added measurement for parameter', parameter_ref )
+
+
+
+            else:
+                print('Reading for date', created_date,'. Kiosk', kiosk_ref, '. Sampling site:', 'exists')
+
+
+        except mysql.connector.Error as err:
+            print('failed to add reading/measurement for ', created_date, err)
+        cursor.close()
 
 

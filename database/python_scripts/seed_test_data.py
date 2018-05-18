@@ -37,7 +37,7 @@ if __name__ == "__main__":
         for customer in customers:
             dbPopulate.populate_customer('UnitTest', "TestCustomer", customer.name, customer.created_date)
         dbPopulate.populate_product(0x1, "DEAD", "product_category 1", "Description of product 1", 20.1, 25, "NZD", "sku-100")
-        dbPopulate.populate_receipt( created_date= datetime.date(2018, 1, 1),
+        dbPopulate.populate_receipt( created_date= datetime.date(2018, 1, 1), # JANUARY
                                      currency = 'NZD',
                                      customer_ref = 'TestCustomer 6',
                                      customer_amount = 15.00,
@@ -49,7 +49,7 @@ if __name__ == "__main__":
                                      total = 15.00,
                                      total_gallons = 4 )
 
-        dbPopulate.populate_receipt( created_date= datetime.date(2018, 1, 20),
+        dbPopulate.populate_receipt( created_date= datetime.date(2018, 1, 20), # JANUARY
                                      currency = 'NZD',
                                      customer_ref = 'TestCustomer 6',
                                      customer_amount = 20.00,
@@ -61,7 +61,7 @@ if __name__ == "__main__":
                                      total = 20.00,
                                      total_gallons = 10 )
 
-        dbPopulate.populate_receipt( created_date= datetime.date(2018, 3, 11),
+        dbPopulate.populate_receipt( created_date= datetime.date(2018, 3, 11), # MARCH
                                      currency = 'NZD',
                                      customer_ref = 'TestCustomer 6',
                                      customer_amount = 30.00,
@@ -73,7 +73,7 @@ if __name__ == "__main__":
                                      total = 30.00,
                                      total_gallons = 13 )
 
-        dbPopulate.populate_receipt( created_date= datetime.date(2018, 4, 22),
+        dbPopulate.populate_receipt( created_date= datetime.date(2018, 4, 22),  # APRIL
                                      currency = 'NZD',
                                      customer_ref = 'TestCustomer 6',
                                      customer_amount = 10.00,
@@ -129,6 +129,21 @@ if __name__ == "__main__":
                                                     sampling_site_ref="PM: Fill Station",
                                                     parameter_ref="Gallons",
                                                     value=100)
+        dbPopulate.populate_reading_and_measurement(created_date= datetime.date(2018, 5, 15),
+                                                    kiosk_ref='UnitTest',
+                                                    sampling_site_ref="Fill Station",
+                                                    parameter_ref="Gallons",
+                                                    value=80)
+        dbPopulate.populate_reading_and_measurement(created_date=datetime.date(2018, 5, 15),
+                                                    kiosk_ref='UnitTest',
+                                                    sampling_site_ref="PM: Product Line",
+                                                    parameter_ref="Gallons",
+                                                    value=200)
+        dbPopulate.populate_reading_and_measurement(created_date=datetime.date(2018, 5, 15),
+                                                    kiosk_ref='UnitTest',
+                                                    sampling_site_ref="AM: Product Line",
+                                                    parameter_ref="Gallons",
+                                                    value=160)
 
         dbPopulate.populate_reading_and_measurement_no_sampling_site(created_date= datetime.date(2018, 5, 10),
                                                                     kiosk_ref='UnitTest',

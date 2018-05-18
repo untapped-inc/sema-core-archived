@@ -2,7 +2,7 @@
     grid-column: 2;
     grid-row:2;
     display: grid;
-    grid-template-rows: 140px 50px auto;
+    grid-template-rows: 200px 10px auto;
     background-color: rgb(240, 240, 240 );
 
 }
@@ -16,20 +16,60 @@
     background: rgb(40,88,167);
 }
 
-.WaterQualitySummaryContainer {
+.WaterOperationsSummaryContainer {
     grid-column: 1;
     grid-row:1;
     display: grid;
-    grid-template-columns:  auto auto auto;
-    background-color: rgb(240, 240, 0 );
+    grid-template-columns:  1fr 3fr;
+	grid-template-rows:  1fr 1fr ;
+    background-color: rgb(171, 193, 222 );
 }
-.WaterQualitySummaryItem {
+.WaterOperationsProduction{
+	grid-column: 1;
+	grid-row:1;
+}
+.WaterOperationsWastage{
+	grid-column: 1;
+	grid-row:2;
+}
+.WaterOperationsPressure{
+	grid-column: 2;
+	grid-row:1;
+}
+.WaterOperationsFlow{
+	grid-column: 2;
+	grid-row:2;
+}
+.WaterOpTableRow1Col1{
+	border:none;
+	padding-bottom:0;
+	font-weight: bold;
+}
+
+.WaterOpTableRow1Col2to4{
+	border:none !important;
+	padding-bottom:0 !important;
+	text-decoration: underline;
+}
+
+.WaterOpTableRow2Col2to4{
+	border:none !important;;
+	padding-bottom:0!important;;
+	color:rgb(219,86,13);
+}
+
+.WaterOperationsSummaryItem {
     display: flex;
     align-items: center;
     justify-content: center;
+	margin-top: 4px;
     background-color: rgb(171, 193,222 );
 }
 
+.WaterOperationsSummaryItem2 {
+	margin-top: 4px;
+	background-color: rgb(171, 193,222 );
+}
 
 .WaterQualitySummaryPanel {
     border-radius: 25px;

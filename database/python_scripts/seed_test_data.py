@@ -129,6 +129,21 @@ if __name__ == "__main__":
                                                     sampling_site_ref="PM: Fill Station",
                                                     parameter_ref="Gallons",
                                                     value=100)
+        dbPopulate.populate_reading_and_measurement(created_date= datetime.date(2018, 5, 15),
+                                                    kiosk_ref='UnitTest',
+                                                    sampling_site_ref="Fill Station",
+                                                    parameter_ref="Gallons",
+                                                    value=80)
+        dbPopulate.populate_reading_and_measurement(created_date=datetime.date(2018, 5, 15),
+                                                    kiosk_ref='UnitTest',
+                                                    sampling_site_ref="PM: Product Line",
+                                                    parameter_ref="Gallons",
+                                                    value=200)
+        dbPopulate.populate_reading_and_measurement(created_date=datetime.date(2018, 5, 15),
+                                                    kiosk_ref='UnitTest',
+                                                    sampling_site_ref="AM: Product Line",
+                                                    parameter_ref="Gallons",
+                                                    value=160)
 
         dbPopulate.populate_reading_and_measurement_no_sampling_site(created_date= datetime.date(2018, 5, 10),
                                                                     kiosk_ref='UnitTest',

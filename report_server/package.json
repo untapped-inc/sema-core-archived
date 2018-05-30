@@ -4,7 +4,8 @@
  "private": true,
  "scripts": {
   "start": "node ./bin/www",
-  "populate": "chmod +x ./bin/populate-models && node ./bin/populate-models"
+  "populate": "chmod +x ./bin/populate-models && node ./bin/populate-models",
+  "postinstal": "yarn populate"
  },
  "dependencies": {
   "bcrypt": "^2.0.1",

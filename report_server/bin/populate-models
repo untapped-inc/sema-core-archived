@@ -2,16 +2,24 @@
 
 require('dotenv').config();
 
-var SequelizeAuto = require('sequelize-auto')
-var auto = new SequelizeAuto(process.env.DB_SCHEMA, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT,
-	directory: './models'
+const SequelizeAuto = require('sequelize-auto')
+
+// We don't want to populate every table from the database, just the ones we
+// definitely need...
+let tablesToPopulate = process.env.DEFAULT_TABLES.split(',');
+
+// ... and additional ones later on
+if (process.argv.length > 2) {
+	tablesToPopulate.push(...process.argv.slice(2))
+}
+
+const auto = new SequelizeAuto(process.env.DB_SCHEMA, process.env.DB_USER, process.env.DB_PASSWORD, {
+	host: process.env.DB_HOST,
+	dialect: process.env.DB_DIALECT,
+	directory: './models',
+	tables: tablesToPopulate
 });
 
 auto.run(function (err) {
-  if (err) throw err;
-
-  console.log(auto.tables); // table list
-  console.log(auto.foreignKeys); // foreign key list
+	if (err) throw err;
 });

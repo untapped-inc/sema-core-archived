@@ -1,0 +1,5 @@
+DB_HOST=xxx.xx.xxx.xx
+DB_USER=username
+DB_PASSWORD=password
+DB_SCHEMA=database_name
+DB_DIALECT=mysql

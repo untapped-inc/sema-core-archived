@@ -22,7 +22,7 @@ if __name__ == "__main__":
                   Customer(name='TestCustomer 5', created_date=datetime.date(2018, 4, 1)),
                   Customer(name='TestCustomer 6', created_date=datetime.date(2018, 5, 1))
                   ]
-    dbConnection = DBConnection('192.168.50.92', 'fred', 'jibu1', 'jibu1')
+    dbConnection = DBConnection('167.99.229.86', 'dashboard', 'Dashboard2018', 'sema_test1')
     dbConnection.connect()
     connection = dbConnection.get_connection()
     if connection is not None:

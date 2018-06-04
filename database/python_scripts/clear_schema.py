@@ -9,6 +9,7 @@ Created on Tue May  8 17:20:33 2018
 from platform import python_version
 from DBConnection import DBConnection
 from DBSchema import DBSchema
+from DBClear import DBClear
 
 
 if __name__ == "__main__":
@@ -17,11 +18,12 @@ if __name__ == "__main__":
     dbConnection = DBConnection('167.99.229.86', 'dashboard', 'Dashboard2018', 'sema_test1')
     dbConnection.connect()
     connection = dbConnection.get_connection()
-    dbSchema = DBSchema(connection)
+    #dbSchema = DBSchema(connection)
+    dbClear = DBClear(connection)
     if connection is not None:
         print("Connected")
-        dbSchema = DBSchema(connection)
-        dbSchema.update_schema()
+
+        dbClear.clear_schema()
         dbConnection.close()
     else:
         print('failed to connect')

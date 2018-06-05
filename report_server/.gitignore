@@ -6,6 +6,12 @@
 public_react
 yarn.lock
 
+# auto generated database files
+models
+!models/associations.js
+!models/custom-methods.js
+!models/index.js
+
 # misc
 .DS_Store
 

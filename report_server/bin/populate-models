@@ -17,7 +17,11 @@ const auto = new SequelizeAuto(process.env.DB_SCHEMA, process.env.DB_USER, proce
 	host: process.env.DB_HOST,
 	dialect: process.env.DB_DIALECT,
 	directory: './models',
-	tables: tablesToPopulate
+	tables: tablesToPopulate,
+	additional: {
+		timestamps: false,
+		underscored: true
+	}
 });
 
 auto.run(function (err) {

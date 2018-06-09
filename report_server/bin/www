@@ -5,10 +5,17 @@ require('dotenv').config();
 // So we can have an absolute path to the base directory at any time
 const path	= require('path');
 const env	= process.env.NODE_ENV || 'development';
+const mysql = require('mysql2');
 
-// Set global variables here
+// Set global variables here. Make sure they start
+// with "__"
 __basedir	= path.resolve(__dirname, '..');
 __dbConfig	= require(`${__basedir}/config/database`)[env];
+
+// Clone the global DB config and add a greater connection limit
+// (default is 5)
+const configs = {...__dbConfig, connectionLimit: 50};
+__pool = mysql.createPool(configs);
 
 const app	= require(`${__basedir}/app`);
 const debug	= require('debug')('report-server:server');

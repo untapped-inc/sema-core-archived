@@ -5,7 +5,8 @@
  "scripts": {
   "start": "nodemon ./bin/www",
   "populate": "chmod +x ./bin/populate-models && node ./bin/populate-models",
-  "postinstal": "yarn populate"
+  "postinstal": "yarn populate",
+  "test": "mocha --timeout 10000"
  },
  "dependencies": {
   "bcrypt": "^2.0.1",
@@ -21,7 +22,6 @@
   "jsonwebtoken": "^8.2.2",
   "lodash": "^4.17.10",
   "morgan": "~1.9.0",
-  "mysql": "^2.15.0",
   "mysql2": "^1.5.3",
   "nodemon": "^1.17.5",
   "passport": "^0.4.0",

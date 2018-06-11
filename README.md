@@ -56,7 +56,6 @@ Our servers are in Linux so installation methods will be for GNU/Linux:
 ### Deploying to Production
 
 Follow those steps to deploy this app in production mode:
- * In the report_client folder Make sure to use the `package.json` without the proxy config - not `package.dev.json`
  * Install client dependencies: `cd report_client && yarn`
  * Build the client: `cd report_client && yarn build`
  * Create a new `public_react` folder into the server directory: `mkdir report_server/public_react`
@@ -83,7 +82,19 @@ location / {
 * Restart Nginx: `sudo systemctl restart nginx`
 * Visit the dashboard website at http://sema.untapped-inc.com
 
+## .env files
+To accommodate development/test/production environments, a '.env' configuration file is used to specify database connection information and other configuration parameters.
+You will need to contact your IT admin for url, database and other credentials required to configure the environment. These parameters are:
+* DB_HOST=                  (Url/IP of the database)
+* DB_USER=                  (User name)
+* DB_PASSWORD=              (User password)
+* DB_SCHEMA=                (Database Schema)
+* DB_DIALECT=mysql          (The SQL dialect we're using, mysql in this case)
+* DEFAULT_TABLES=user,role,user_role  (The tables that must be populated - postinstall - by sequelize-auto by default)
+* JWT_SECRET=xxxxx          (Json Web Token secret used to encrypt the token)
+* JWT_EXPIRATION_LENGTH=    (length of time the token is valid for. E.g.1 day)
+* BCRYPT_SALT_ROUNDS=12     (How much time is needed to calculate a single BCrypt hash - Between 8 and 12 is recommended)
+
 ## TODO
 - [ ] Production: Add SSL certification support with Let's Encrypt
 - [ ] Production: Make sure we only use logs and error printing only in development mode
-- [ ] Production: Use a `.env` file

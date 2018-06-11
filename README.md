@@ -89,11 +89,11 @@ You will need to contact your IT admin for url, database and other credentials r
 * DB_USER=                  (User name)
 * DB_PASSWORD=              (User password)
 * DB_SCHEMA=                (Database Schema)
-* DB_DIALECT=mysql          (Do we need to expose this?)
-* DEFAULT_TABLES=user,role,user_role  (Do we need to expose these?)
+* DB_DIALECT=mysql          (The SQL dialect we're using, mysql in this case)
+* DEFAULT_TABLES=user,role,user_role  (The tables that must be populated - postinstall - by sequelize-auto by default)
 * JWT_SECRET=xxxxx          (Json Web Token secret used to encrypt the token)
 * JWT_EXPIRATION_LENGTH=    (length of time the token is valid for. E.g.1 day)
-* BCRYPT_SALT_ROUNDS=10     (Do we need to expose this?)
+* BCRYPT_SALT_ROUNDS=12     (How much time is needed to calculate a single BCrypt hash - Between 8 and 12 is recommended)
 
 ## TODO
 - [ ] Production: Add SSL certification support with Let's Encrypt

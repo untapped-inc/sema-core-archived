@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
 --
--- Host: 104.131.40.239    Database: dlo
+-- Host: 167.99.229.86    Database: sema
 -- ------------------------------------------------------
--- Server version	5.5.38-0ubuntu0.12.04.1
+-- Server version	5.7.22-0ubuntu0.16.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -346,7 +346,7 @@ CREATE TABLE `measurement` (
   KEY `FK93F2DBBCABB2A633` (`reading_id`),
   CONSTRAINT `FK93F2DBBC33059AD3` FOREIGN KEY (`parameter_id`) REFERENCES `parameter` (`id`),
   CONSTRAINT `FK93F2DBBCABB2A633` FOREIGN KEY (`reading_id`) REFERENCES `reading` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=231538 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=232303 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -391,7 +391,7 @@ CREATE TABLE `payment_history` (
   KEY `FK9034575BB099F6B3` (`receipt_id`),
   KEY `FK9034575BA462EED6` (`customer_account_id`),
   CONSTRAINT `FK9034575BB099F6B3` FOREIGN KEY (`receipt_id`) REFERENCES `receipt` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=174905 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=175264 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -598,7 +598,7 @@ CREATE TABLE `reading` (
   KEY `FK4065CE8C8DF0B430` (`sampling_site_id`),
   CONSTRAINT `FK4065CE8C6413D753` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`),
   CONSTRAINT `FK4065CE8C8DF0B430` FOREIGN KEY (`sampling_site_id`) REFERENCES `sampling_site` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44007 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=44147 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -658,7 +658,7 @@ CREATE TABLE `receipt` (
   CONSTRAINT `FK4082723817D4B373` FOREIGN KEY (`sponsor_id`) REFERENCES `sponsor` (`id`),
   CONSTRAINT `FK4082723854B1E8E8` FOREIGN KEY (`sales_channel_id`) REFERENCES `sales_channel` (`id`),
   CONSTRAINT `FK408272386413D753` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=224804 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=225286 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -710,7 +710,7 @@ CREATE TABLE `receipt_line_item` (
   PRIMARY KEY (`id`),
   KEY `FKABD16337B099F6B3` (`receipt_id`),
   CONSTRAINT `FKABD16337B099F6B3` FOREIGN KEY (`receipt_id`) REFERENCES `receipt` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=254816 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=255356 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -791,6 +791,23 @@ CREATE TABLE `region_rebates` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `role`
+--
+
+DROP TABLE IF EXISTS `role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `role` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `authority` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `authority` (`authority`),
+  UNIQUE KEY `code_UNIQUE` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `sales_channel`
 --
 
@@ -845,24 +862,6 @@ CREATE TABLE `sampling_site` (
   CONSTRAINT `FKED08A09FA6ADD2D7` FOREIGN KEY (`followup_to_site_id`) REFERENCES `sampling_site` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Temporary view structure for view `school_receipt`
---
-
-DROP TABLE IF EXISTS `school_receipt`;
-/*!50001 DROP VIEW IF EXISTS `school_receipt`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `school_receipt` AS SELECT 
- 1 AS `id`,
- 1 AS `name`,
- 1 AS `created_date`,
- 1 AS `currency_code`,
- 1 AS `customer_amount`,
- 1 AS `total`,
- 1 AS `total_gallons`*/;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `schools`
@@ -979,9 +978,9 @@ CREATE TABLE `trip` (
   KEY `FK_Trip_Kiosk_idx` (`kiosk_id`),
   KEY `fk_trip_drivers_idx` (`driver_id`),
   KEY `fk_trip_vehicles` (`vehicle_id`),
-  CONSTRAINT `fk_trip_vehicles` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`vehicle_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_trip_drivers` FOREIGN KEY (`driver_id`) REFERENCES `drivers` (`driver_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_trip_kiosk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_trip_kiosk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_trip_vehicles` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`vehicle_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=504 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1021,54 +1020,34 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `is_active` bit(1) NOT NULL,
+  `id` bigint(20) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `user_name` varchar(255) NOT NULL,
-  `class` varchar(255) NOT NULL,
-  `contact_details` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `user_name` (`user_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `user_name` (`username`),
+  UNIQUE KEY `email_UNIQUE` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Temporary view structure for view `v_mfin`
+-- Table structure for table `user_role`
 --
 
-DROP TABLE IF EXISTS `v_mfin`;
-/*!50001 DROP VIEW IF EXISTS `v_mfin`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_mfin` AS SELECT 
- 1 AS `id`,
- 1 AS `Kiosk`,
- 1 AS `date`,
- 1 AS `contact_id`,
- 1 AS `Contact Name`,
- 1 AS `Sales Channel`,
- 1 AS `SKU`,
- 1 AS `Description`,
- 1 AS `Quantity`,
- 1 AS `Customer Payment`,
- 1 AS `Total`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `v_mfin_payments`
---
-
-DROP TABLE IF EXISTS `v_mfin_payments`;
-/*!50001 DROP VIEW IF EXISTS `v_mfin_payments`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_mfin_payments` AS SELECT 
- 1 AS `id`,
- 1 AS `contact_name`,
- 1 AS `date(payment_date)`,
- 1 AS `amount`*/;
-SET character_set_client = @saved_cs_client;
+DROP TABLE IF EXISTS `user_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_role` (
+  `role_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  KEY `role_id` (`role_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `fk_user_role_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_role_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `vehicles`
@@ -1087,60 +1066,6 @@ CREATE TABLE `vehicles` (
   CONSTRAINT `fk_vehicles_kiosk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Final view structure for view `school_receipt`
---
-
-/*!50001 DROP VIEW IF EXISTS `school_receipt`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`app`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `school_receipt` AS select `a`.`id` AS `id`,`a`.`name` AS `name`,`b`.`created_date` AS `created_date`,`b`.`currency_code` AS `currency_code`,`b`.`customer_amount` AS `customer_amount`,`b`.`total` AS `total`,`b`.`total_gallons` AS `total_gallons` from (`schools` `a` left join `receipt` `b` on((`a`.`id` = `b`.`customer_account_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `v_mfin`
---
-
-/*!50001 DROP VIEW IF EXISTS `v_mfin`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`app`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `v_mfin` AS (select `r`.`id` AS `id`,`k`.`name` AS `Kiosk`,cast(`r`.`created_date` as date) AS `date`,`c`.`id` AS `contact_id`,`c`.`contact_name` AS `Contact Name`,`s`.`name` AS `Sales Channel`,`rli`.`sku` AS `SKU`,`p`.`description` AS `Description`,sum(`rli`.`quantity`) AS `Quantity`,`r`.`customer_amount` AS `Customer Payment`,`r`.`total` AS `Total` from (((((`receipt` `r` join `sales_channel` `s`) join `receipt_line_item` `rli`) join `product` `p`) join `kiosk` `k`) join `customer_account` `c`) where ((`r`.`id` = `rli`.`receipt_id`) and (`s`.`id` = `r`.`sales_channel_id`) and (`p`.`sku` = `rli`.`sku`) and (`k`.`id` = `r`.`kiosk_id`) and (`c`.`id` = `r`.`customer_account_id`) and (`r`.`payment_type` = 'Post-Pay') and `r`.`id` in (select `rli`.`receipt_id` from `receipt_line_item` `rli` where (`rli`.`sku` = 'MFIN'))) group by `r`.`id`,`k`.`name`,cast(`r`.`created_date` as date),`c`.`id`,`c`.`contact_name`,`s`.`name`,`rli`.`sku`,`p`.`description`,`p`.`price_amount`,`r`.`customer_amount`,`r`.`total`) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `v_mfin_payments`
---
-
-/*!50001 DROP VIEW IF EXISTS `v_mfin_payments`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`app`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `v_mfin_payments` AS (select `c`.`id` AS `id`,`c`.`contact_name` AS `contact_name`,cast(`ph`.`payment_date` as date) AS `date(payment_date)`,`ph`.`amount` AS `amount` from (`customer_account` `c` join `payment_history` `ph`) where ((`c`.`id` = `ph`.`customer_account_id`) and isnull(`ph`.`receipt_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1151,4 +1076,4 @@ CREATE TABLE `vehicles` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-08 16:01:04
+-- Dump completed on 2018-06-12 11:37:22

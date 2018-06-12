@@ -14,7 +14,7 @@ __dbConfig	= require(`${__basedir}/config/database`)[env];
 
 // Clone the global DB config and add a additional options
 // (default is 5)
-const configs = {...__dbConfig, connectionLimit: 50, supportBigNumbers: true};
+const configs = {...__dbConfig, connectionLimit: 50, supportBigNumbers: true, decimalNumbers: true};
 __pool = mysql.createPool(configs);
 
 const app	= require(`${__basedir}/app`);

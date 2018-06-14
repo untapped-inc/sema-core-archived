@@ -24,5 +24,5 @@ echo building release apk
 ./gradlew assembleRelease
 
 
-echo signing the apk (will need to enter sign passcode)
+echo "signing the apk (will need to enter signing passcode)"
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /Users/fredoleary/android_key_store/jibu_pos app/build/outputs/apk/release/app-release-unsigned.apk key_jubu -signedjar sema.apk

@@ -9,3 +9,6 @@ __pycache__
 
 #configuration file
 dbConfig.py
+
+#pycharm
+.idea/

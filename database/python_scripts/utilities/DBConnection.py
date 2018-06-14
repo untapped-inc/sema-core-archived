@@ -16,7 +16,7 @@ class DBConnection():
         self.dbName = dbName
         self.password = password
         self.user = user
- 
+        print( "Database: host-", host, "user-", user, "database-",dbName)
     def connect(self):
         """ Initialize database connection and tables """
         self.connection = mysql.connector.connect(host= self.host,

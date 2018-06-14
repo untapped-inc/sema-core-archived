@@ -7,9 +7,10 @@ Created on Tue May  8 17:20:33 2018
 """
 
 from platform import python_version
-from DBConnection import DBConnection
-from DBPopulate import DBPopulate
-from Customer import Customer
+from utilities.DBConnection import DBConnection
+from utilities.DBPopulate import DBPopulate
+from utilities.Customer import Customer
+from dbConfig import dbConfig
 
 import datetime
 
@@ -22,7 +23,8 @@ if __name__ == "__main__":
                   Customer(name='TestCustomer 5', created_date=datetime.date(2018, 4, 1)),
                   Customer(name='TestCustomer 6', created_date=datetime.date(2018, 5, 1))
                   ]
-    dbConnection = DBConnection('167.99.229.86', 'dashboard', 'Dashboard2018', 'sema_test1')
+    DBConfig = dbConfig()
+    dbConnection = DBConnection(DBConfig.host, DBConfig.user, DBConfig.password,DBConfig.dbName)
     dbConnection.connect()
     connection = dbConnection.get_connection()
     if connection is not None:

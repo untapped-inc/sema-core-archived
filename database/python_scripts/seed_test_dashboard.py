@@ -16,13 +16,14 @@ import datetime
 
 if __name__ == "__main__":
     print('Python', python_version())
-    customers = [ Customer(name='TestCustomer 1', created_date= datetime.date(2018, 1, 1)),
-                  Customer(name='TestCustomer 2', created_date=datetime.date(2018, 2, 1)),
-                  Customer(name='TestCustomer 3', created_date=datetime.date(2018, 3, 1)),
-                  Customer(name='TestCustomer 4', created_date=datetime.date(2018, 4, 1)),
-                  Customer(name='TestCustomer 5', created_date=datetime.date(2018, 4, 1)),
-                  Customer(name='TestCustomer 6', created_date=datetime.date(2018, 5, 1))
-                  ]
+    customers = [
+        Customer(name='TestCustomer 1', created_date=datetime.date(2018, 1, 1), updated_date=datetime.date(2018, 1, 1)),
+        Customer(name='TestCustomer 2', created_date=datetime.date(2018, 2, 1), updated_date=datetime.date(2018, 2, 1)),
+        Customer(name='TestCustomer 3', created_date=datetime.date(2018, 3, 1), updated_date=datetime.date(2018, 3, 1)),
+        Customer(name='TestCustomer 4', created_date=datetime.date(2018, 4, 1), updated_date=datetime.date(2018, 4, 1)),
+        Customer(name='TestCustomer 5', created_date=datetime.date(2018, 4, 1), updated_date=datetime.date(2018, 4, 1)),
+        Customer(name='TestCustomer 6', created_date=datetime.date(2018, 5, 1), updated_date=datetime.date(2018, 5, 1))
+        ]
     DBConfig = dbConfig()
     dbConnection = DBConnection(DBConfig.host, DBConfig.user, DBConfig.password,DBConfig.dbName)
     dbConnection.connect()
@@ -37,7 +38,7 @@ if __name__ == "__main__":
         dbPopulate.populate_region('New Zealand', 'Manawatu')
         dbPopulate.populate_kiosk('Manawatu', "UnitTest", "my_api_key")
         for customer in customers:
-            dbPopulate.populate_customer('UnitTest', "TestCustomer", customer.name, customer.created_date)
+            dbPopulate.populate_customer('UnitTest', "TestCustomer", customer.name, customer.created_date, customer.updated_date)
         dbPopulate.populate_product(0x1, "DEAD", "product_category 1", "Description of product 1", 20.1, 25, "NZD", "sku-100")
         dbPopulate.populate_receipt( created_date= datetime.date(2018, 1, 1), # JANUARY
                                      currency = 'NZD',

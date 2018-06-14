@@ -84,7 +84,8 @@ class DBPopulate:
         cursor.close()
 
     """ Add a customer. Note: This assumes contact_name are unique """
-    def populate_customer(self, kiosk_name, customer_type, contact_name, create_date):
+
+    def populate_customer(self, kiosk_name, customer_type, contact_name, create_date, updated_date):
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM customer_account WHERE contact_name = %s", (contact_name,))
         rows = cursor.fetchall()
@@ -98,9 +99,9 @@ class DBPopulate:
                 ct_rows = cursor.fetchall()
 
                 cursor.execute("INSERT INTO customer_account "
-                               "(version, id, kiosk_id, contact_name, due_amount, customer_type_id, created_date) "
-                               "VALUES(%s, %s, %s, %s, %s, %s, %s)",
-                               (1, guid, kiosk_rows[0][0], contact_name, 0, ct_rows[0][0],create_date ))
+                               "(version, id, kiosk_id, contact_name, due_amount, customer_type_id, created_date, updated_date) "
+                               "VALUES(%s, %s, %s, %s, %s, %s, %s, %s)",
+                               (1, guid, kiosk_rows[0][0], contact_name, 0, ct_rows[0][0], create_date, updated_date))
                 self.connection.commit()
                 print("Customer", contact_name, 'added')
             except mysql.connector.Error as err:

@@ -6,3 +6,9 @@
 
 #python cache
 __pycache__
+
+#configuration file
+dbConfig.py
+
+#pycharm
+.idea/

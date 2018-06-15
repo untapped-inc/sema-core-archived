@@ -1,11 +1,14 @@
 #!/usr/bin/env node
 
-require('dotenv').config();
+const dotenvPath = '/home/.env';
+const dotenv = require('dotenv').config({ path: dotenvPath});
 
-// So we can have an absolute path to the base directory at any time
-const path	= require('path');
+if (dotenv.error) {
+	return console.log(`.env file not found at '${dotenvPath}')}`);
+}
 const env	= process.env.NODE_ENV || 'development';
 const mysql = require('mysql2');
+const path = require('path');
 
 // Set global variables here. Make sure they start
 // with "__"

@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 
-require('dotenv').config();
+const path = require('path');
+const dotenvPath = path.resolve('..', '.env');
+const dotenv = require('dotenv').config({ path: dotenvPath});
+
+if (dotenv.error) {
+	return console.log(`.env file not found at '${dotenvPath}')}`);
+}
 
 const SequelizeAuto = require('sequelize-auto')
 

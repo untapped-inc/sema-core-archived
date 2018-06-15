@@ -7,22 +7,25 @@ Created on Tue May  8 17:20:33 2018
 """
 
 from platform import python_version
-from DBConnection import DBConnection
-from DBPopulate import DBPopulate
-from Customer import Customer
+from utilities.DBConnection import DBConnection
+from utilities.DBPopulate import DBPopulate
+from utilities.Customer import Customer
+from dbConfig import dbConfig
 
 import datetime
 
 if __name__ == "__main__":
     print('Python', python_version())
-    customers = [ Customer(name='TestCustomer 1', created_date= datetime.date(2018, 1, 1)),
-                  Customer(name='TestCustomer 2', created_date=datetime.date(2018, 2, 1)),
-                  Customer(name='TestCustomer 3', created_date=datetime.date(2018, 3, 1)),
-                  Customer(name='TestCustomer 4', created_date=datetime.date(2018, 4, 1)),
-                  Customer(name='TestCustomer 5', created_date=datetime.date(2018, 4, 1)),
-                  Customer(name='TestCustomer 6', created_date=datetime.date(2018, 5, 1))
-                  ]
-    dbConnection = DBConnection('167.99.229.86', 'dashboard', 'Dashboard2018', 'sema_test1')
+    customers = [
+        Customer(name='TestCustomer 1', created_date=datetime.date(2018, 1, 1), updated_date=datetime.date(2018, 1, 1)),
+        Customer(name='TestCustomer 2', created_date=datetime.date(2018, 2, 1), updated_date=datetime.date(2018, 2, 1)),
+        Customer(name='TestCustomer 3', created_date=datetime.date(2018, 3, 1), updated_date=datetime.date(2018, 3, 1)),
+        Customer(name='TestCustomer 4', created_date=datetime.date(2018, 4, 1), updated_date=datetime.date(2018, 4, 1)),
+        Customer(name='TestCustomer 5', created_date=datetime.date(2018, 4, 1), updated_date=datetime.date(2018, 4, 1)),
+        Customer(name='TestCustomer 6', created_date=datetime.date(2018, 5, 1), updated_date=datetime.date(2018, 5, 1))
+        ]
+    DBConfig = dbConfig()
+    dbConnection = DBConnection(DBConfig.host, DBConfig.user, DBConfig.password,DBConfig.dbName)
     dbConnection.connect()
     connection = dbConnection.get_connection()
     if connection is not None:
@@ -35,7 +38,7 @@ if __name__ == "__main__":
         dbPopulate.populate_region('New Zealand', 'Manawatu')
         dbPopulate.populate_kiosk('Manawatu', "UnitTest", "my_api_key")
         for customer in customers:
-            dbPopulate.populate_customer('UnitTest', "TestCustomer", customer.name, customer.created_date)
+            dbPopulate.populate_customer('UnitTest', "TestCustomer", customer.name, customer.created_date, customer.updated_date)
         dbPopulate.populate_product(0x1, "DEAD", "product_category 1", "Description of product 1", 20.1, 25, "NZD", "sku-100")
         dbPopulate.populate_receipt( created_date= datetime.date(2018, 1, 1), # JANUARY
                                      currency = 'NZD',

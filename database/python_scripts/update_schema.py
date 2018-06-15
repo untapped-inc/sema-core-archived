@@ -7,14 +7,15 @@ Created on Tue May  8 17:20:33 2018
 """
 
 from platform import python_version
-from DBConnection import DBConnection
-from DBSchema import DBSchema
-
+from utilities.DBConnection import DBConnection
+from utilities.DBSchema import DBSchema
+from dbConfig import dbConfig
 
 if __name__ == "__main__":
     print('Python', python_version())
+    DBConfig = dbConfig()
 
-    dbConnection = DBConnection('167.99.229.86', 'dashboard', 'Dashboard2018', 'sema_test1')
+    dbConnection = DBConnection(DBConfig.host, DBConfig.user, DBConfig.password,DBConfig.dbName)
     dbConnection.connect()
     connection = dbConnection.get_connection()
     dbSchema = DBSchema(connection)

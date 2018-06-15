@@ -64,14 +64,14 @@
 .SalesMapItem {
 	grid-row: 1;
 	grid-column: 1;
-	background:hotpink;
 	height: 62vh;
+	background: #fff;
 }
 .SalesListItem {
 	grid-row: 1;
 	grid-column: 2;
 	background:white;
-	overflow: scroll;
+	overflow-y: scroll;
 	height: 62vh;
 }
 

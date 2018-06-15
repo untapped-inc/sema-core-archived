@@ -1,6 +1,6 @@
 {
  "name": "report-server",
- "version": "0.0.0",
+ "version": "0.0.0.7",
  "private": true,
  "scripts": {
   "start": "nodemon ./bin/www",
@@ -12,6 +12,7 @@
   "bcrypt": "^2.0.1",
   "body-parser": "~1.18.2",
   "cookie-parser": "~1.4.3",
+  "cors": "^2.8.4",
   "datejs": "^1.0.0-rc3",
   "debug": "~2.6.9",
   "dotenv": "^5.0.1",

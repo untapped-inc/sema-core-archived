@@ -3,6 +3,8 @@
 const path = require('path');
 const dotenvPath = path.resolve('..', '.env');
 const dotenv = require('dotenv').config({ path: dotenvPath});
+const env	= process.env.NODE_ENV || 'development';
+const dbConfig	= require(`../config/database`)[env];
 
 if (dotenv.error) {
 	return console.log(`.env file not found at '${dotenvPath}')}`);
@@ -19,9 +21,9 @@ if (process.argv.length > 2) {
 	tablesToPopulate.push(...process.argv.slice(2))
 }
 
-const auto = new SequelizeAuto(process.env.DB_SCHEMA, process.env.DB_USER, process.env.DB_PASSWORD, {
-	host: process.env.DB_HOST,
-	dialect: process.env.DB_DIALECT,
+const auto = new SequelizeAuto(dbConfig.database, dbConfig.user, dbConfig.password, {
+	host: dbConfig.host,
+	dialect: dbConfig.dialect,
 	directory: './models',
 	tables: tablesToPopulate,
 	additional: {

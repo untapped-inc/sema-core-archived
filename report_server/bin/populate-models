@@ -29,7 +29,8 @@ const auto = new SequelizeAuto(dbConfig.database, dbConfig.user, dbConfig.passwo
 	additional: {
 		timestamps: false,
 		underscored: true
-	}
+	},
+	logging: false
 });
 
 auto.run(function (err) {

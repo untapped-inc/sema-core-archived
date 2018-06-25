@@ -1026,6 +1026,8 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name` (`username`),
   UNIQUE KEY `email_UNIQUE` (`email`)
@@ -1076,4 +1078,4 @@ CREATE TABLE `vehicles` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-12 11:37:22
+-- Dump completed on 2018-06-18 13:18:19

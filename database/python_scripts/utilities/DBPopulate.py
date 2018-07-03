@@ -127,7 +127,7 @@ class DBPopulate:
         cursor.close()
 
     """ Add a product. Note: This assumes product descriptions are unique """
-    def populate_product(self, active, encoded_image, category, description, gallons, price, currency, sku):
+    def populate_product(self, active, encoded_image, category, description, gallons, price, currency, sku, updated_date):
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM product WHERE description = %s", (description,))
         rows = cursor.fetchall()
@@ -138,9 +138,9 @@ class DBPopulate:
                 found_rows = cursor.fetchall()
 
                 cursor.execute("INSERT INTO product "
-                               "(version, active, base64encoded_image, category_id, description, gallons, price_amount, price_currency, sku) "
-                               "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                               (1, active, encoded_image, found_rows[0][0], description, gallons, price, currency, sku))
+                               "(version, active, base64encoded_image, category_id, description, gallons, price_amount, price_currency, sku, updated_date) "
+                               "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                               (1, active, encoded_image, found_rows[0][0], description, gallons, price, currency, sku, updated_date))
                 self.connection.commit()
                 print("Product", description, 'added')
             except mysql.connector.Error as err:

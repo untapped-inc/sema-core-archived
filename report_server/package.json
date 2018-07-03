@@ -6,7 +6,7 @@
   "start": "nodemon ./bin/www",
   "populate": "chmod +x ./bin/populate-models && node ./bin/populate-models",
   "postinstall": "yarn populate",
-  "test": "mocha --timeout 10000"
+  "test": "mocha --exit --timeout 10000"
  },
  "dependencies": {
   "bcrypt": "^2.0.1",
@@ -25,6 +25,7 @@
   "mysql": "^2.15.0",
   "mysql2": "^1.5.3",
   "nodemon": "^1.17.5",
+  "parse-error": "^0.2.0",
   "passport": "^0.4.0",
   "passport-jwt": "^4.0.0",
   "sequelize": "^4.37.10",

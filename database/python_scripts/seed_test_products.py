@@ -6,27 +6,33 @@ Created on Mon July 2 2018
 @author: Brian Mackessy
 """
 
+
+
 from platform import python_version
 from utilities.DBConnection import DBConnection
 from utilities.DBPopulate import DBPopulate
 from utilities.Product import Product
 from dbConfig import dbConfig
 
+
 import datetime
 if __name__ == "__main__":
+    f = open("URIs/URIs")
+    URIs = f.readlines()
+
     print('Python', python_version())
-    products = [ Product(active = 0, base64encodedImage="pic1", category="product_category 1",
+    products = [ Product(active = 0, base64encodedImage=URIs[0], category="product_category 1",
                           description="Product-1", gallons=10.0, priceAmount=5.0, priceCurrency="Dollars", sku="sku1",
                           updatedDate= datetime.date(2018, 1, 1)),
-                  Product(active=0, base64encodedImage="pic1", category="product_category 1",
+                  Product(active=0, base64encodedImage=URIs[1], category="product_category 1",
                           description="Product-2", gallons=10.0,
                           priceAmount=5.0, priceCurrency="Dollars", sku="sku2",
                           updatedDate=datetime.date(2017, 1, 1)),
-                  Product(active=0, base64encodedImage="pic1", category="product_category 1",
+                  Product(active=0, base64encodedImage=URIs[2], category="product_category 1",
                           description="Product-3", gallons=10.0,
                           priceAmount=5.0, priceCurrency="Dollars", sku="sku3",
                           updatedDate=datetime.date(2016, 1, 1)),
-                  Product(active=0, base64encodedImage="pic1", category="product_category 1",
+                  Product(active=0, base64encodedImage=URIs[3], category="product_category 1",
                           description="Product-4", gallons=10.0,
                           priceAmount=5.0, priceCurrency="Dollars", sku="sku4",
                           updatedDate=datetime.date(2015, 1, 1))

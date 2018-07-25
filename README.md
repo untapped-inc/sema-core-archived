@@ -29,6 +29,8 @@ The server uses Expressjs
 * Start the server on port 3001: `yarn start`. Note that client is configured to access the server on port 3001
 * Test the server access via curl: `curl http://localhost:3001/untapped/health-check` this should return {"server":"Ok","database":"Ok"}
 
+[![Build Status](https://travis-ci.org/FredOleary/dlodashboard1.svg?branch=master)](https://travis-ci.org/FredOleary/dlodashboard1)
+
 ## Client build
 The client is a React application
 * Change to report_client folder: `cd report_client`

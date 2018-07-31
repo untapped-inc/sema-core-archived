@@ -6,7 +6,8 @@
   "start": "nodemon ./bin/www",
   "populate": "chmod +x ./bin/populate-models && node ./bin/populate-models",
   "postinstall": "yarn populate",
-  "test": "yarn populate && TZ='America/Los_Angeles' mocha --exit --timeout 10000"
+  "test": "yarn populate && TZ='America/Los_Angeles' mocha --exit --timeout 10000",
+  "dbdoc": "cd ../documentations && java -jar schemaspy.jar"
  },
  "dependencies": {
   "bcrypt": "^2.0.1",

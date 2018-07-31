@@ -15,15 +15,16 @@ if __name__ == "__main__":
     print('Python', python_version())
     DBConfig = dbConfig()
 
-    dbConnection = DBConnection(DBConfig.host, DBConfig.user, DBConfig.password,DBConfig.dbName)
-    dbConnection.connect()
-    connection = dbConnection.get_connection()
-    dbSchema = DBSchema(connection)
-    if connection is not None:
-        print("Connected")
-        dbSchema = DBSchema(connection)
-        dbSchema.update_schema()
-        dbConnection.close()
-    else:
-        print('failed to connect')
-
+    print('This script is deprecated...')
+    # dbConnection = DBConnection(DBConfig.host, DBConfig.user, DBConfig.password,DBConfig.dbName)
+    # dbConnection.connect()
+    # connection = dbConnection.get_connection()
+    # dbSchema = DBSchema(connection)
+    # if connection is not None:
+    #     print("Connected")
+    #     dbSchema = DBSchema(connection)
+    #     dbSchema.update_schema()
+    #     dbConnection.close()
+    # else:
+    #     print('failed to connect')
+    #

@@ -104,7 +104,7 @@ class DBPopulate:
 
                 cursor.execute("INSERT INTO customer_account "
                                "(created_at, updated_at, name, customer_type_id, sales_channel_id, "
-                               "kiosk_id, address_line1, gps_coordinates, phone_number, uuid) "
+                               "kiosk_id, address_line1, gps_coordinates, phone_number, id) "
                                "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                                (created_date, updated_date, customer_name, ct_rows[0][0], sales_channel_rows[0][0],
                                 kiosk_rows[0][0], "test_address", "gps", phone, guid))

@@ -2,7 +2,11 @@
 
 const path = require('path');
 const dotenvPath = path.resolve('..', '.env');
-require('dotenv').config({ path: dotenvPath});
+const dotenv = require('dotenv').config({ path: dotenvPath});
+
+if (dotenv.error) {
+	return console.log(`.env file not found at '${dotenvPath}')}`);
+}
 
 // Instanciate all global variables
 require('./global_vars.js');

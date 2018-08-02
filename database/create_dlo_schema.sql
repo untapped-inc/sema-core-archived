@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
 --
--- Host: 167.99.229.86    Database: sema
+-- Host: 167.99.229.86    Database: sema_core
 -- ------------------------------------------------------
--- Server version	5.7.22-0ubuntu0.16.04.1
+-- Server version	5.7.23-0ubuntu0.16.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,22 +16,25 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Schools List and Report`
+-- Table structure for table `contact`
 --
 
-DROP TABLE IF EXISTS `Schools List and Report`;
+DROP TABLE IF EXISTS `contact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Schools List and Report` (
-  `Kiosk` text,
-  `Contact Name` text,
-  `Number of Students` int(11) DEFAULT NULL,
-  `GPS Coordinates` text,
-  `What3Words` text,
-  `Customer Type` text,
-  `Sales Channel` text,
-  `Total Gallons 2017` text,
-  `New` text
+CREATE TABLE `contact` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
+  `name` varchar(255) NOT NULL COMMENT 'Contact Name.',
+  `gender` varchar(255) DEFAULT NULL COMMENT 'Contact gender.',
+  `phone_number1` varchar(255) NOT NULL COMMENT 'Required phone number.',
+  `phone_number2` varchar(255) DEFAULT NULL COMMENT 'Additional optional phone number.',
+  `notes` varchar(255) DEFAULT NULL COMMENT 'Additional notes about the customer.',
+  `multimedia1` longtext COMMENT 'Reference to photo, file, etc. related to the contact.',
+  `multimedia2` longtext COMMENT 'Additional reference to photo, file, etc. related to the contact.',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -43,26 +46,11 @@ DROP TABLE IF EXISTS `country`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `country` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `crud_users`
---
-
-DROP TABLE IF EXISTS `crud_users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `crud_users` (
-  `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(70) NOT NULL,
-  `password` varchar(70) NOT NULL,
-  `permissions` varchar(255) DEFAULT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
+  `name` varchar(100) NOT NULL COMMENT 'Name of country.',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -75,79 +63,76 @@ DROP TABLE IF EXISTS `customer_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `customer_account` (
-  `id` varchar(255) NOT NULL,
-  `version` bigint(20) NOT NULL,
-  `address` longtext,
-  `contact_name` varchar(255) NOT NULL,
-  `customer_type_id` bigint(20) NOT NULL,
-  `due_amount` double NOT NULL,
-  `gps_coordinates` varchar(255) DEFAULT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `phone_number` varchar(255) DEFAULT NULL,
-  `active` bit(1) DEFAULT NULL,
-  `serviceable_customer_base` bigint(20) DEFAULT NULL,
-  `what3words` varchar(255) DEFAULT NULL,
-  `notes` varchar(255) DEFAULT NULL,
-  `multimedia1` varchar(255) DEFAULT NULL,
-  `multimedia2` varchar(255) DEFAULT NULL,
-  `multimedia3` varchar(255) DEFAULT NULL,
-  `gender` varchar(45) DEFAULT NULL,
+  `id` varchar(255) NOT NULL COMMENT 'Uses an application generated UUID.',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
+  `name` varchar(255) NOT NULL COMMENT 'Name of business, person, or entity.',
+  `customer_type_id` bigint(20) NOT NULL COMMENT 'Customer type reference.',
+  `sales_channel_id` bigint(20) NOT NULL COMMENT 'Sales channel reference.',
+  `kiosk_id` bigint(20) NOT NULL COMMENT 'Kiosk reference.',
+  `due_amount` decimal(19,2) DEFAULT NULL COMMENT 'Total amount due.',
+  `consumer_base` int(11) DEFAULT NULL COMMENT 'BIGINT Manually entered value on number of people they serve. For example, a school may have 1,000 meaning 1,000 students, a family may have 5, and a reseller may have 500.  In the case of the reseller, this calculation can be used to calculate penetration rate. In the case of schools, the number of students served.',
+  `address_line1` varchar(255) NOT NULL COMMENT 'Required business address.',
+  `address_line2` varchar(255) DEFAULT NULL COMMENT 'Optional business address.',
+  `address_line3` varchar(255) DEFAULT NULL COMMENT 'Optional business address.',
+  `gps_coordinates` varchar(255) NOT NULL,
+  `what3words` varchar(255) DEFAULT NULL COMMENT 'Alternative coordinate system.',
+  `phone_number` varchar(255) NOT NULL COMMENT 'Main contact phone (may be same as contact phone).',
+  `notes` varchar(255) DEFAULT NULL COMMENT 'Additional notes about the customer.',
+  `multimedia1` longtext COMMENT 'Reference to photo, file, etc. related to the customer.',
+  `multimedia2` longtext COMMENT 'Additional reference to photo, file, etc. related to the customer.',
+  `multimedia3` longtext COMMENT 'Additional reference to photo, file, etc. related to the customer.',
+  `multimedia4` longtext COMMENT 'Additional reference to photo, file, etc. related to the customer.',
+  `income_level` decimal(19,2) DEFAULT NULL COMMENT 'Estimated daily income as captured during customer registration.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`,`kiosk_id`,`contact_name`),
-  KEY `FK3FEDF2CC303F70BE` (`customer_type_id`),
-  KEY `FK3FEDF2CC6413D753` (`kiosk_id`),
-  CONSTRAINT `FK3FEDF2CC303F70BE` FOREIGN KEY (`customer_type_id`) REFERENCES `customer_type` (`id`),
-  CONSTRAINT `FK3FEDF2CC6413D753` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`)
+  KEY `customer_account_sales_channel_id_fk_idx` (`sales_channel_id`),
+  KEY `customer_account_kiosk_id_fk_idx` (`kiosk_id`),
+  KEY `customer_account_customer_type_id_fk_idx` (`customer_type_id`),
+  CONSTRAINT `customer_account_customer_type_id_fk` FOREIGN KEY (`customer_type_id`) REFERENCES `customer_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `customer_account_kiosk_id_fk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `customer_account_sales_channel_id_fk` FOREIGN KEY (`sales_channel_id`) REFERENCES `sales_channel` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `customer_account_sponsors`
+-- Table structure for table `customer_account_contact`
 --
 
-DROP TABLE IF EXISTS `customer_account_sponsors`;
+DROP TABLE IF EXISTS `customer_account_contact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `customer_account_sponsors` (
-  `customer_account_id` varchar(255) NOT NULL,
-  `sponsor_id` varchar(255) NOT NULL,
-  PRIMARY KEY (`customer_account_id`,`sponsor_id`),
-  KEY `FKA1CB4ACA462EED6` (`customer_account_id`),
-  KEY `FKA1CB4AC17D4B373` (`sponsor_id`),
-  CONSTRAINT `FKA1CB4AC17D4B373` FOREIGN KEY (`sponsor_id`) REFERENCES `sponsor` (`id`),
-  CONSTRAINT `FKA1CB4ACA462EED6` FOREIGN KEY (`customer_account_id`) REFERENCES `customer_account` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `customer_account_contact` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `customer_account_id` varchar(255) NOT NULL COMMENT 'Customer account reference.',
+  `contact_id` bigint(20) NOT NULL COMMENT 'Contact reference.',
+  PRIMARY KEY (`id`),
+  KEY `customer_account_contact_contact_id_fk_idx` (`contact_id`),
+  KEY `customer_account_contact_customer_account_id_fk_idx` (`customer_account_id`),
+  CONSTRAINT `customer_account_contact_contact_id_fk` FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `customer_account_contact_customer_account_id_fk` FOREIGN KEY (`customer_account_id`) REFERENCES `customer_account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Customer to contact mapping table.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `customer_account_temp`
+-- Table structure for table `customer_account_sponsor`
 --
 
-DROP TABLE IF EXISTS `customer_account_temp`;
+DROP TABLE IF EXISTS `customer_account_sponsor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `customer_account_temp` (
-  `id` varchar(255) NOT NULL,
-  `version` bigint(20) NOT NULL,
-  `address` longtext,
-  `contact_name` varchar(255) NOT NULL,
-  `customer_type_id` bigint(20) NOT NULL,
-  `due_amount` double NOT NULL,
-  `gps_coordinates` varchar(255) DEFAULT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `phone_number` varchar(255) DEFAULT NULL,
-  `active` bit(1) DEFAULT NULL,
-  `serviceable_customer_base` bigint(20) DEFAULT NULL,
-  `what3words` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+CREATE TABLE `customer_account_sponsor` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `customer_account_id` varchar(255) NOT NULL COMMENT 'Customer account reference.',
+  `sponsor_id` varchar(255) NOT NULL COMMENT 'Sponsor reference.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`,`kiosk_id`,`contact_name`),
-  KEY `FK3FEDF2CC303F70BE` (`customer_type_id`),
-  KEY `FK3FEDF2CC6413D753` (`kiosk_id`),
-  CONSTRAINT `FK3FEDF2CC303F70BE_customer_account_temp` FOREIGN KEY (`customer_type_id`) REFERENCES `customer_type` (`id`),
-  CONSTRAINT `FK3FEDF2CC6413D753_customer_account_temp` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `customer_account_sponsor_customer_account_id_fk_idx` (`customer_account_id`),
+  KEY `customer_account_sponsor_sponsor_id_fk_idx` (`sponsor_id`),
+  CONSTRAINT `customer_account_sponsor_customer_account_id_fk` FOREIGN KEY (`customer_account_id`) REFERENCES `customer_account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `customer_account_sponsor_sponsor_id_fk` FOREIGN KEY (`sponsor_id`) REFERENCES `sponsor` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Maps sponsor to a specific customer account.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,14 +144,12 @@ DROP TABLE IF EXISTS `customer_type`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `customer_type` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `parent_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`),
-  KEY `FK803B02FB5864D8AF` (`parent_id`),
-  CONSTRAINT `FK803B02FB5864D8AF` FOREIGN KEY (`parent_id`) REFERENCES `customer_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=latin1;
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `description` varchar(255) DEFAULT NULL COMMENT 'Type description.',
+  `name` varchar(255) NOT NULL COMMENT 'Type name.',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,91 +161,87 @@ DROP TABLE IF EXISTS `delivery`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `delivery` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `created_date` datetime NOT NULL,
-  `delivery_agent_id` bigint(20) NOT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `type` varchar(255) NOT NULL,
+  `date` date NOT NULL COMMENT 'Date of delivery.',
+  `kiosk_id` bigint(20) NOT NULL COMMENT 'Kiosk reference.',
+  `user_id` bigint(20) NOT NULL COMMENT 'Driver reference.',
+  `depart_kiosk` time DEFAULT NULL COMMENT 'Time when the driver left the kiosk.',
+  `return_kiosk` time DEFAULT NULL COMMENT 'Time when the driver got back to the kiosk.',
+  `vehicle_id` bigint(20) DEFAULT NULL COMMENT 'Vehicle reference.',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data/Time when updated.',
   PRIMARY KEY (`id`),
-  KEY `FK31151BF46413D753` (`kiosk_id`),
-  KEY `FK31151BF4569B1D2A` (`delivery_agent_id`),
-  CONSTRAINT `FK31151BF4569B1D2A` FOREIGN KEY (`delivery_agent_id`) REFERENCES `delivery_agent` (`id`),
-  CONSTRAINT `FK31151BF46413D753` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `delivery_kiosk_id_fk_idx` (`kiosk_id`) USING BTREE,
+  KEY `delivery_vehicle_id_fk_idx` (`vehicle_id`) USING BTREE,
+  KEY `delivery_user_id_fk_idx` (`user_id`),
+  CONSTRAINT `delivery_kiosk_id_fk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`),
+  CONSTRAINT `delivery_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `delivery_vehicle_id_fk` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Manages delivery trips.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `delivery_agent`
+-- Table structure for table `delivery_leg`
 --
 
-DROP TABLE IF EXISTS `delivery_agent`;
+DROP TABLE IF EXISTS `delivery_leg`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `delivery_agent` (
+CREATE TABLE `delivery_leg` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `active` bit(1) NOT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `delivery_id` bigint(20) NOT NULL COMMENT 'Delivery reference.',
+  `customer_account_id` varchar(255) NOT NULL COMMENT 'Customer account reference.',
+  `empty_pickup_id` bigint(20) NOT NULL COMMENT 'Empty pickup reference.',
+  `arrive_at_customer` time DEFAULT NULL COMMENT 'Time the driver got to the customer.',
+  `depart_from_customer` time DEFAULT NULL COMMENT 'Time the driver left the customer.',
+  `comment` varchar(255) DEFAULT NULL COMMENT 'Comment made by the driver about this delivery leg.',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
   PRIMARY KEY (`id`),
-  KEY `FKA8A8FAFA6413D753` (`kiosk_id`),
-  CONSTRAINT `FKA8A8FAFA6413D753` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `delivery_leg_delivery_id_fk_idx` (`delivery_id`) USING BTREE,
+  KEY `delivery_leg_empty_pickup_id_fk_idx` (`empty_pickup_id`),
+  KEY `delivery_leg_customer_account_id_fk_idx` (`customer_account_id`),
+  CONSTRAINT `delivery_leg_customer_account_id_fk` FOREIGN KEY (`customer_account_id`) REFERENCES `customer_account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `delivery_leg_delivery_id_fk` FOREIGN KEY (`delivery_id`) REFERENCES `delivery` (`id`),
+  CONSTRAINT `delivery_leg_empty_pickup_id_fk` FOREIGN KEY (`empty_pickup_id`) REFERENCES `empty_pickup` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Manages individual leg of each delivery.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `delivery_configuration`
+-- Table structure for table `delivery_leg_receipt`
 --
 
-DROP TABLE IF EXISTS `delivery_configuration`;
+DROP TABLE IF EXISTS `delivery_leg_receipt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `delivery_configuration` (
+CREATE TABLE `delivery_leg_receipt` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `default_value` int(11) NOT NULL,
-  `gallons` float NOT NULL,
-  `maximum_value` int(11) NOT NULL,
-  `minimum_value` int(11) NOT NULL,
-  `price_amount` decimal(19,2) NOT NULL,
-  `price_currency` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `delivery_leg_id` bigint(20) NOT NULL COMMENT 'Delivery leg reference.',
+  `receipt_id` varchar(255) NOT NULL COMMENT 'Receipt reference.',
+  PRIMARY KEY (`id`),
+  KEY `delivery_leg_receipt_delivery_leg_id_fk_idx` (`delivery_leg_id`),
+  KEY `delivery_leg_receipt_receipt_id_fk_idx` (`receipt_id`),
+  CONSTRAINT `delivery_leg_receipt_delivery_leg_id_fk` FOREIGN KEY (`delivery_leg_id`) REFERENCES `delivery_leg` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `delivery_leg_receipt_receipt_id_fk` FOREIGN KEY (`receipt_id`) REFERENCES `receipt` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Maps a delivery leg to a receipt.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `delivery_configuration_bkp`
+-- Table structure for table `empty_pickup`
 --
 
-DROP TABLE IF EXISTS `delivery_configuration_bkp`;
+DROP TABLE IF EXISTS `empty_pickup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `delivery_configuration_bkp` (
-  `id` bigint(20) NOT NULL DEFAULT '0',
-  `version` bigint(20) NOT NULL,
-  `default_value` int(11) NOT NULL,
-  `gallons` int(11) NOT NULL,
-  `maximum_value` int(11) NOT NULL,
-  `minimum_value` int(11) NOT NULL,
-  `price_amount` decimal(19,2) NOT NULL,
-  `price_currency` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `drivers`
---
-
-DROP TABLE IF EXISTS `drivers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `drivers` (
-  `driver_id` int(11) NOT NULL AUTO_INCREMENT,
-  `kiosk_id` bigint(20) NOT NULL,
-  `driver_name` varchar(50) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`driver_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+CREATE TABLE `empty_pickup` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `product_id` bigint(20) NOT NULL COMMENT 'Product reference.',
+  `quantity` varchar(45) DEFAULT NULL COMMENT 'Number of empties picked up (jugs, canisters).',
+  PRIMARY KEY (`id`),
+  KEY `empty_pickup_product_id_fk_idx` (`product_id`),
+  CONSTRAINT `empty_pickup_product_id_fk` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Tracks pickups of empty containers (reusable jugs, bags, canisters, etc.).';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -274,58 +253,37 @@ DROP TABLE IF EXISTS `kiosk`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `kiosk` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `api_key` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `region_id` bigint(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
+  `name` varchar(150) NOT NULL COMMENT 'Name of kiosk.',
+  `region_id` bigint(20) NOT NULL COMMENT 'Kiosk region reference.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`),
-  KEY `FK6153CE9E073EA21` (`region_id`),
-  CONSTRAINT `FK6153CE9E073EA21` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=latin1;
+  KEY `kiosk_region_id_fk_idx` (`region_id`),
+  CONSTRAINT `kiosk_region_id_fk` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `kiosk_wise_parameter`
+-- Table structure for table `kiosk_parameter`
 --
 
-DROP TABLE IF EXISTS `kiosk_wise_parameter`;
+DROP TABLE IF EXISTS `kiosk_parameter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `kiosk_wise_parameter` (
+CREATE TABLE `kiosk_parameter` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `kiosk_id` bigint(20) NOT NULL,
-  `parameter_id` bigint(20) NOT NULL,
-  `sampling_site_id` bigint(20) NOT NULL,
+  `kiosk_id` bigint(20) NOT NULL COMMENT 'Kiosk reference.',
+  `parameter_id` bigint(20) NOT NULL COMMENT 'Parameter reference.',
+  `sampling_site_id` bigint(20) NOT NULL COMMENT 'Sampling site reference.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `sampling_site_id` (`sampling_site_id`,`kiosk_id`,`parameter_id`),
-  KEY `FK641883E433059AD3` (`parameter_id`),
-  KEY `FK641883E46413D753` (`kiosk_id`),
-  KEY `FK641883E48DF0B430` (`sampling_site_id`),
-  CONSTRAINT `FK641883E433059AD3` FOREIGN KEY (`parameter_id`) REFERENCES `parameter` (`id`),
-  CONSTRAINT `FK641883E46413D753` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`),
-  CONSTRAINT `FK641883E48DF0B430` FOREIGN KEY (`sampling_site_id`) REFERENCES `sampling_site` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=849 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `kiosk_wise_parameter_clone`
---
-
-DROP TABLE IF EXISTS `kiosk_wise_parameter_clone`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `kiosk_wise_parameter_clone` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `kiosk_id` bigint(20) NOT NULL,
-  `parameter_id` bigint(20) NOT NULL,
-  `sampling_site_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `sampling_site_id` (`sampling_site_id`,`kiosk_id`,`parameter_id`),
-  KEY `FK641883E433059AD3` (`parameter_id`),
-  KEY `FK641883E46413D753` (`kiosk_id`),
-  KEY `FK641883E48DF0B430` (`sampling_site_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=676 DEFAULT CHARSET=latin1;
+  KEY `kiosk_parameter_kiosk_id_fk_idx` (`kiosk_id`),
+  KEY `kiosk_parameter_parameter_id_fk_idx` (`parameter_id`),
+  KEY `kiosk_parameter_sampling_site_id_fk_idx` (`sampling_site_id`),
+  CONSTRAINT `kiosk_parameter_kiosk_id_fk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `kiosk_parameter_parameter_id_fk` FOREIGN KEY (`parameter_id`) REFERENCES `parameter` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `kiosk_parameter_sampling_site_id_fk` FOREIGN KEY (`sampling_site_id`) REFERENCES `sampling_site` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Maps water quality parameters and sampling sites to kiosks.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -337,16 +295,15 @@ DROP TABLE IF EXISTS `measurement`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `measurement` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `parameter_id` bigint(20) NOT NULL,
-  `reading_id` bigint(20) NOT NULL,
-  `value` decimal(19,2) NOT NULL,
+  `parameter_id` bigint(20) NOT NULL COMMENT 'Parameter reference.',
+  `value` decimal(19,2) NOT NULL COMMENT 'Measurement value.',
+  `reading_id` bigint(20) NOT NULL COMMENT 'Reading reference.',
   PRIMARY KEY (`id`),
-  KEY `FK93F2DBBC33059AD3` (`parameter_id`),
-  KEY `FK93F2DBBCABB2A633` (`reading_id`),
-  CONSTRAINT `FK93F2DBBC33059AD3` FOREIGN KEY (`parameter_id`) REFERENCES `parameter` (`id`),
-  CONSTRAINT `FK93F2DBBCABB2A633` FOREIGN KEY (`reading_id`) REFERENCES `reading` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=232303 DEFAULT CHARSET=latin1;
+  KEY `measurement_parameter_id_fk_idx` (`parameter_id`) USING BTREE,
+  KEY `measurement_reading_id_fk_idx` (`reading_id`),
+  CONSTRAINT `measurement_parameter_id_fk` FOREIGN KEY (`parameter_id`) REFERENCES `parameter` (`id`),
+  CONSTRAINT `measurement_reading_id_fk` FOREIGN KEY (`reading_id`) REFERENCES `reading` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Records measurements using reading and parameter.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -358,40 +315,20 @@ DROP TABLE IF EXISTS `parameter`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `parameter` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `active` bit(1) NOT NULL,
-  `is_ok_not_ok` bit(1) NOT NULL,
-  `is_used_in_totalizer` bit(1) NOT NULL,
-  `manual` bit(1) NOT NULL,
-  `maximum` decimal(19,2) DEFAULT NULL,
-  `minimum` decimal(19,2) DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  `priority` int(11) DEFAULT NULL,
-  `unit` varchar(255) DEFAULT NULL,
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
+  `is_ok_not_ok` bit(1) NOT NULL COMMENT '1 makes it a Yes or No radial choice; 0 makes it a decimal value.',
+  `is_used_in_totalizer` bit(1) NOT NULL COMMENT 'Used in determining the totalizer line on the volumeByDay web report.',
+  `manual` bit(1) NOT NULL COMMENT '1 to show up on kiosk tablet for manual entry; 0 for parameters measured by things like solar sensors.',
+  `maximum` decimal(19,2) DEFAULT NULL COMMENT 'Minimum and maximum validates the input result on the kiosk displayed as the range of valid values.',
+  `minimum` decimal(19,2) DEFAULT NULL COMMENT 'Minimum and maximum validates the input result on the kiosk displayed as the range of valid values.',
+  `name` varchar(255) NOT NULL COMMENT 'Parameter name.',
+  `priority` int(11) DEFAULT NULL COMMENT 'Order in which entry fields are displayed.',
+  `unit` varchar(255) DEFAULT NULL COMMENT 'Measurement unit such as mg/L CaCO3 (ppm).',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `payment_history`
---
-
-DROP TABLE IF EXISTS `payment_history`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `payment_history` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `amount` double NOT NULL,
-  `customer_account_id` varchar(255) NOT NULL,
-  `payment_date` datetime NOT NULL,
-  `receipt_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK9034575BB099F6B3` (`receipt_id`),
-  KEY `FK9034575BA462EED6` (`customer_account_id`),
-  CONSTRAINT `FK9034575BB099F6B3` FOREIGN KEY (`receipt_id`) REFERENCES `receipt` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=175264 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `parameter_name_uq` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -403,45 +340,26 @@ DROP TABLE IF EXISTS `product`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `active` bit(1) NOT NULL,
-  `base64encoded_image` longtext NOT NULL,
-  `category_id` bigint(20) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `gallons` float NOT NULL,
-  `maximum_quantity` int(11) DEFAULT NULL,
-  `minimum_quantity` int(11) DEFAULT NULL,
-  `price_amount` decimal(19,2) NOT NULL,
-  `price_currency` varchar(255) NOT NULL,
-  `sku` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display on UI, 0 to hide.',
+  `name` varchar(255) NOT NULL COMMENT 'Name of product.',
+  `sku` varchar(255) NOT NULL COMMENT 'External SKU identifier.',
+  `description` varchar(255) NOT NULL COMMENT 'Product description.',
+  `category_id` bigint(20) NOT NULL COMMENT 'Product category reference.',
+  `price_amount` decimal(19,2) NOT NULL COMMENT 'Price per unit.',
+  `price_currency` varchar(255) NOT NULL COMMENT 'Currency used.',
+  `minimum_quantity` int(11) DEFAULT NULL COMMENT 'Specifying min max will pop up the quantity spinner in UI.',
+  `maximum_quantity` int(11) DEFAULT NULL COMMENT 'Specifying min max will pop up the quantity spinner in UI.',
+  `unit_per_product` float NOT NULL COMMENT 'If a water product, volume of water measured in order to measure water volume (e.g 5 gallons per SKU).  If non water product, measures quantity in each unit sold (one bag of milk has 25 kg).',
+  `unit_measure` varchar(255) NOT NULL COMMENT 'Unit of measurement (liters, gallons, ounce, grams, etc.).',
+  `cogs_amount` decimal(19,2) NOT NULL COMMENT 'Cost of product per SKU for gross margin calculation purposes.',
+  `base64encoded_image` longtext NOT NULL COMMENT 'Reference to product picture. Must be a 144x144 PNG.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `sku` (`sku`),
-  KEY `FKED8DCCEF74288202` (`category_id`),
-  CONSTRAINT `FKED8DCCEF74288202` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=553 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `product_bkp`
---
-
-DROP TABLE IF EXISTS `product_bkp`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `product_bkp` (
-  `id` bigint(20) NOT NULL DEFAULT '0',
-  `version` bigint(20) NOT NULL,
-  `active` bit(1) NOT NULL,
-  `base64encoded_image` longtext NOT NULL,
-  `category_id` bigint(20) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `gallons` int(11) NOT NULL,
-  `maximum_quantity` int(11) DEFAULT NULL,
-  `minimum_quantity` int(11) DEFAULT NULL,
-  `price_amount` decimal(19,2) NOT NULL,
-  `price_currency` varchar(255) NOT NULL,
-  `sku` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  UNIQUE KEY `product_sku_uq` (`sku`),
+  KEY `product_category_id_fk_idx` (`category_id`),
+  CONSTRAINT `product_category_id_fk` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -453,12 +371,13 @@ DROP TABLE IF EXISTS `product_category`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product_category` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
+  `description` varchar(255) DEFAULT NULL COMMENT 'Longer description.',
+  `name` varchar(255) NOT NULL COMMENT 'Category Name.',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -470,90 +389,22 @@ DROP TABLE IF EXISTS `product_mrp`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product_mrp` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `price_amount` decimal(19,2) NOT NULL,
-  `price_currency` varchar(255) NOT NULL,
-  `product_id` bigint(20) NOT NULL,
-  `sales_channel_id` bigint(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `kiosk_id` bigint(20) NOT NULL COMMENT 'Kiosk reference.',
+  `product_id` bigint(20) NOT NULL COMMENT 'Product reference.',
+  `sales_channel_id` bigint(20) NOT NULL COMMENT 'Sales channel reference.',
+  `price_amount` decimal(19,2) NOT NULL COMMENT 'Price for that product for specific kiosk/channel combo.',
+  `price_currency` varchar(255) NOT NULL COMMENT 'Currency used for price.',
+  `cogs_amount` decimal(19,2) NOT NULL COMMENT 'Cost of product for gross margin calculation purposes.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `sales_channel_id` (`sales_channel_id`,`kiosk_id`,`product_id`),
-  KEY `FKA71C941B6413D753` (`kiosk_id`),
-  KEY `FKA71C941BB9F6E753` (`product_id`),
-  KEY `FKA71C941B54B1E8E8` (`sales_channel_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4442 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `product_mrp_bad`
---
-
-DROP TABLE IF EXISTS `product_mrp_bad`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `product_mrp_bad` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `price_amount` decimal(19,2) NOT NULL,
-  `price_currency` varchar(255) NOT NULL,
-  `product_id` bigint(20) NOT NULL,
-  `sales_channel_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `sales_channel_id` (`sales_channel_id`,`kiosk_id`,`product_id`),
-  KEY `FKA71C941B6413D753` (`kiosk_id`),
-  KEY `FKA71C941BB9F6E753` (`product_id`),
-  KEY `FKA71C941B54B1E8E8` (`sales_channel_id`),
-  CONSTRAINT `FKA71C941B54B1E8E8` FOREIGN KEY (`sales_channel_id`) REFERENCES `sales_channel` (`id`),
-  CONSTRAINT `FKA71C941B6413D753` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`),
-  CONSTRAINT `FKA71C941BB9F6E753` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3043 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `product_mrp_master_bkp`
---
-
-DROP TABLE IF EXISTS `product_mrp_master_bkp`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `product_mrp_master_bkp` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `price_amount` decimal(19,2) NOT NULL,
-  `price_currency` varchar(255) NOT NULL,
-  `product_id` bigint(20) NOT NULL,
-  `sales_channel_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `sales_channel_id` (`sales_channel_id`,`kiosk_id`,`product_id`),
-  KEY `FKA71C941B6413D753` (`kiosk_id`),
-  KEY `FKA71C941BB9F6E753` (`product_id`),
-  KEY `FKA71C941B54B1E8E8` (`sales_channel_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3043 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `product_mrp_new_kiosk`
---
-
-DROP TABLE IF EXISTS `product_mrp_new_kiosk`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `product_mrp_new_kiosk` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `price_amount` decimal(19,2) NOT NULL,
-  `price_currency` varchar(255) NOT NULL,
-  `product_id` bigint(20) NOT NULL,
-  `sales_channel_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `sales_channel_id` (`sales_channel_id`,`kiosk_id`,`product_id`),
-  KEY `FKA71C941B6413D753` (`kiosk_id`),
-  KEY `FKA71C941BB9F6E753` (`product_id`),
-  KEY `FKA71C941B54B1E8E8` (`sales_channel_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2923 DEFAULT CHARSET=latin1;
+  KEY `product_mrp_kiosk_id_fk_idx` (`kiosk_id`),
+  KEY `product_mrp_product_id_fk_idx` (`product_id`),
+  KEY `product_mrp_sales_channel_id_fk_idx` (`sales_channel_id`),
+  CONSTRAINT `product_mrp_kiosk_id_fk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `product_mrp_product_id_fk` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `product_mrp_sales_channel_id_fk` FOREIGN KEY (`sales_channel_id`) REFERENCES `sales_channel` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Maps product pricing to sales channels & kiosks. Each product+kiosk+channel can have different prices.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -565,18 +416,20 @@ DROP TABLE IF EXISTS `promotion`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `promotion` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `amount` decimal(19,2) NOT NULL,
-  `applies_to` varchar(255) NOT NULL,
-  `base64encoded_image` longtext NOT NULL,
-  `end_date` datetime NOT NULL,
-  `product_sku` varchar(255) DEFAULT NULL,
-  `sku` varchar(255) NOT NULL,
-  `start_date` datetime NOT NULL,
-  `type` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `amount` decimal(19,2) NOT NULL COMMENT 'Discount amount: If type = AMOUNT.  Uses same currency units as product price set in product table.  If type = PERCENT, then percentage off of list price.',
+  `applies_to` varchar(255) NOT NULL COMMENT 'Must either be ''SKU'' or ''BASKET'' of goods.',
+  `base64encoded_image` longtext COMMENT 'Reference to promotion picture.',
+  `start_date` datetime NOT NULL COMMENT 'Dtae and time of when promotion starts.',
+  `end_date` datetime NOT NULL COMMENT 'Dtae and time of when promotion ends.',
+  `product_id` bigint(20) NOT NULL COMMENT 'Product reference.',
+  `sku` varchar(255) NOT NULL COMMENT 'Promotion SKU',
+  `type` varchar(255) NOT NULL COMMENT 'PERCENT (e.g. 10 for 10% off) or AMOUNT Value (e.g. 10 currency units off)',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `sku` (`sku`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  KEY `promotion_product_id_fk_idx` (`product_id`),
+  CONSTRAINT `promotion_product_id_fk` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -588,17 +441,20 @@ DROP TABLE IF EXISTS `reading`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reading` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `created_date` datetime NOT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `sampling_site_id` bigint(20) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL,
+  `kiosk_id` bigint(20) NOT NULL COMMENT 'Kiosk reference.',
+  `parameter_id` bigint(20) NOT NULL COMMENT 'Parameter reference.',
+  `sampling_site_id` bigint(20) NOT NULL COMMENT 'Sampling site reference.',
+  `user_id` bigint(20) NOT NULL COMMENT 'User reference.',
   PRIMARY KEY (`id`),
-  KEY `FK4065CE8C6413D753` (`kiosk_id`),
-  KEY `FK4065CE8C8DF0B430` (`sampling_site_id`),
-  CONSTRAINT `FK4065CE8C6413D753` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`),
-  CONSTRAINT `FK4065CE8C8DF0B430` FOREIGN KEY (`sampling_site_id`) REFERENCES `sampling_site` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44147 DEFAULT CHARSET=latin1;
+  KEY `reading_kiosk_id_fk_idx` (`kiosk_id`),
+  KEY `reading_parameter_id_fk_idx` (`parameter_id`),
+  KEY `reading_sampling_site_id_fk_idx` (`sampling_site_id`),
+  KEY `reading_user_id_fk_idx` (`user_id`),
+  CONSTRAINT `reading_kiosk_id_fk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `reading_parameter_id_fk` FOREIGN KEY (`parameter_id`) REFERENCES `parameter` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `reading_sampling_site_id_fk` FOREIGN KEY (`sampling_site_id`) REFERENCES `sampling_site` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `reading_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Maps sampling site to specific user of employee at site. Measurement table uses user from this table to record who made the measurement for each reading .';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -610,18 +466,13 @@ DROP TABLE IF EXISTS `rebate`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `rebate` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `base64encoded_image` longtext,
-  `name` varchar(255) NOT NULL,
-  `no_of_free_skus` varchar(255) NOT NULL,
-  `no_of_skus` int(11) NOT NULL,
-  `product_id` bigint(20) NOT NULL,
-  `transaction_type` varchar(255) NOT NULL,
+  `customer_account_id` varchar(255) NOT NULL COMMENT 'Customer account reference.',
+  `type` varchar(255) NOT NULL COMMENT 'PERCENT (e.g. 10% rebate) or AMOUNT (e.g. 1 currency unit for each SKU sold).',
+  `rate` decimal(19,2) NOT NULL COMMENT 'Either decimal or integer based on rebate type.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`),
-  KEY `FKC845C3A3B9F6E753` (`product_id`),
-  CONSTRAINT `FKC845C3A3B9F6E753` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `rebate_customer_account_id_fk_idx` (`customer_account_id`),
+  CONSTRAINT `rebate_customer_account_id_fk` FOREIGN KEY (`customer_account_id`) REFERENCES `customer_account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Maps rebate rate to specific customer_id’s to calculate product rebate due to each customer. Version below replaces table structure in original dlo schema.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -632,60 +483,37 @@ DROP TABLE IF EXISTS `receipt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `receipt` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `created_date` datetime NOT NULL,
-  `currency_code` varchar(255) NOT NULL,
-  `customer_account_id` varchar(255) NOT NULL,
-  `customer_amount` decimal(19,2) DEFAULT NULL,
-  `delivery_time` varchar(255) DEFAULT NULL,
-  `is_sponsor_selected` bit(1) NOT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `payment_mode` varchar(255) NOT NULL,
+  `id` varchar(255) NOT NULL COMMENT 'Client generated unique ID in format: [updated_at]+[sequence]  2018072700001. Will be used for reference outside of application such as receipt number printed on paper receipts.',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `currency_code` varchar(255) NOT NULL COMMENT 'Currency used.',
+  `customer_account_id` varchar(255) NOT NULL COMMENT 'Customer account reference.',
+  `amount_cash` decimal(19,2) DEFAULT NULL COMMENT 'Amount paid by cash.',
+  `amount_mobile` decimal(19,2) DEFAULT NULL COMMENT 'Amount paid by mobile or other method.',
+  `amount_loan` decimal(19,2) DEFAULT NULL COMMENT 'Amount covered by loan.',
+  `amount_card` decimal(19,2) DEFAULT NULL COMMENT 'Amount covered by card.',
+  `delivery_id` bigint(20) DEFAULT NULL COMMENT 'Delivery reference.',
+  `is_sponsor_selected` bit(1) NOT NULL DEFAULT b'0' COMMENT '1 for sponsor selected, 0 otherwise.',
+  `kiosk_id` bigint(20) NOT NULL COMMENT 'Kiosk reference.',
   `payment_type` varchar(255) NOT NULL,
-  `sales_channel_id` bigint(20) NOT NULL,
-  `sponsor_id` varchar(255) DEFAULT NULL,
-  `sponsor_amount` decimal(19,2) DEFAULT NULL,
-  `total` decimal(19,2) NOT NULL,
-  `total_gallons` float DEFAULT NULL,
-  `uuid` varchar(255) DEFAULT NULL,
+  `sales_channel_id` bigint(20) NOT NULL COMMENT 'Sales channel reference.',
+  `customer_type_id` bigint(20) NOT NULL COMMENT 'Customer type reference.',
+  `sponsor_id` varchar(255) DEFAULT NULL COMMENT 'Sponsor reference.',
+  `sponsor_amount` decimal(19,2) NOT NULL DEFAULT '0.00' COMMENT 'Amount paid by sponsor.',
+  `total` decimal(19,2) NOT NULL COMMENT 'Total amount in currency.',
+  `cogs` varchar(45) NOT NULL COMMENT 'Cost of goods sold. Net revenue for this receipt is total-cogs',
+  `uuid` varchar(255) NOT NULL COMMENT 'For integration with other applications such as a receipt printer over Bluetooth connection.',
   PRIMARY KEY (`id`),
-  KEY `FK408272386413D753` (`kiosk_id`),
-  KEY `FK40827238A462EED6` (`customer_account_id`),
-  KEY `FK4082723817D4B373` (`sponsor_id`),
-  KEY `FK4082723854B1E8E8` (`sales_channel_id`),
-  KEY `uuid_Idx` (`uuid`),
-  CONSTRAINT `FK4082723817D4B373` FOREIGN KEY (`sponsor_id`) REFERENCES `sponsor` (`id`),
-  CONSTRAINT `FK4082723854B1E8E8` FOREIGN KEY (`sales_channel_id`) REFERENCES `sales_channel` (`id`),
-  CONSTRAINT `FK408272386413D753` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=225286 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `receipt_bkp`
---
-
-DROP TABLE IF EXISTS `receipt_bkp`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `receipt_bkp` (
-  `id` bigint(20) NOT NULL DEFAULT '0',
-  `version` bigint(20) NOT NULL,
-  `created_date` datetime NOT NULL,
-  `currency_code` varchar(255) NOT NULL,
-  `customer_account_id` varchar(255) NOT NULL,
-  `customer_amount` decimal(19,2) DEFAULT NULL,
-  `delivery_time` varchar(255) DEFAULT NULL,
-  `is_sponsor_selected` bit(1) NOT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `payment_mode` varchar(255) NOT NULL,
-  `payment_type` varchar(255) NOT NULL,
-  `sales_channel_id` bigint(20) NOT NULL,
-  `sponsor_id` varchar(255) DEFAULT NULL,
-  `sponsor_amount` decimal(19,2) DEFAULT NULL,
-  `total` decimal(19,2) NOT NULL,
-  `total_gallons` int(11) DEFAULT NULL,
-  `uuid` varchar(255) DEFAULT NULL
+  KEY `receipt_kiosk_id_fk_idx` (`kiosk_id`),
+  KEY `receipt_sales_channel_id_fk_idx` (`sales_channel_id`),
+  KEY `receipt_customer_type_id_fk_idx` (`customer_type_id`),
+  KEY `receipt_customer_account_id_fk_idx` (`customer_account_id`),
+  KEY `receipt_sponsor_id_fk_idx` (`sponsor_id`),
+  CONSTRAINT `receipt_customer_account_id_fk` FOREIGN KEY (`customer_account_id`) REFERENCES `customer_account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `receipt_customer_type_id_fk` FOREIGN KEY (`customer_type_id`) REFERENCES `customer_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `receipt_kiosk_id_fk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `receipt_sales_channel_id_fk` FOREIGN KEY (`sales_channel_id`) REFERENCES `sales_channel` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `receipt_sponsor_id_fk` FOREIGN KEY (`sponsor_id`) REFERENCES `sponsor` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -698,39 +526,19 @@ DROP TABLE IF EXISTS `receipt_line_item`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `receipt_line_item` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `currency_code` varchar(255) NOT NULL,
-  `gallons` float NOT NULL,
-  `price` decimal(19,2) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `receipt_id` bigint(20) NOT NULL,
-  `sku` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `receipt_line_items_idx` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `currency_code` varchar(255) NOT NULL COMMENT 'Currency used.',
+  `price_total` decimal(19,2) NOT NULL COMMENT 'This is price total, so price per item is price/quantity',
+  `quantity` varchar(45) NOT NULL COMMENT 'Total number of product of that SKU.  If you have 5 jugs of water, quantity = 5. If you purchase 3 bags of milk, quantity = 3.	',
+  `receipt_id` varchar(255) NOT NULL COMMENT 'Receipt reference.',
+  `product_id` bigint(20) NOT NULL COMMENT 'Product reference.',
+  `cogs_total` decimal(19,2) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `FKABD16337B099F6B3` (`receipt_id`),
-  CONSTRAINT `FKABD16337B099F6B3` FOREIGN KEY (`receipt_id`) REFERENCES `receipt` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=255356 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `receipt_line_item_bkp`
---
-
-DROP TABLE IF EXISTS `receipt_line_item_bkp`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `receipt_line_item_bkp` (
-  `id` bigint(20) NOT NULL DEFAULT '0',
-  `version` bigint(20) NOT NULL,
-  `currency_code` varchar(255) NOT NULL,
-  `gallons` int(11) NOT NULL,
-  `price` decimal(19,2) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `receipt_id` bigint(20) NOT NULL,
-  `sku` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `receipt_line_items_idx` int(11) DEFAULT NULL
+  KEY `receipt_line_item_receipt_id_fk_idx` (`receipt_id`),
+  KEY `receipt_line_item_product_id_fk_idx` (`product_id`),
+  CONSTRAINT `receipt_line_item_product_id_fk` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `receipt_line_item_receipt_id_fk` FOREIGN KEY (`receipt_id`) REFERENCES `receipt` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -743,50 +551,61 @@ DROP TABLE IF EXISTS `region`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `region` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `country_id` bigint(20) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
+  `name` varchar(150) NOT NULL COMMENT 'Region Name.',
+  `description` varchar(250) NOT NULL COMMENT 'Descriptive name of region.',
+  `country_id` bigint(20) unsigned NOT NULL COMMENT 'Region country reference.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`),
-  KEY `FKC84826F4605E91F3` (`country_id`),
-  CONSTRAINT `FKC84826F4605E91F3` FOREIGN KEY (`country_id`) REFERENCES `country` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+  KEY `region_country_id_fk_idx` (`country_id`),
+  CONSTRAINT `region_country_id_fk` FOREIGN KEY (`country_id`) REFERENCES `country` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `region_promotions`
+-- Table structure for table `region_promotion`
 --
 
-DROP TABLE IF EXISTS `region_promotions`;
+DROP TABLE IF EXISTS `region_promotion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `region_promotions` (
-  `promotion_id` bigint(20) NOT NULL,
-  `region_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`region_id`,`promotion_id`),
-  KEY `FKEAB6A65B5F724093` (`promotion_id`),
-  KEY `FKEAB6A65BE073EA21` (`region_id`),
-  CONSTRAINT `FKEAB6A65B5F724093` FOREIGN KEY (`promotion_id`) REFERENCES `promotion` (`id`),
-  CONSTRAINT `FKEAB6A65BE073EA21` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `region_promotion` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `promotion_id` bigint(20) NOT NULL COMMENT 'Promotion reference.',
+  `region_id` bigint(20) NOT NULL COMMENT 'Region reference.',
+  `kiosk_id` bigint(20) NOT NULL COMMENT 'Kiosk reference.',
+  PRIMARY KEY (`id`),
+  KEY `region_promotion_promotion_id_fk_idx` (`promotion_id`) USING BTREE,
+  KEY `region_promotion_region_id_fk_idx` (`region_id`) USING BTREE,
+  KEY `region_promotion_kiosk_id_fk_idx` (`kiosk_id`) USING BTREE,
+  CONSTRAINT `region_promotion_kiosk_id_fk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`),
+  CONSTRAINT `region_promotion_promotion_id_fk` FOREIGN KEY (`promotion_id`) REFERENCES `promotion` (`id`),
+  CONSTRAINT `region_promotion_region_id_fk` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Maps each promotion to each region turning it off or on for each region.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `region_rebates`
+-- Table structure for table `region_rebate`
 --
 
-DROP TABLE IF EXISTS `region_rebates`;
+DROP TABLE IF EXISTS `region_rebate`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `region_rebates` (
-  `rebate_id` bigint(20) NOT NULL,
-  `region_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`region_id`,`rebate_id`),
-  KEY `FK46FE4AE5CA8DF7C1` (`rebate_id`),
-  KEY `FK46FE4AE5E073EA21` (`region_id`),
-  CONSTRAINT `FK46FE4AE5CA8DF7C1` FOREIGN KEY (`rebate_id`) REFERENCES `rebate` (`id`),
-  CONSTRAINT `FK46FE4AE5E073EA21` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`)
+CREATE TABLE `region_rebate` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `region_id` bigint(20) NOT NULL COMMENT 'Region reference.',
+  `rebate_id` bigint(20) NOT NULL COMMENT 'Rebate reference.',
+  `kiosk_id` bigint(20) NOT NULL COMMENT 'Kiosk reference.',
+  PRIMARY KEY (`id`),
+  KEY `region_rebate_region_id_fk_idx` (`region_id`) USING BTREE,
+  KEY `region_rebate_rebate_id_fk_idx` (`rebate_id`) USING BTREE,
+  KEY `region_rebate_kiosk_id_fk_idx` (`kiosk_id`) USING BTREE,
+  CONSTRAINT `region_rebate_kiosk_id_fk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`),
+  CONSTRAINT `region_rebate_rebate_id_fk` FOREIGN KEY (`rebate_id`) REFERENCES `rebate` (`id`),
+  CONSTRAINT `region_rebate_region_id_fk` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -799,12 +618,12 @@ DROP TABLE IF EXISTS `role`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `authority` varchar(255) NOT NULL,
-  `code` varchar(255) NOT NULL,
+  `authority` varchar(255) NOT NULL COMMENT 'Role name.',
+  `code` varchar(255) NOT NULL COMMENT 'Role code.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `authority` (`authority`),
-  UNIQUE KEY `code_UNIQUE` (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `role_authority_uq` (`authority`),
+  UNIQUE KEY `role_code_uq` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -816,32 +635,13 @@ DROP TABLE IF EXISTS `sales_channel`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sales_channel` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `delayed_delivery` bit(1) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `discount_amount` decimal(19,2) DEFAULT NULL,
-  `discount_type` varchar(255) DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `sales_channel_customer_accounts`
---
-
-DROP TABLE IF EXISTS `sales_channel_customer_accounts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sales_channel_customer_accounts` (
-  `customer_account_id` varchar(255) NOT NULL,
-  `sales_channel_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`sales_channel_id`,`customer_account_id`),
-  KEY `FK2F345D78A462EED6` (`customer_account_id`),
-  KEY `FK2F345D7854B1E8E8` (`sales_channel_id`),
-  CONSTRAINT `FK2F345D7854B1E8E8` FOREIGN KEY (`sales_channel_id`) REFERENCES `sales_channel` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display on UI, 0 to hide.',
+  `name` varchar(255) NOT NULL COMMENT 'Sales channel name.',
+  `description` varchar(45) DEFAULT NULL COMMENT 'Sales channel description.',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -853,55 +653,14 @@ DROP TABLE IF EXISTS `sampling_site`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sampling_site` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
+  `is_used_for_totalizer` bit(1) NOT NULL COMMENT 'Used in  ''Gallons distributed'' calculation on web report; only sites with ''true'' are used in calculation, totalizer calculation requires us to subtract PM sample sites numbers from AM Sample sites in webpage.',
+  `name` varchar(255) NOT NULL COMMENT 'Descriptive name of where the sample is taken.',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
   `followup_to_site_id` bigint(20) DEFAULT NULL,
-  `is_used_for_totalizer` bit(1) NOT NULL,
-  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `FKED08A09FA6ADD2D7` (`followup_to_site_id`),
-  CONSTRAINT `FKED08A09FA6ADD2D7` FOREIGN KEY (`followup_to_site_id`) REFERENCES `sampling_site` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `schools`
---
-
-DROP TABLE IF EXISTS `schools`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `schools` (
-  `id` varchar(255) NOT NULL,
-  `address` longtext,
-  `contact_name` varchar(255) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `kiosk_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `sensor`
---
-
-DROP TABLE IF EXISTS `sensor`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sensor` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `version` bigint(20) NOT NULL,
-  `display_name` varchar(255) NOT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `parameter_id` bigint(20) NOT NULL,
-  `sampling_site_id` bigint(20) NOT NULL,
-  `sensor_id` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `sensor_id` (`sensor_id`),
-  KEY `FKCA0053BA33059AD3` (`parameter_id`),
-  KEY `FKCA0053BA6413D753` (`kiosk_id`),
-  KEY `FKCA0053BA8DF0B430` (`sampling_site_id`),
-  CONSTRAINT `FKCA0053BA33059AD3` FOREIGN KEY (`parameter_id`) REFERENCES `parameter` (`id`),
-  CONSTRAINT `FKCA0053BA6413D753` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`),
-  CONSTRAINT `FKCA0053BA8DF0B430` FOREIGN KEY (`sampling_site_id`) REFERENCES `sampling_site` (`id`)
+  KEY `sampling_site_followup_to_site_id_fk_idx` (`followup_to_site_id`),
+  CONSTRAINT `sampling_site_followup_to_site_id_fk` FOREIGN KEY (`followup_to_site_id`) REFERENCES `sampling_site` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -913,103 +672,36 @@ DROP TABLE IF EXISTS `sponsor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sponsor` (
-  `id` varchar(255) NOT NULL,
-  `version` bigint(20) NOT NULL,
-  `contact_name` varchar(255) NOT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `phone_number` varchar(255) DEFAULT NULL,
+  `id` varchar(255) NOT NULL COMMENT 'Auto-generated uuid.  Used by contact to link contact to sponsor.',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
+  `name` varchar(255) NOT NULL COMMENT 'Sponsor name.',
+  `kiosk_id` bigint(20) NOT NULL COMMENT 'Kiosk reference.',
+  `phone_number` varchar(255) DEFAULT NULL COMMENT 'Main phone number of sponsor (contacts associated with Sponsor may also have phone numbers and other contact info).',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `kiosk_id` (`kiosk_id`,`name`),
-  KEY `FK88DB531A6413D753` (`kiosk_id`),
-  CONSTRAINT `FK88DB531A6413D753` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `sponsor_kiosk_id_fk_idx` (`kiosk_id`),
+  CONSTRAINT `sponsor_kiosk_id_fk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Manages list of sponsors.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `tmp_customer`
+-- Table structure for table `sponsor_contact`
 --
 
-DROP TABLE IF EXISTS `tmp_customer`;
+DROP TABLE IF EXISTS `sponsor_contact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tmp_customer` (
-  `id` varchar(255) NOT NULL,
-  `version` bigint(20) NOT NULL,
-  `address` longtext,
-  `contact_name` varchar(255) NOT NULL,
-  `customer_type_id` bigint(20) NOT NULL,
-  `due_amount` double NOT NULL,
-  `gps_coordinates` varchar(255) DEFAULT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `phone_number` varchar(255) DEFAULT NULL,
-  `active` bit(1) DEFAULT NULL,
-  `serviceable_customer_base` bigint(20) DEFAULT NULL,
-  `what3words` varchar(255) DEFAULT NULL,
-  `notes` varchar(255) DEFAULT NULL,
-  `multimedia1` varchar(255) DEFAULT NULL,
-  `multimedia2` varchar(255) DEFAULT NULL,
-  `multimedia3` varchar(255) DEFAULT NULL,
-  `gender` varchar(45) DEFAULT NULL,
+CREATE TABLE `sponsor_contact` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `sponsor_id` varchar(255) NOT NULL COMMENT 'Sponsor reference.',
+  `contact_id` bigint(20) NOT NULL COMMENT 'Contact reference.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`,`kiosk_id`,`contact_name`),
-  KEY `FK3FEDF2CC303F70BE` (`customer_type_id`),
-  KEY `FK3FEDF2CC6413D753` (`kiosk_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `trip`
---
-
-DROP TABLE IF EXISTS `trip`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `trip` (
-  `trip_id` int(11) NOT NULL AUTO_INCREMENT,
-  `trip_date` date NOT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  `driver_id` int(11) NOT NULL,
-  `depart_kiosk` time DEFAULT NULL,
-  `return_kiosk` time DEFAULT NULL,
-  `vehicle_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`trip_id`),
-  KEY `FK_Trip_Kiosk_idx` (`kiosk_id`),
-  KEY `fk_trip_drivers_idx` (`driver_id`),
-  KEY `fk_trip_vehicles` (`vehicle_id`),
-  CONSTRAINT `fk_trip_drivers` FOREIGN KEY (`driver_id`) REFERENCES `drivers` (`driver_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_trip_kiosk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_trip_vehicles` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`vehicle_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=504 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `trip_details`
---
-
-DROP TABLE IF EXISTS `trip_details`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `trip_details` (
-  `trip_detail_id` int(11) NOT NULL AUTO_INCREMENT,
-  `trip_id` int(11) NOT NULL,
-  `customer_account_id` varchar(255) NOT NULL,
-  `gallons_delivered` double DEFAULT NULL,
-  `empty_jug_pickup` int(11) DEFAULT NULL,
-  `customer_arrive` time DEFAULT NULL,
-  `customer_depart` time DEFAULT NULL,
-  `receipt_id` bigint(20) DEFAULT NULL,
-  `comment` varchar(255) DEFAULT NULL,
-  `jugs_delivered` double DEFAULT NULL,
-  `gallons_per_jug` int(11) DEFAULT '5',
-  PRIMARY KEY (`trip_detail_id`),
-  UNIQUE KEY `trip_detail_id_UNIQUE` (`trip_detail_id`),
-  KEY `FK_TripDetails_Customer_account_idx` (`customer_account_id`),
-  KEY `fk_trip_details_trip` (`trip_id`),
-  CONSTRAINT `fk_trip_details_customer_account` FOREIGN KEY (`customer_account_id`) REFERENCES `customer_account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_trip_details_trip` FOREIGN KEY (`trip_id`) REFERENCES `trip` (`trip_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1527 DEFAULT CHARSET=latin1;
+  KEY `sponsor_contact_contact_id_fk_idx` (`contact_id`) USING BTREE,
+  KEY `sponsor_contact_sponsor_id_fk_idx` (`sponsor_id`),
+  CONSTRAINT `sponsor_contact_contact_id_fk` FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`),
+  CONSTRAINT `sponsor_contact_sponsor_id_fk` FOREIGN KEY (`sponsor_id`) REFERENCES `sponsor` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Sponsor to contact mapping table.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1020,17 +712,37 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
-  `id` bigint(20) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `first_name` varchar(255) NOT NULL,
-  `last_name` varchar(255) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL COMMENT 'Username of the user.',
+  `email` varchar(255) NOT NULL COMMENT 'Email of the user.',
+  `password` varchar(255) NOT NULL COMMENT 'Password of the user.',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `first_name` varchar(255) NOT NULL COMMENT 'First name of user.',
+  `last_name` varchar(255) NOT NULL COMMENT 'Last name of user.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `user_name` (`username`),
-  UNIQUE KEY `email_UNIQUE` (`email`)
+  UNIQUE KEY `user_email_uq` (`email`),
+  UNIQUE KEY `user_username_uq` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user_contact`
+--
+
+DROP TABLE IF EXISTS `user_contact`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_contact` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `contact_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_contact_contact_id_fk_idx` (`contact_id`),
+  KEY `user_contact_user_id_fk_idx` (`user_id`),
+  CONSTRAINT `user_contact_contact_id_fk` FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `user_contact_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1042,31 +754,37 @@ DROP TABLE IF EXISTS `user_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_role` (
-  `role_id` bigint(20) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
-  KEY `role_id` (`role_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `fk_user_role_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_role_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `role_id` bigint(20) NOT NULL COMMENT 'Role reference.',
+  `user_id` bigint(20) NOT NULL COMMENT 'User reference.',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  KEY `user_role_role_id_fk` (`role_id`),
+  KEY `user_role_user_id_fk_idx` (`user_id`),
+  CONSTRAINT `user_role_role_id_fk` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
+  CONSTRAINT `user_role_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COMMENT='Maps a user to a role.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `vehicles`
+-- Table structure for table `vehicle`
 --
 
-DROP TABLE IF EXISTS `vehicles`;
+DROP TABLE IF EXISTS `vehicle`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `vehicles` (
-  `vehicle_id` int(11) NOT NULL,
-  `type` varchar(20) CHARACTER SET utf8 NOT NULL,
-  `license` varchar(10) DEFAULT NULL,
-  `kiosk_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`vehicle_id`),
-  KEY `fk_vehicles_kiosk_idx` (`kiosk_id`),
-  CONSTRAINT `fk_vehicles_kiosk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `vehicle` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date/Time when created.',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
+  `kiosk_id` bigint(20) NOT NULL COMMENT 'Kiosk reference.',
+  `name` varchar(255) NOT NULL COMMENT 'Vehicle name.',
+  `license` varchar(255) NOT NULL COMMENT 'Vehicle license.',
+  `type` varchar(255) NOT NULL COMMENT 'Vehicle type.',
+  PRIMARY KEY (`id`),
+  KEY `vehicle_kiosk_id_fk_idx` (`kiosk_id`),
+  CONSTRAINT `vehicle_kiosk_id_fk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='List of vehicles.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -1078,4 +796,4 @@ CREATE TABLE `vehicles` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-18 13:18:19
+-- Dump completed on 2018-08-01 17:50:00

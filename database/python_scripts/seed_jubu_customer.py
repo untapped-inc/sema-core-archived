@@ -34,18 +34,28 @@ if __name__ == "__main__":
     connection = dbConnection.get_connection()
     if connection is not None:
         print("Connected")
-        dbPopulate = DBPopulate(connection)
-        dbPopulate.populate_country('Uganda')
-        dbPopulate.populate_customer_type('generic')
-        dbPopulate.populate_sales_channel(0x0, "walkup")
-        dbPopulate.populate_sales_channel(0x0, "reseller")
-        dbPopulate.populate_product_category("Description of product category", "product_category 1")
-        dbPopulate.populate_region('Uganda', 'Kampala', "Kampala - Uganda")
-        dbPopulate.populate_kiosk('Kampala', "Kiswa")
-        for customer in customers:
-            dbPopulate.populate_customer('Kiswa', "generic", customer.channel, customer.name,
-                                         customer.created_date, customer.updated_date, customer.phone)
 
+        cursor = connection.cursor()
+        cursor.execute("select database()")
+        db_name = cursor.fetchone()[0]
+
+
+        # Verify you are connected to a jibu database
+        if "jibu" in db_name.lower():
+
+            dbPopulate = DBPopulate(connection)
+            dbPopulate.populate_country('Uganda')
+            dbPopulate.populate_customer_type('generic')
+            dbPopulate.populate_sales_channel(0x0, "walkup")
+            dbPopulate.populate_sales_channel(0x0, "reseller")
+            dbPopulate.populate_product_category("Description of product category", "product_category 1")
+            dbPopulate.populate_region('Uganda', 'Kampala', "Kampala - Uganda")
+            dbPopulate.populate_kiosk('Kampala', "Kiswa")
+            for customer in customers:
+                dbPopulate.populate_customer('Kiswa', "generic", customer.channel, customer.name,
+                                             customer.created_date, customer.updated_date, customer.phone)
+        else:
+            print("You are not connected to a 'jibu' database")
         dbConnection.close()
     else:
         print('failed to connect')

@@ -62,6 +62,11 @@ if __name__ == "__main__":
                                             product.category, product.description, product.priceAmount,
                                             product.priceCurrency, 1,"tons", product.cogs, product.sku,
                                             product.updatedDate, product.active);
+            # create products mrp
+            for product in products:
+                dbPopulate.populate_product_mrp(
+                    product.updatedDate, 'UnitTestCustomers', product.sku, "sales channel 1",
+                    product.priceAmount *2, "USD", product.cogs )
         else:
             print("You are not connected to a 'test' database")
         dbConnection.close()

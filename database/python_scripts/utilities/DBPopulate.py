@@ -134,7 +134,7 @@ class DBPopulate:
 
     """ Add a product. Note: This assumes product skus are unique """
     def populate_product(self, name, encoded_image, category, description,  price, currency, unit_per_product,
-                         unit_measure, cogs, sku, updatedDate ):
+                         unit_measure, cogs, sku, updatedDate, active ):
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM product WHERE sku = %s", (sku,))
         rows = cursor.fetchall()
@@ -147,10 +147,10 @@ class DBPopulate:
 
                 cursor.execute("INSERT INTO product "
                                "(name, sku, description, category_id, price_amount, price_currency, "
-                               "unit_per_product, unit_measure, cogs_amount, base64encoded_image, updated_at ) "
-                               "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                               "unit_per_product, unit_measure, cogs_amount, base64encoded_image, updated_at, active ) "
+                               "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                                ( name, sku, description, cat_id_rows[0][0], price, currency,
-                                 unit_per_product, unit_measure, cogs, encoded_image, updatedDate ))
+                                 unit_per_product, unit_measure, cogs, encoded_image, updatedDate, active ))
                 self.connection.commit()
                 print("Product", description, 'added')
             except mysql.connector.Error as err:
@@ -342,4 +342,36 @@ class DBPopulate:
             print('failed to add reading/measurement for ', created_date, err)
         cursor.close()
 
+    """ Add a row to the product_mrp table"""
+    def populate_product_mrp( self, updatedDate, kiosk_name, sku_name, sales_channel_name, mrpPrice, currencyCode, cogs):
+        cursor = self.connection.cursor()
 
+        cursor.execute("SELECT * FROM kiosk WHERE name = %s", (kiosk_name,))
+        kiosk_rows = cursor.fetchall()
+
+        cursor.execute("SELECT * FROM sales_channel WHERE name = %s", (sales_channel_name,))
+        sales_channel_rows = cursor.fetchall()
+
+        cursor.execute("SELECT * FROM product WHERE sku = %s", (sku_name,))
+        product_rows = cursor.fetchall()
+
+        cursor.execute("SELECT * FROM product_mrp WHERE kiosk_id = %s AND "
+                       "product_id = %s AND sales_channel_id = %s" ,
+                       (kiosk_rows[0][0], product_rows[0][0], sales_channel_rows[0][0] ))
+        product_mrp_rows = cursor.fetchall()
+
+        if len(product_mrp_rows) == 0:
+            try:
+                cursor.execute("INSERT INTO product_mrp "
+                               "(created_at, updated_at, kiosk_id, product_id, sales_channel_id,"
+                               "price_amount, price_currency, cogs_amount ) "
+                               "VALUES(%s, %s, %s, %s, %s, %s, %s, %s )",
+                               ( updatedDate, updatedDate, kiosk_rows[0][0], product_rows[0][0], sales_channel_rows[0][0],
+                                 mrpPrice, currencyCode, cogs ))
+                self.connection.commit()
+                print('Product_mrp for ',sku_name, '/', sales_channel_name, ' added')
+            except mysql.connector.Error as err:
+                print('failed to add product_mrp ', sku_name, err)
+        else:
+            print('Product_mrp for ',sku_name, '/', sales_channel_name, ' exists')
+        cursor.close()

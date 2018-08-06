@@ -64,6 +64,16 @@ if __name__ == "__main__":
                                                 product.category, product.description, product.priceAmount,
                                                 product.priceCurrency, product.quantityPerUnit, "liters",
                                                 product.cogs, product.sku, product.updatedDate, product.active);
+
+            # create products mrp
+            for product in products:
+                dbPopulate.populate_product_mrp(
+                    product.updatedDate, 'Kiswa', product.sku, "walkup",
+                    product.priceAmount, product.priceCurrency, product.cogs )
+                dbPopulate.populate_product_mrp(
+                    product.updatedDate, 'Kiswa', product.sku, "reseller",
+                    product.priceAmount * .9, product.priceCurrency, product.cogs )
+
         else:
             print("You are not connected to a 'jibu' database")
         dbConnection.close()

@@ -51,6 +51,14 @@ if __name__ == "__main__":
             dbPopulate.populate_product_category("Description of product category", "product_category 1")
             dbPopulate.populate_region('Uganda', 'Kampala', "Kampala - Uganda")
             dbPopulate.populate_kiosk('Kampala', "Kiswa")
+
+            # add the 'anonymous' walk up customer
+            dbPopulate.populate_customer_uuid('Kiswa', "generic", "walkup", "Walkup Client",
+                                              datetime.date(2018, 1, 1), datetime.date(2018, 1, 1),
+                                              "----------------------------",
+                                              "----------------------------",
+                                              "9999999-9999-9999-9999-9999999")
+
             for customer in customers:
                 dbPopulate.populate_customer('Kiswa', "generic", customer.channel, customer.name,
                                              customer.created_date, customer.updated_date, customer.phone)

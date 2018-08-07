@@ -86,12 +86,18 @@ class DBPopulate:
     """ Add a customer. Note: This assumes contact_name are unique """
 
     def populate_customer(self, kiosk_name, customer_type, sales_channel, customer_name, created_date, updated_date, phone):
+        guid = str(uuid.uuid1())
+
+        self.populate_customer_uuid( kiosk_name, customer_type, sales_channel, customer_name, created_date, updated_date,
+                                     phone, "test_address", guid)
+
+    def populate_customer_uuid(self, kiosk_name, customer_type, sales_channel, customer_name, created_date, updated_date,
+                               phone, address, guid):
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM customer_account WHERE name = %s", (customer_name,))
         rows = cursor.fetchall()
         if len(rows) == 0:
             try:
-                guid = str(uuid.uuid1())
 
                 cursor.execute("SELECT * FROM kiosk WHERE name = %s", (kiosk_name,))
                 kiosk_rows = cursor.fetchall()
@@ -107,7 +113,7 @@ class DBPopulate:
                                "kiosk_id, address_line1, gps_coordinates, phone_number, id) "
                                "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                                (created_date, updated_date, customer_name, ct_rows[0][0], sales_channel_rows[0][0],
-                                kiosk_rows[0][0], "test_address", "gps", phone, guid))
+                                kiosk_rows[0][0], address, "gps", phone, guid))
                 self.connection.commit()
                 print("Customer", customer_name, 'added')
             except mysql.connector.Error as err:

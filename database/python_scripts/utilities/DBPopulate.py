@@ -22,7 +22,7 @@ class DBPopulate:
         rows = cursor.fetchall()
         if len(rows) == 0:
             try:
-                cursor.execute("INSERT INTO country (version, name) VALUES(%s, %s)", (1, country))
+                cursor.execute("INSERT INTO country ( name) VALUES(%s)", ( country,))
                 self.connection.commit()
                 print(country, 'added')
             except mysql.connector.Error as err:
@@ -38,17 +38,17 @@ class DBPopulate:
         rows = cursor.fetchall()
         if len(rows) == 0:
             try:
-                cursor.execute("INSERT INTO customer_type (version, name) VALUES(%s, %s)", (1, name))
+                cursor.execute("INSERT INTO customer_type (name) VALUES(%s)", (name,))
                 self.connection.commit()
                 print('Customer type', name, 'added')
             except mysql.connector.Error as err:
-                print('failed to add', name, err)
+                print('failed to add Customer Type', name, err)
         else:
             print('Customer type', name, 'exists')
         cursor.close()
 
     """ Add a region  """
-    def populate_region(self, country, region):
+    def populate_region(self, country, region, description):
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM region WHERE name = %s", (region,))
         rows = cursor.fetchall()
@@ -56,7 +56,7 @@ class DBPopulate:
             try:
                 cursor.execute("SELECT * FROM country WHERE name = %s", (country,))
                 rows = cursor.fetchall()
-                cursor.execute("INSERT INTO region (version, country_id, name) VALUES(%s,%s, %s)", (1, rows[0][0], region) )
+                cursor.execute("INSERT INTO region (country_id, name, description) VALUES(%s, %s, %s)", (rows[0][0], region, description) )
                 self.connection.commit()
                 print(region, 'added')
             except mysql.connector.Error as err:
@@ -66,7 +66,7 @@ class DBPopulate:
         cursor.close()
 
     """ Add a kiosk  """
-    def populate_kiosk(self, region_name, kiosk_name, api_key ):
+    def populate_kiosk(self, region_name, kiosk_name ):
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM kiosk WHERE name = %s", (kiosk_name,))
         rows = cursor.fetchall()
@@ -74,7 +74,7 @@ class DBPopulate:
             try:
                 cursor.execute("SELECT * FROM region WHERE name = %s", (region_name,))
                 rows = cursor.fetchall()
-                cursor.execute("INSERT INTO kiosk (version, region_id, name, api_key) VALUES(%s,%s, %s, %s)", (1, rows[0][0], kiosk_name, api_key))
+                cursor.execute("INSERT INTO kiosk (region_id, name ) VALUES(%s, %s )", (rows[0][0], kiosk_name))
                 self.connection.commit()
                 print(kiosk_name, 'added')
             except mysql.connector.Error as err:
@@ -85,29 +85,41 @@ class DBPopulate:
 
     """ Add a customer. Note: This assumes contact_name are unique """
 
-    def populate_customer(self, kiosk_name, customer_type, contact_name, create_date, updated_date):
+    def populate_customer(self, kiosk_name, customer_type, sales_channel, customer_name, created_date, updated_date, phone):
+        guid = str(uuid.uuid1())
+
+        self.populate_customer_uuid( kiosk_name, customer_type, sales_channel, customer_name, created_date, updated_date,
+                                     phone, "test_address", guid)
+
+    def populate_customer_uuid(self, kiosk_name, customer_type, sales_channel, customer_name, created_date, updated_date,
+                               phone, address, guid):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM customer_account WHERE contact_name = %s", (contact_name,))
+        cursor.execute("SELECT * FROM customer_account WHERE name = %s", (customer_name,))
         rows = cursor.fetchall()
         if len(rows) == 0:
             try:
-                guid = str(uuid.uuid1())
 
                 cursor.execute("SELECT * FROM kiosk WHERE name = %s", (kiosk_name,))
                 kiosk_rows = cursor.fetchall()
+
                 cursor.execute("SELECT * FROM customer_type WHERE name = %s", (customer_type,))
                 ct_rows = cursor.fetchall()
 
+                cursor.execute("SELECT * FROM sales_channel WHERE name = %s", (sales_channel,))
+                sales_channel_rows = cursor.fetchall()
+
                 cursor.execute("INSERT INTO customer_account "
-                               "(version, id, kiosk_id, contact_name, due_amount, customer_type_id, created_date, updated_date) "
-                               "VALUES(%s, %s, %s, %s, %s, %s, %s, %s)",
-                               (1, guid, kiosk_rows[0][0], contact_name, 0, ct_rows[0][0], create_date, updated_date))
+                               "(created_at, updated_at, name, customer_type_id, sales_channel_id, "
+                               "kiosk_id, address_line1, gps_coordinates, phone_number, id) "
+                               "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                               (created_date, updated_date, customer_name, ct_rows[0][0], sales_channel_rows[0][0],
+                                kiosk_rows[0][0], address, "gps", phone, guid))
                 self.connection.commit()
-                print("Customer", contact_name, 'added')
+                print("Customer", customer_name, 'added')
             except mysql.connector.Error as err:
                 print('failed to add kiosk', kiosk_name, err)
         else:
-            print('Contact_name', contact_name, 'exists')
+            print('Contact_name', customer_name, 'exists')
         cursor.close()
 
     """ Add a product category  """
@@ -117,7 +129,7 @@ class DBPopulate:
         rows = cursor.fetchall()
         if len(rows) == 0:
             try:
-                cursor.execute("INSERT INTO product_category (version, name, description) VALUES(%s, %s, %s)", (1, name, description))
+                cursor.execute("INSERT INTO product_category (name, description) VALUES( %s, %s)", (name, description))
                 self.connection.commit()
                 print('product category', name, 'added')
             except mysql.connector.Error as err:
@@ -126,21 +138,25 @@ class DBPopulate:
             print('product category', name, 'exists')
         cursor.close()
 
-    """ Add a product. Note: This assumes product descriptions are unique """
-    def populate_product(self, active, encoded_image, category, description, gallons, price, currency, sku, updated_date):
+    """ Add a product. Note: This assumes product skus are unique """
+    def populate_product(self, name, encoded_image, category, description,  price, currency, unit_per_product,
+                         unit_measure, cogs, sku, updatedDate, active ):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM product WHERE description = %s", (description,))
+        cursor.execute("SELECT * FROM product WHERE sku = %s", (sku,))
         rows = cursor.fetchall()
         if len(rows) == 0:
             try:
 
+
                 cursor.execute("SELECT * FROM product_category WHERE name = %s", (category,))
-                found_rows = cursor.fetchall()
+                cat_id_rows = cursor.fetchall()
 
                 cursor.execute("INSERT INTO product "
-                               "(version, active, base64encoded_image, category_id, description, gallons, price_amount, price_currency, sku, updated_date) "
-                               "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                               (1, active, encoded_image, found_rows[0][0], description, gallons, price, currency, sku, updated_date))
+                               "(name, sku, description, category_id, price_amount, price_currency, "
+                               "unit_per_product, unit_measure, cogs_amount, base64encoded_image, updated_at, active ) "
+                               "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                               ( name, sku, description, cat_id_rows[0][0], price, currency,
+                                 unit_per_product, unit_measure, cogs, encoded_image, updatedDate, active ))
                 self.connection.commit()
                 print("Product", description, 'added')
             except mysql.connector.Error as err:
@@ -156,8 +172,7 @@ class DBPopulate:
         rows = cursor.fetchall()
         if len(rows) == 0:
             try:
-                cursor.execute("INSERT INTO sales_channel (version, delayed_delivery, name ) VALUES(%s, %s, %s)",
-                               (1, delayed_delivery, name))
+                cursor.execute("INSERT INTO sales_channel ( name ) VALUES( %s)", (name,))
                 self.connection.commit()
                 print('sales channel', name, 'added')
             except mysql.connector.Error as err:
@@ -333,4 +348,36 @@ class DBPopulate:
             print('failed to add reading/measurement for ', created_date, err)
         cursor.close()
 
+    """ Add a row to the product_mrp table"""
+    def populate_product_mrp( self, updatedDate, kiosk_name, sku_name, sales_channel_name, mrpPrice, currencyCode, cogs):
+        cursor = self.connection.cursor()
 
+        cursor.execute("SELECT * FROM kiosk WHERE name = %s", (kiosk_name,))
+        kiosk_rows = cursor.fetchall()
+
+        cursor.execute("SELECT * FROM sales_channel WHERE name = %s", (sales_channel_name,))
+        sales_channel_rows = cursor.fetchall()
+
+        cursor.execute("SELECT * FROM product WHERE sku = %s", (sku_name,))
+        product_rows = cursor.fetchall()
+
+        cursor.execute("SELECT * FROM product_mrp WHERE kiosk_id = %s AND "
+                       "product_id = %s AND sales_channel_id = %s" ,
+                       (kiosk_rows[0][0], product_rows[0][0], sales_channel_rows[0][0] ))
+        product_mrp_rows = cursor.fetchall()
+
+        if len(product_mrp_rows) == 0:
+            try:
+                cursor.execute("INSERT INTO product_mrp "
+                               "(created_at, updated_at, kiosk_id, product_id, sales_channel_id,"
+                               "price_amount, price_currency, cogs_amount ) "
+                               "VALUES(%s, %s, %s, %s, %s, %s, %s, %s )",
+                               ( updatedDate, updatedDate, kiosk_rows[0][0], product_rows[0][0], sales_channel_rows[0][0],
+                                 mrpPrice, currencyCode, cogs ))
+                self.connection.commit()
+                print('Product_mrp for ',sku_name, '/', sales_channel_name, ' added')
+            except mysql.connector.Error as err:
+                print('failed to add product_mrp ', sku_name, err)
+        else:
+            print('Product_mrp for ',sku_name, '/', sales_channel_name, ' exists')
+        cursor.close()

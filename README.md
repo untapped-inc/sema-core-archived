@@ -4,6 +4,7 @@ This file contains instructions on installing, building and deploying the DloHai
 - [Prerequisites](#prerequisites)
 - [Server build](#server-build)
 - [Client build](#client-build)
+- [Android POS tablet](#android-build)
 - [Production Deployment](#production-deployment)
 
 
@@ -40,6 +41,20 @@ The client is a React application
 * Note: The client uses a custom Bootstrap theme located at ./report_client/src/css/bootstrap_cerulean.min.css. There is a postInstall script, update_theme.sh, that should copy this theme to the folder ./report_client/node_modules/bootstrap/dist/css/bootstrap_cerulean.min.css. Run it with `sh update_theme.sh`.
 
 In development mode, the dashboard server runs on locathost:3001 and the React App on port 3000. REST calls from the app to the server are proxied through port 3001.
+
+## Android build
+The Android POS application is a React-Native application used by Jibu to record sales of water products
+To build the POS application:
+* Follow the Android setup steps at: https://facebook.github.io/react-native/docs/getting-started.html#content. Make sure you select the appropriate tabs in the instructions. 
+"Building Projects with **Native Code**"
+"Development OS: **macOS** or **Windows** or **Linux** Target OS:  **Android**"
+* Change to folder jib_pos `cd jibu_pos`
+* Install dependencies `yarn install`
+* Open the Android project in the folder jibu_pos with Android Studio. Note. Do not open the folder jibu_pos, open **jibu_pos/android**
+Build the project from Build menu
+* Additional instructions for debugging can be found at https://dlohaiti.atlassian.net/wiki/spaces/DLODOC/pages/34078783/React+Native+on+Android?atlOrigin=eyJpIjoiNGFmMDEwNGVjMTYwNDNhMWJkODZmODgzODQ5NzJiNjIiLCJwIjoiYyJ9
+
+
 
 ## Production Deployment
 In production mode, the dashboard server runs on sema.untapped-inc.com and the React app is built then rendered by the server. REST calls from the app to the server are reverse proxied by Ngninx from port 80 to port 3001. We use pm2 to run the server.

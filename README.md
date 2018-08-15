@@ -52,7 +52,7 @@ To build the POS application:
 * Install dependencies `yarn install`
 * Open the Android project in the folder jibu_pos with Android Studio. Note. Do not open the folder jibu_pos, open **jibu_pos/android**
 Build the project from Build menu
-* Additional instructions for debugging can be found at https://dlohaiti.atlassian.net/wiki/spaces/DLODOC/pages/34078783/React+Native+on+Android?atlOrigin=eyJpIjoiNGFmMDEwNGVjMTYwNDNhMWJkODZmODgzODQ5NzJiNjIiLCJwIjoiYyJ9
+* Additional instructions for debugging can be found at with JetBrains WebStorm and Visual Studio Code can be found at https://dlohaiti.atlassian.net/wiki/spaces/DLODOC/pages/34078783/React+Native+on+Android?atlOrigin=eyJpIjoiNGFmMDEwNGVjMTYwNDNhMWJkODZmODgzODQ5NzJiNjIiLCJwIjoiYyJ9
 
 
 

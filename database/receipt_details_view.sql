@@ -9,7 +9,8 @@ CREATE VIEW `receipt_details` AS
 		product.unit_per_product,
         receipt_line_item.quantity * product.unit_per_product AS volume,
         customer_account.name,
-        customer_account.income_level
+        customer_account.income_level,
+        customer_account.customer_type_id
     FROM
         sema_jibu_core.receipt_line_item
             INNER JOIN

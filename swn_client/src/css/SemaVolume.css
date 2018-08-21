@@ -12,132 +12,33 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: rgb(371, 193, 222 );
-}
-
-.WaterVolumeGroupAndType {
-	grid-column: 1;
-	grid-row:2;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-color: rgb(71, 193, 222 );
-}
-
-.WaterQualityNavigtionItem {
-	grid-column: 1;
-	grid-row:2;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background: rgb(40,88,167);
-}
-
-.WaterOperationsSummaryContainer {
-	grid-column: 1;
-	grid-row:1;
-	display: grid;
-	grid-template-columns:	1fr 3fr;
-	grid-template-rows:  1fr 1fr ;
 	background-color: rgb(171, 193, 222 );
 }
-.WaterOperationsProduction{
-	grid-column: 1;
-	grid-row:1;
-}
-.WaterOperationsWastage{
+
+.WaterVolumeChannelAndCustomerType {
 	grid-column: 1;
 	grid-row:2;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	background-color: rgb(201, 223, 249 );
 }
-.WaterOperationsPressure{
-	grid-column: 2;
+
+.WaterVolumeChannel {
+	grid-column: 1;
 	grid-row:1;
-}
-.WaterOperationsFlow{
-	grid-column: 2;
-	grid-row:2;
-}
-.WaterOpTableRow1Col1{
-	border:none;
-	padding-bottom:0;
-	font-weight: bold;
-}
-
-.WaterOpTableRow1Col2to4{
-	border:none !important;
-	padding-bottom:0 !important;
-	text-decoration: underline;
-}
-
-.WaterOpTableRow2Col2to4{
-	border:none !important;;
-	padding-bottom:0!important;;
-	color:rgb(219,86,13);
-}
-
-.WaterOperationsSummaryItem {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-top: 4px;
-	background-color: rgb(171, 193,222 );
 }
 
-.WaterOperationsSummaryItem2 {
-	margin-top: 4px;
-	background-color: rgb(171, 193,222 );
-}
-
-.WaterQualitySummaryPanel {
-	border-radius: 25px;
-	border-color: rgb(101, 139, 194);
-	border-style: solid;
-	border-width: medium;
-	margin-bottom: 0;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-}
-
-
-.SeamaSidebarItem {
-	grid-column: 1;
-	grid-row: 1 / span 3;
-	background-color: rgb(240, 0, 0 );
-}
-
-
-
-.WaterQualityChartContainer {
-	grid-column: 1;
-	grid-row:3;
-	display: grid;
-	grid-template-columns:	1fr 1fr ;
-	grid-template-rows:  1fr 1fr ;
-	grid-gap:5px;
-	padding:10px;
-}
-
-.WaterQualityMainChartItem {
-	grid-row: 1;
-	grid-column: 1 /span 2;
-	background:white;
-	margin-left: 10%;
-	margin-right: 10%;
-}
-
-.WaterQualitySecondaryChart1Item {
-	grid-row: 2;
-	grid-column: 1;
-	background:white;
-	height: 80%;
-}
-.WaterQualitySecondaryChart2Item {
-	grid-row: 2;
+.WaterVolumeCustomerType {
 	grid-column: 2;
-	background:white;
-	height: 80%;
+	grid-row:1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
+
 
 .SeamaServiceError {
 	height: 100px;

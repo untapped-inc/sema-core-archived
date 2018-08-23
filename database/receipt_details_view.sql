@@ -12,10 +12,10 @@ CREATE VIEW `receipt_details` AS
         customer_account.income_level,
         customer_account.customer_type_id
     FROM
-        sema_jibu_core.receipt_line_item
+        sema_swn_core.receipt_line_item
             INNER JOIN
-        sema_jibu_core.receipt ON receipt_line_item.receipt_id = receipt.id
+        sema_swn_core.receipt ON receipt_line_item.receipt_id = receipt.id
             INNER JOIN
-        sema_jibu_core.product ON receipt_line_item.product_id = product.id
+        sema_swn_core.product ON receipt_line_item.product_id = product.id
             INNER JOIN
-        sema_jibu_core.customer_account ON receipt.customer_account_id = customer_account.id;
+        sema_swn_core.customer_account ON receipt.customer_account_id = customer_account.id;

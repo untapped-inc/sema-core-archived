@@ -2,13 +2,18 @@
 	grid-column: 2;
 	grid-row:2;
 	display: grid;
-	grid-template-rows: 1fr 1fr;
+	grid-template-rows: 5px 1fr 1fr;
 	background: rgb(40,88,167);
 }
 
-.WaterVolumeChannelAndIncome {
+.WaterVolumeProgress {
 	grid-column: 1;
 	grid-row:1;
+	display: flex;
+}
+.WaterVolumeChannelAndIncome {
+	grid-column: 1;
+	grid-row:2;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -17,7 +22,7 @@
 
 .WaterVolumeChannelAndCustomerType {
 	grid-column: 1;
-	grid-row:2;
+	grid-row:3;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	background-color: rgb(201, 223, 249 );

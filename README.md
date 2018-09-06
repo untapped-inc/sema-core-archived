@@ -10,20 +10,18 @@ This file contains instructions on installing, building and deploying the DloHai
 
 ## Prerequisites
 ### Mac OSX
-* Install Homebrew (Homebrew is used to install other components):
-https://treehouse.github.io/installation-guides/mac/homebrew
 * Install nvm: https://github.com/creationix/nvm#installation
 * Install latest LTS version of Node and npm: `nvm install --lts`
-* Install Yarn: `brew install yarn`
+* Install Yarn: `npm i -g yarn`
 * Install react-scripts (To be able to run the client): `yarn global add react-scripts`
-* Clone the Git repository to a local folder: `git clone https://github.com/FredOleary/dlodashboard1.git sema`
+* Clone the Git repository to a local folder: `git clone https://github.com/untapped-inc/sema-core.git`
 
 ### GNU/Linux
 * Install nvm: https://github.com/creationix/nvm#installation
 * Install latest LTS version of Node and npm: `nvm install --lts`
 * Install Yarn: `npm i -g yarn`
 * Install react-scripts (To be able to run the client): `yarn global add react-scripts`
-* Clone the Git repository to a local folder: `git clone https://github.com/FredOleary/dlodashboard1.git sema`
+* Clone the Git repository to a local folder: `git clone https://github.com/untapped-inc/sema-core.git`
 
 ## Server build
 The server uses Expressjs
@@ -68,7 +66,7 @@ Our servers are in Linux so installation methods will be for GNU/Linux:
 * Install Node and npm: [Follow depending on your distro](https://nodejs.org/en/download/package-manager/)
 * Install Yarn: `npm i -g yarn`
 * Install react-scripts (To be able to build the client): `yarn global add react-scripts`
-* Clone the Git repository to the server: `git clone https://github.com/FredOleary/dlodashboard1.git sema`
+* Clone the Git repository to the server: `git clone https://github.com/untapped-inc/sema-core.git`
 * Nginx (Reverse Proxy): `sudo apt install nginx`
 * Pm2 (Robust Process Manager): `yarn global add pm2`
 

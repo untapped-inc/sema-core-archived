@@ -12,13 +12,15 @@ This file contains instructions on installing, building and deploying the DloHai
 ### Mac OSX
 * Install Homebrew (Homebrew is used to install other components):
 https://treehouse.github.io/installation-guides/mac/homebrew
-* Install Node and npm: `brew install node`
+* Install nvm: https://github.com/creationix/nvm#installation
+* Install latest LTS version of Node and npm: `nvm install --lts`
 * Install Yarn: `brew install yarn`
 * Install react-scripts (To be able to run the client): `yarn global add react-scripts`
 * Clone the Git repository to a local folder: `git clone https://github.com/FredOleary/dlodashboard1.git sema`
 
 ### GNU/Linux
-* Install Node and npm: [Follow depending on your distro](https://nodejs.org/en/download/package-manager/)
+* Install nvm: https://github.com/creationix/nvm#installation
+* Install latest LTS version of Node and npm: `nvm install --lts`
 * Install Yarn: `npm i -g yarn`
 * Install react-scripts (To be able to run the client): `yarn global add react-scripts`
 * Clone the Git repository to a local folder: `git clone https://github.com/FredOleary/dlodashboard1.git sema`

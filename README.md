@@ -63,7 +63,8 @@ In production mode, the dashboard server runs on sema.untapped-inc.com and the R
 
 Our servers are in Linux so installation methods will be for GNU/Linux:
 
-* Install Node and npm: [Follow depending on your distro](https://nodejs.org/en/download/package-manager/)
+* Install nvm: https://github.com/creationix/nvm#installation
+* Install latest LTS version of Node and npm: `nvm install --lts`
 * Install Yarn: `npm i -g yarn`
 * Install react-scripts (To be able to build the client): `yarn global add react-scripts`
 * Clone the Git repository to the server: `git clone https://github.com/untapped-inc/sema-core.git`

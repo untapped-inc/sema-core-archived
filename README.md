@@ -74,35 +74,44 @@ Our servers are in Linux so installation methods will be for GNU/Linux:
 ### Deploying to Production
 
 Follow those steps to deploy this app in production mode:
- * Install client dependencies: `cd report_client && yarn`
- * Build the client: `cd report_client && yarn build`
- * Create a new `public_react` folder into the server directory: `mkdir report_server/public_react`
- * Copy the entire build folder from react_client/build to the report_server/public_react folder:
-     `cp -rf report_client/build report_server/public_react`
-* Install server dependencies: `cd report_server && yarn`
-* Start the server with Pm2: `cd report_server && pm2 start bin/www`
-* Test the server access via curl - Since we haven't configured Nginx yet, we'll test it from port 3001: `curl http://sema.untapped-inc.com:3001/untapped/health-check` this should return {"server":"Ok","database":"Ok"}
+ 
+* Assuming you are in the root folder of this project
+* Install client dependencies: `cd report_client && yarn`
+* Build the client: `yarn build`
+* Create a new `public_react` folder into the server directory: `mkdir ../report_server/public_react`
+* Copy the entire build folder from react_client/build to the report_server/public_react folder:
+     `cp -rf ./build ../report_server/public_react`
+* Switch to server directory: `cd ../report_server`
+* Create a .env file from the example .env file: `cp .example-env .env`
+* Edit .env file with the right information, follow the [instructions below](#env-files)
+* Install server dependencies: `yarn`
+* Start the server with Pm2: `pm2 start bin/www --name sema-server`. Name it however you want so you can easily refer to it later
+* Get your server IP address: `curl icanhazip.com`
+* Test the server access via curl - Since we haven't configured Nginx yet, we'll test it from port 3001: `curl http://YOUR-SERVER-IP-ADDRESS:3001/untapped/health-check`. This should return {"server":"Ok","database":"Ok"}
 * Setup Ngninx using [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-16-04)
 * Configure Nginx by editing - *WITH SUPER USER*: `/etc/nginx/sites-available/default`:
     `sudo vim /etc/nginx/sites-available/default`
-Within the server block, there is an existing `location /` block. Replace the contents of that block with the following configuration:
+* Within the server block, there is an existing `location /` block. Replace the contents of that block with the following configuration:
+
+
 ```
 location / {
-        proxy_pass http://localhost:3001;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
+	proxy_pass http://localhost:3001;
+	proxy_http_version 1.1;
+	proxy_set_header Upgrade $http_upgrade;
+	proxy_set_header Connection 'upgrade';
+	proxy_set_header Host $host;
+	proxy_cache_bypass $http_upgrade;
+}
 ```
 * Make sure you didn't introduce any syntax errors: `sudo nginx -t`
 * Restart Nginx: `sudo systemctl restart nginx`
-* Visit the dashboard website at http://sema.untapped-inc.com
+* Test the server access without using the port: `curl http://YOUR-SERVER-IP-ADDRESS/untapped/health-check`. This should return {"server":"Ok","database":"Ok"}. You can now setup DNS zone records for your server.
 
 ## .env files
 To accommodate development/test/production environments, a '.env' configuration file is used to specify database connection information and other configuration parameters.
 You will need to contact your IT admin for url, database and other credentials required to configure the environment. These parameters are:
+
 * DB_HOST=                  (Url/IP of the database)
 * DB_USER=                  (User name)
 * DB_PASSWORD=              (User password)
@@ -110,9 +119,9 @@ You will need to contact your IT admin for url, database and other credentials r
 * DB_DIALECT=mysql          (The SQL dialect we're using, mysql in this case)
 * DEFAULT_TABLES=user,role,user_role  (The tables that must be populated - postinstall - by sequelize-auto by default)
 * JWT_SECRET=xxxxx          (Json Web Token secret used to encrypt the token)
-* JWT_EXPIRATION_LENGTH=    (length of time the token is valid for. E.g.1 day)
-* BCRYPT_SALT_ROUNDS=12     (How much time is needed to calculate a single BCrypt hash - Between 8 and 12 is recommended)
+* JWT_EXPIRATION_LENGTH='xxxxx'   (length of time the token is valid for. E.g.1 day)
+* BCRYPT_SALT_ROUNDS=10     (How much time is needed to calculate a single BCrypt hash - Between 8 and 12 is recommended)
 
 ## TODO
-- [ ] Production: Add SSL certification support with Let's Encrypt
-- [ ] Production: Make sure we only use logs and error printing only in development mode
+- [ ] Production: Add instructions on how to add SSL certification support with Let's Encrypt
+- [ ] Production: Make sure we use logs and error printing only in development mode

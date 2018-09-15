@@ -17,7 +17,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: rgb(171, 193, 222 );
+	background-color: rgb(185, 205, 229 );
 }
 
 .WaterVolumeChannelAndCustomerType {
@@ -25,7 +25,7 @@
 	grid-row:3;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	background-color: rgb(201, 223, 249 );
+	background-color: rgb(185, 205, 229);
 }
 
 .WaterVolumeChannel {

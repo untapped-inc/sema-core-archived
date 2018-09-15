@@ -33,7 +33,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: rgb(201, 223, 249 );
+	background-color: rgb(185, 205, 229 );
 }
 .CustomerSummaryRow2Col1Bottom {
 	grid-row:2;
@@ -41,7 +41,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: rgb(201, 223, 249 );
+	background-color: rgb(185, 205, 229 );
 }
 
 .CustomerSummaryRow2Col2 {
@@ -50,7 +50,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: rgb(201, 223, 249 );
+	background-color: rgb(185, 205, 229 );
 }
 
 .CustomerSummaryRow3 {
@@ -58,7 +58,7 @@
 	grid-column: 1;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	background-color: rgb(201, 223, 249 );
+	background-color: rgb(185, 205, 229 );
 }
 
 .CustomerSummaryRow3Col1 {
@@ -67,14 +67,14 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: rgb(239, 239, 239 );
+	background-color: rgb(185, 205, 229 );
 }
 .CustomerSummaryRow3Col2 {
 	grid-row:1;
 	grid-column: 2;
 	display: flex;
 	align-items: center;
-	background-color: rgb(239, 239, 239 );
+	background-color: rgb(185, 205, 229 );
 	justify-content: center;
 }
 

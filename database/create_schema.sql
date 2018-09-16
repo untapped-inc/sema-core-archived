@@ -1,6 +1,6 @@
--- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.35, for macos10.12 (x86_64)
 --
--- Host: 167.99.229.86    Database: sema_core
+-- Host: 167.99.229.86    Database: sema_dlo_core
 -- ------------------------------------------------------
 -- Server version	5.7.23-0ubuntu0.16.04.1
 
@@ -52,7 +52,7 @@ CREATE TABLE `country` (
   `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
   `name` varchar(100) NOT NULL COMMENT 'Name of country.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,7 +149,7 @@ CREATE TABLE `customer_type` (
   `description` varchar(255) DEFAULT NULL COMMENT 'Type description.',
   `name` varchar(255) NOT NULL COMMENT 'Type name.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -261,7 +261,7 @@ CREATE TABLE `kiosk` (
   PRIMARY KEY (`id`),
   KEY `kiosk_region_id_fk_idx` (`region_id`),
   CONSTRAINT `kiosk_region_id_fk` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -359,7 +359,7 @@ CREATE TABLE `product` (
   UNIQUE KEY `product_sku_uq` (`sku`),
   KEY `product_category_id_fk_idx` (`category_id`),
   CONSTRAINT `product_category_id_fk` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -377,7 +377,7 @@ CREATE TABLE `product_category` (
   `description` varchar(255) DEFAULT NULL COMMENT 'Longer description.',
   `name` varchar(255) NOT NULL COMMENT 'Category Name.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -560,7 +560,7 @@ CREATE TABLE `region` (
   PRIMARY KEY (`id`),
   KEY `region_country_id_fk_idx` (`country_id`),
   CONSTRAINT `region_country_id_fk` FOREIGN KEY (`country_id`) REFERENCES `country` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -623,7 +623,7 @@ CREATE TABLE `role` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `role_authority_uq` (`authority`),
   UNIQUE KEY `role_code_uq` (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -641,7 +641,7 @@ CREATE TABLE `sales_channel` (
   `name` varchar(255) NOT NULL COMMENT 'Sales channel name.',
   `description` varchar(45) DEFAULT NULL COMMENT 'Sales channel description.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -724,7 +724,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_email_uq` (`email`),
   UNIQUE KEY `user_username_uq` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -762,7 +762,7 @@ CREATE TABLE `user_role` (
   KEY `user_role_user_id_fk_idx` (`user_id`),
   CONSTRAINT `user_role_role_id_fk` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `user_role_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COMMENT='Maps a user to a role.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Maps a user to a role.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -796,4 +796,4 @@ CREATE TABLE `vehicle` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-01 17:50:00
+-- Dump completed on 2018-09-14 20:01:09

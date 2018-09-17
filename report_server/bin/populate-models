@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const path = require('path');
-const dotenvPath = '.env';
+const dotenvPath = path.resolve('..', '.env');
 const dotenv = require('dotenv').config({ path: dotenvPath});
 const env	= process.env.NODE_ENV || 'development';
 const dbConfig	= require(`../config/database`)[env];

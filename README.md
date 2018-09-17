@@ -26,6 +26,7 @@ This file contains instructions on installing, building and deploying the DloHai
 ## Server build
 The server uses Expressjs
 * Change to report_server folder: `cd report_server`
+* Follow [the instructions below](#env-files) to create the environment variables file needed by the project
 * Install components: `yarn`
 * Start the server on port 3001: `yarn start`. Note that client is configured to access the server on port 3001
 * Test the server access via curl: `curl http://localhost:3001/untapped/health-check` this should return {"server":"Ok","database":"Ok"}
@@ -75,15 +76,14 @@ Our servers are in Linux so installation methods will be for GNU/Linux:
 
 Follow those steps to deploy this app in production mode:
  
-* Assuming you are in the root folder of this project
+* Assuming you are in the root directory of this project
 * Install client dependencies: `cd report_client && yarn`
 * Build the client: `yarn build`
 * Create a new `public_react` folder into the server directory: `mkdir ../report_server/public_react`
 * Copy the entire build folder from react_client/build to the report_server/public_react folder:
      `cp -rf ./build ../report_server/public_react`
 * Switch to server directory: `cd ../report_server`
-* Create a .env file from the example .env file: `cp .example-env .env`
-* Edit .env file with the right information, follow the [instructions below](#env-files)
+* Follow [the instructions below](#env-files) to create the environment variables file needed by the project
 * Install server dependencies: `yarn`
 * Start the server with Pm2: `pm2 start bin/www --name sema-server`. Name it however you want so you can easily refer to it later
 * Get your server IP address: `curl icanhazip.com`
@@ -110,6 +110,11 @@ location / {
 
 ## .env files
 To accommodate development/test/production environments, a '.env' configuration file is used to specify database connection information and other configuration parameters.
+
+It's a shared .env file used accross the whole project - by the web client, the mobile client, the server and database scripts.
+
+It's located at the root directory under the name `.example-env`, simply rename it to `.env` and fill up the missing information.
+
 You will need to contact your IT admin for url, database and other credentials required to configure the environment. These parameters are:
 
 * DB_HOST=                  (Url/IP of the database)

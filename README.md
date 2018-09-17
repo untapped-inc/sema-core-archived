@@ -25,7 +25,7 @@ This file contains instructions on installing, building and deploying the DloHai
 
 ## Server build
 The server uses Expressjs
-* Change to report_server folder: `cd report_server`
+* Change to server folder: `cd server`
 * Follow [the instructions below](#env-files) to create the environment variables file needed by the project
 * Install components: `yarn`
 * Start the server on port 3001: `yarn start`. Note that client is configured to access the server on port 3001
@@ -35,23 +35,23 @@ The server uses Expressjs
 
 ## Client build
 The client is a React application
-* Change to report_client folder: `cd report_client`
+* Change to dashboard_client folder: `cd dashboard_client`
 * Install components: `yarn`
 * Start the client on the default port, 3000: `yarn start`
 * You should now see the login page
-* Note: The client uses a custom Bootstrap theme located at ./report_client/src/css/bootstrap_cerulean.min.css. There is a postInstall script, update_theme.sh, that should copy this theme to the folder ./report_client/node_modules/bootstrap/dist/css/bootstrap_cerulean.min.css. Run it with `sh update_theme.sh`.
+* Note: The client uses a custom Bootstrap theme located at ./dashboard_client/src/css/bootstrap_cerulean.min.css. There is a postInstall script, update_theme.sh, that should copy this theme to the folder ./dashboard_client/node_modules/bootstrap/dist/css/bootstrap_cerulean.min.css. Run it with `sh update_theme.sh`.
 
 In development mode, the dashboard server runs on locathost:3001 and the React App on port 3000. REST calls from the app to the server are proxied through port 3001.
 
 ## Android build
-The Android POS application is a React-Native application used by Jibu to record sales of water products
+The Android POS application is a React-Native application used by SWEs to record sales of water products
 To build the POS application:
 * Follow the Android setup steps at: https://facebook.github.io/react-native/docs/getting-started.html#content. Make sure you select the appropriate tabs in the instructions. 
 "Building Projects with **Native Code**"
 "Development OS: **macOS** or **Windows** or **Linux** Target OS:  **Android**"
-* Change to folder jib_pos `cd jibu_pos`
+* Change to folder jib_pos `cd mobile_client`
 * Install dependencies `yarn install`
-* Open the Android project in the folder jibu_pos with Android Studio. Note. Do not open the folder jibu_pos, open **jibu_pos/android**
+* Open the Android project in the folder mobile_client with Android Studio. Note. Do not open the folder mobile_client, open **mobile_client/android**
 Build the project from Build menu
 * Additional instructions for debugging can be found at with JetBrains WebStorm and Visual Studio Code can be found at https://dlohaiti.atlassian.net/wiki/spaces/DLODOC/pages/34078783/React+Native+on+Android?atlOrigin=eyJpIjoiNGFmMDEwNGVjMTYwNDNhMWJkODZmODgzODQ5NzJiNjIiLCJwIjoiYyJ9
 
@@ -77,12 +77,12 @@ Our servers are in Linux so installation methods will be for GNU/Linux:
 Follow those steps to deploy this app in production mode:
  
 * Assuming you are in the root directory of this project
-* Install client dependencies: `cd report_client && yarn`
+* Install client dependencies: `cd dashboard_client && yarn`
 * Build the client: `yarn build`
-* Create a new `public_react` folder into the server directory: `mkdir ../report_server/public_react`
-* Copy the entire build folder from react_client/build to the report_server/public_react folder:
-     `cp -rf ./build ../report_server/public_react`
-* Switch to server directory: `cd ../report_server`
+* Create a new `public_react` folder into the server directory: `mkdir ../server/public_react`
+* Copy the entire build folder from react_client/build to the server/public_react folder:
+     `cp -rf ./build ../server/public_react`
+* Switch to server directory: `cd ../server`
 * Follow [the instructions below](#env-files) to create the environment variables file needed by the project
 * Install server dependencies: `yarn`
 * Start the server with Pm2: `pm2 start bin/www --name sema-server`. Name it however you want so you can easily refer to it later

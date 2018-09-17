@@ -49,7 +49,7 @@ To build the POS application:
 * Follow the Android setup steps at: https://facebook.github.io/react-native/docs/getting-started.html#content. Make sure you select the appropriate tabs in the instructions. 
 "Building Projects with **Native Code**"
 "Development OS: **macOS** or **Windows** or **Linux** Target OS:  **Android**"
-* Change to folder jib_pos `cd mobile_client`
+* Change to folder mobile_client `cd mobile_client`
 * Install dependencies `yarn install`
 * Open the Android project in the folder mobile_client with Android Studio. Note. Do not open the folder mobile_client, open **mobile_client/android**
 Build the project from Build menu

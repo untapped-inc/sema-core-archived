@@ -6,6 +6,7 @@ CREATE VIEW `receipt_details` AS
         receipt_line_item.receipt_id,
         receipt.sales_channel_id,
         receipt.kiosk_id,
+        receipt.amount_cash,
 		product.unit_per_product,
         receipt_line_item.quantity * product.unit_per_product AS volume,
         customer_account.name,

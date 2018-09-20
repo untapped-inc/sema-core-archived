@@ -22,6 +22,11 @@ import time
 NUM_RECEIPTS =500
 NUM_CUSTOMERS = 100
 
+FIRST_SAMPLE_COLUMN = 3
+COUNTRY_ROW = 1
+REGION_ROW =2
+KIOSK_ROW = 3
+
 def strTimeProp(start, end, format, prop):
     """Get a time at a proportion of a range of two formatted times.
 
@@ -75,6 +80,12 @@ def importSheet( xls, index, sheetName, dbPopulate):
         print("Processing sheet:", sheetName)
         sheet = xls.parse(index)
         print( "number of rows in", sheetName, len(sheet.index), "Number of columns:", len(sheet.columns))
+        for index in range( FIRST_SAMPLE_COLUMN, len(sheet.columns)) :
+            country = sheet[sheet.columns[index]][COUNTRY_ROW]
+            region = sheet[sheet.columns[index]][REGION_ROW]
+            kiosk = sheet[sheet.columns[index]][KIOSK_ROW]
+            print( "Country", country, "Region", region, "Kiosk", kiosk)
+
 
 
 if __name__ == "__main__":

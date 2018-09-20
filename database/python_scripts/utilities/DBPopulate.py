@@ -117,7 +117,40 @@ class DBPopulate:
                 self.connection.commit()
                 print("Customer", customer_name, 'added')
             except mysql.connector.Error as err:
-                print('failed to add kiosk', kiosk_name, err)
+                print('failed to add Customer', customer_name, err)
+        else:
+            print('Contact_name', customer_name, 'exists')
+        cursor.close()
+
+    """ Add a customer for safe water networ"""
+    def populate_customer_swn(self, kiosk_name, customer_type, sales_channel, customer_name, created_date, updated_date,
+                               phone, income, gender, distance):
+        cursor = self.connection.cursor()
+        guid = str(uuid.uuid1())
+        cursor.execute("SELECT * FROM customer_account WHERE name = %s", (customer_name,))
+        rows = cursor.fetchall()
+        if len(rows) == 0:
+            try:
+
+                cursor.execute("SELECT * FROM kiosk WHERE name = %s", (kiosk_name,))
+                kiosk_rows = cursor.fetchall()
+
+                cursor.execute("SELECT * FROM customer_type WHERE name = %s", (customer_type,))
+                ct_rows = cursor.fetchall()
+
+                cursor.execute("SELECT * FROM sales_channel WHERE name = %s", (sales_channel,))
+                sales_channel_rows = cursor.fetchall()
+
+                cursor.execute("INSERT INTO customer_account "
+                               "(created_at, updated_at, name, customer_type_id, sales_channel_id, "
+                               "kiosk_id, address_line1, gps_coordinates, phone_number, id, income_level, gender, distance) "
+                               "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                               (created_date, updated_date, customer_name, ct_rows[0][0], sales_channel_rows[0][0],
+                                kiosk_rows[0][0], "test_address", "gps", phone, guid, income, gender, distance))
+                self.connection.commit()
+                print("Customer", customer_name, 'added')
+            except mysql.connector.Error as err:
+                print('failed to add Customer', customer_name, err)
         else:
             print('Contact_name', customer_name, 'exists')
         cursor.close()
@@ -223,6 +256,97 @@ class DBPopulate:
         else:
             print('Receipt for "',created_date,'" exists')
         cursor.close()
+
+    """ Add a receipt to the receipt based on sema_core schema. Note: This assumes receipts have unique date and time """
+
+    def populate_receipt_sema_core(self, id, createUpdateDate, currencyCode, customer_ref,
+                         kiosk_ref, paymentType, total, cogs):
+
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT * FROM receipt WHERE id = %s", (id,))
+        rows = cursor.fetchall()
+        if len(rows) == 0:
+            try:
+
+                cursor.execute("SELECT * FROM kiosk WHERE name = %s", (kiosk_ref,))
+                found_rows = cursor.fetchall()
+                kiosk_id = found_rows[0][0]
+
+                cursor.execute("SELECT * FROM customer_account WHERE name = %s", (customer_ref,))
+                found_rows = cursor.fetchall()
+                customer_id = found_rows[0][0]
+                sales_channel_id = found_rows[0][6]
+                customer_type_id = found_rows[0][5]
+                guid = str(uuid.uuid1())
+                try:
+                    cursor.execute("INSERT INTO receipt "
+                                   "( id, created_at, updated_at, currency_code, "
+                                   "customer_account_id, kiosk_id, payment_type, "
+                                   "sales_channel_id, customer_type_id, total, cogs, uuid )"
+
+                                   " VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                                   (id, createUpdateDate, createUpdateDate, currencyCode,
+                                    customer_id, kiosk_id, paymentType,
+                                    sales_channel_id, customer_type_id, total, cogs, guid))
+                except Exception as e:
+                    print(e.message)
+
+                self.connection.commit()
+                print("Receipt", id, 'added')
+            except mysql.connector.Error as err:
+                print('failed to add receipt for', id, err)
+        else:
+            print('Receipt for "', id, '" exists')
+        cursor.close()
+
+
+    """ Add a receipt line item to a receipt """
+
+    def populate_receipt_line_item(self, receipt_id, product_ref, quantity):
+
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT * FROM receipt_line_item WHERE receipt_id = %s", (receipt_id,))
+        rows = cursor.fetchall()
+        if len(rows) == 0:
+            try:
+
+                cursor.execute("SELECT * FROM receipt WHERE id = %s", (receipt_id,))
+                found_rows = cursor.fetchall()
+                created_at = found_rows[0][1]
+                updated_at = found_rows[0][2]
+                currency_code = found_rows[0][3]
+
+                cursor.execute("SELECT * FROM product WHERE name = %s", (product_ref,))
+                found_rows = cursor.fetchall()
+                product_id = found_rows[0][0]
+                price_amount = found_rows[0][8]
+                priceTotal = price_amount * quantity
+
+                cogs_amount = found_rows[0][14]
+                cogsTotal = cogs_amount * quantity
+
+
+                try:
+                    cursor.execute("INSERT INTO receipt_line_item "
+                                   "( created_at, updated_at, currency_code, "
+                                   "price_total, quantity, receipt_id, "
+                                   "product_id, cogs_total )"
+
+                                   " VALUES(%s, %s, %s, %s, %s, %s, %s, %s)",
+                                   (created_at, updated_at, currency_code,
+                                    priceTotal, quantity, receipt_id,
+                                    product_id, cogsTotal ))
+                except Exception as e:
+                    print(e.message)
+
+                self.connection.commit()
+                print("Receipt_line_item", receipt_id, 'added')
+            except mysql.connector.Error as err:
+                print('failed to add Receipt_line_item for', receipt_id, err)
+        else:
+            print('Receipt_line_item for "', receipt_id, '" exists')
+        cursor.close()
+
 
     """ Add a parameter """
     def populate_parameter( self, name):

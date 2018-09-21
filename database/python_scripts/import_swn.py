@@ -15,17 +15,32 @@ from utilities.SalesChannel import SalesChannel
 from utilities.CustomerType import CustomerType
 from dbConfig import dbConfig
 from utilities.Product import Product
+from swn_xls_record import swnXlsRecord
 
 import datetime
 import random
 import time
+import math
+from enum import Enum
+
 NUM_RECEIPTS =500
 NUM_CUSTOMERS = 100
 
 FIRST_SAMPLE_COLUMN = 3
-COUNTRY_ROW = 1
-REGION_ROW =2
-KIOSK_ROW = 3
+
+class ROW(Enum):
+    COUNTRY = 1
+    REGION =2
+    KIOSK = 3
+    CONSUMER_BASE = 4
+    CUSTOMER_ACCOUNT_ID = 5
+    CREATED_DATE = 6
+    CREATED_TIME = 7
+    ACTIVE = 8
+    NAME = 9
+    SALES_CHANNEL = 10
+    CUSTOMER_TYPE = 12
+    CUSTOMER_CONSUMER_BASE = 13
 
 def strTimeProp(start, end, format, prop):
     """Get a time at a proportion of a range of two formatted times.
@@ -81,10 +96,29 @@ def importSheet( xls, index, sheetName, dbPopulate):
         sheet = xls.parse(index)
         print( "number of rows in", sheetName, len(sheet.index), "Number of columns:", len(sheet.columns))
         for index in range( FIRST_SAMPLE_COLUMN, len(sheet.columns)) :
-            country = sheet[sheet.columns[index]][COUNTRY_ROW]
-            region = sheet[sheet.columns[index]][REGION_ROW]
-            kiosk = sheet[sheet.columns[index]][KIOSK_ROW]
-            print( "Country", country, "Region", region, "Kiosk", kiosk)
+            xlsRecord = swnXlsRecord( sheet[sheet.columns[index]][ROW.COUNTRY.value],
+                                      sheet[sheet.columns[index]][ROW.REGION.value],
+                                      sheet[sheet.columns[index]][ROW.KIOSK.value],
+                                      sheet[sheet.columns[index]][ROW.CONSUMER_BASE.value],
+                                      sheet[sheet.columns[index]][ROW.CUSTOMER_ACCOUNT_ID.value],
+                                      sheet[sheet.columns[index]][ROW.CREATED_DATE.value],
+                                      sheet[sheet.columns[index]][ROW.CREATED_TIME.value],
+                                      sheet[sheet.columns[index]][ROW.ACTIVE.value],
+                                      sheet[sheet.columns[index]][ROW.NAME.value],
+                                      sheet[sheet.columns[index]][ROW.SALES_CHANNEL.value],
+                                      sheet[sheet.columns[index]][ROW.CUSTOMER_TYPE.value],
+                                      sheet[sheet.columns[index]][ROW.CUSTOMER_CONSUMER_BASE.value],
+
+
+            )
+
+            print("Country:", xlsRecord.country, "Region:", xlsRecord.region, "Kiosk:", xlsRecord.kiosk,
+                  "Consumer Base:", xlsRecord.consumerBase, "Customer AccountId:", xlsRecord.customerAccountId,
+                  "Customer Create Date:", xlsRecord.customerCreateDate, "Customer Create Time:", xlsRecord.customerCreateTime,
+                  )
+            print("   Customer Name:", xlsRecord.customerName, "Sales Channel:", xlsRecord.customerSalesChannel,
+                  "Customer Type:", xlsRecord.customerType, "Customer Consumer Base:", xlsRecord.customerConsumerBase
+                  )
 
 
 

@@ -127,13 +127,15 @@ class DBPopulate:
                                phone, income, gender, distance):
         cursor = self.connection.cursor()
         guid = str(uuid.uuid1())
-        cursor.execute("SELECT * FROM customer_account WHERE name = %s", (customer_name,))
+        cursor.execute("SELECT * FROM kiosk WHERE name = %s", (kiosk_name,))
+        kiosk_rows = cursor.fetchall()
+        kioskId = kiosk_rows[0][0]
+
+        cursor.execute("SELECT * FROM customer_account WHERE name = %s AND kiosk_id = %s", (customer_name, kioskId,))
         rows = cursor.fetchall()
         if len(rows) == 0:
             try:
 
-                cursor.execute("SELECT * FROM kiosk WHERE name = %s", (kiosk_name,))
-                kiosk_rows = cursor.fetchall()
 
                 cursor.execute("SELECT * FROM customer_type WHERE name = %s", (customer_type,))
                 ct_rows = cursor.fetchall()
@@ -260,7 +262,7 @@ class DBPopulate:
     """ Add a receipt to the receipt based on sema_core schema. Note: This assumes receipts have unique date and time """
 
     def populate_receipt_sema_core(self, id, createUpdateDate, currencyCode, customer_ref,
-                         kiosk_ref, paymentType, total, cogs):
+                         kiosk_ref, paymentType, total, cogs, amountCash, amountCard, amountMobile):
 
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM receipt WHERE id = %s", (id,))
@@ -272,7 +274,7 @@ class DBPopulate:
                 found_rows = cursor.fetchall()
                 kiosk_id = found_rows[0][0]
 
-                cursor.execute("SELECT * FROM customer_account WHERE name = %s", (customer_ref,))
+                cursor.execute("SELECT * FROM customer_account WHERE name = %s AND kiosk_id = %s", (customer_ref, kiosk_id))
                 found_rows = cursor.fetchall()
                 customer_id = found_rows[0][0]
                 sales_channel_id = found_rows[0][6]
@@ -282,12 +284,14 @@ class DBPopulate:
                     cursor.execute("INSERT INTO receipt "
                                    "( id, created_at, updated_at, currency_code, "
                                    "customer_account_id, kiosk_id, payment_type, "
-                                   "sales_channel_id, customer_type_id, total, cogs, uuid )"
+                                   "sales_channel_id, customer_type_id, total, cogs, uuid,"
+                                   "amount_cash, amount_card, amount_mobile )"
 
-                                   " VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                                   " VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                                    (id, createUpdateDate, createUpdateDate, currencyCode,
                                     customer_id, kiosk_id, paymentType,
-                                    sales_channel_id, customer_type_id, total, cogs, guid))
+                                    sales_channel_id, customer_type_id, total, cogs, guid,
+                                    amountCash, amountCard, amountMobile))
                 except Exception as e:
                     print(e.message)
 

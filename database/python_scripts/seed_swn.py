@@ -64,6 +64,9 @@ def getGender():
     else:
         return 'F'
 
+def getDistance():
+    return  random.randint( 1, 800)
+
 if __name__ == "__main__":
     print('Python', python_version())
     salesChannels = [ SalesChannel(name='Household',),
@@ -112,12 +115,6 @@ if __name__ == "__main__":
             dbPopulate = DBPopulate(connection)
 
 
-            xls = pd.ExcelFile("yourfilename.xls")
-
-            sheetX = xls.parse(2)  # 2 is the sheet number
-
-            var1 = sheetX['ColumnName']
-
             dbPopulate.populate_country('Ghana')
             for customerType in  customerTypes:
                 dbPopulate.populate_customer_type(customerType.name)
@@ -135,7 +132,9 @@ if __name__ == "__main__":
                 customerName = customerNameBase +str(i)
                 createUpdateDate = getDate()
                 dbPopulate.populate_customer_swn('Lartebiokorshie', getCustomerType(), getSalesChannel(), customerName,
-                                                 createUpdateDate, createUpdateDate, "5551212", getIncome(), getGender() )
+                                                 createUpdateDate, createUpdateDate, "5551212", getIncome(), getGender(),
+                                                 getDistance())
+
 
             # add some products
             dbPopulate.populate_product_category("Water products for SWN", "water_products")
@@ -160,7 +159,7 @@ if __name__ == "__main__":
                 cogs = 4.5               # Don't care
 
                 dbPopulate.populate_receipt_sema_core( id, createUpdateDate, currencyCode, customerName, kiosk,
-                                                        paymentType, total, cogs )
+                                                        paymentType, total, cogs, amountCash, 0, 2.2 )
 
             # Add a receipt line item to each receipts
             for i in range(NUM_RECEIPTS):

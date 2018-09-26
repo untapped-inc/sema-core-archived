@@ -29,6 +29,9 @@ NUM_CUSTOMERS = 100
 
 FIRST_SAMPLE_COLUMN = 4
 
+REMAP_CUSTOMER_SALES_CHANNEL_NAME =    ["Mr. Adugyenfi", "Maxwell Acheampong", "Yorke Properties Ltd (GN Bank)","Agya Yaw", "Margaret Gyemfi", "Mr. Daniel Oteng","Nana Osei Kwame"]
+REMAP_CUSTOMER_SALES_CHANNEL_CHANNEL = ["Access Points", "Household",          "Main Station",                "Access Points", "Household",     "Main Station",   "Access Points"]
+
 class ROW(Enum):
     COUNTRY = 1
     REGION =2
@@ -164,8 +167,12 @@ def importRecord( dbPopulate, xlsRecord, counter ):
 
     # xlsDateTime = xlsRecord.customerDate + " " + xlsRecord.customerTime
     # customer_createDateTime = datetime.datetime.strptime(xlsDateTime, '%m/%d/%y %H:%M')
+    salesChannelToUse = xlsRecord.customerSalesChannel
+    if xlsRecord.customerName in REMAP_CUSTOMER_SALES_CHANNEL_NAME:
+        idx = REMAP_CUSTOMER_SALES_CHANNEL_NAME.index(xlsRecord.customerName)
+        salesChannelToUse = REMAP_CUSTOMER_SALES_CHANNEL_CHANNEL[idx]
     customer_createDateTime = xlsRecord.customerDate.replace(hour=xlsRecord.customerTime.hour, minute = xlsRecord.customerTime.minute)
-    dbPopulate.populate_customer_swn( xlsRecord.kiosk, xlsRecord.customerType, xlsRecord.customerSalesChannel, xlsRecord.customerName,
+    dbPopulate.populate_customer_swn( xlsRecord.kiosk, xlsRecord.customerType, salesChannelToUse, xlsRecord.customerName,
                                       customer_createDateTime, customer_createDateTime,
                                       phone, xlsRecord.customerIncome, gender, xlsRecord.customerDistance)
 
@@ -226,7 +233,7 @@ if __name__ == "__main__":
 
             dbPopulate = DBPopulate(connection)
 
-            xls = pd.ExcelFile("spreadsheets/SWN-Dummy Data-8.31kw-Values.xlsx")
+            xls = pd.ExcelFile("spreadsheets/SWN-Dummy Data-8.31kw.xlsx")
             for i in range(len(xls.sheet_names)):
                 importSheet( xls, i, xls.sheet_names[i], dbPopulate)
         else:

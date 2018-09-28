@@ -3,4 +3,5 @@
 *.swo
 documentations/docs/dbdoc
 package-lock.json
-*.DS_STORE
+**.DS_Store**
+**.vscode**

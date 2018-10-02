@@ -1,4 +1,90 @@
 {
-  "title": "demo react-native-languages",
-  "current": "Nan moman an, langaj lan se \"{{language}}\""
+  "version": "Vèsyon",
+  "online": "KONEKTE",
+  "offline": "DEKONEKTE",
+  "site": "Kyòsk",
+  "logout": "Dekonekte",
+
+  "settings": "Konfigirasyon",
+  "service-url-label": "URL Sèvis SEMA",
+  "service-url-placeholder": "URL sèvis SEMA, (http://sèvis-sema)",
+  "site-label": "Kyòsk",
+  "site-placeholder": "Kyòsk",
+  "username-or-email-label": "Non Itilizatè Oswa Email",
+  "username-or-email-placeholder": "Non Itilizatè Oswa Email",
+  "password-label": "Modpas",
+  "password-placeholder": "Modpas",
+  "save-settings": "Anrejistre Konfigirasyon",
+  "connect": "Konekte",
+  "clear": "Efase...",
+  "sync-now": "Senkronize Kounya",
+
+  "search-placeholder": "Chèche pa Non Oswa pa Nimewo",
+  "account-name": "Non Kliyan",
+  "telephone-number": "# Telefòn",
+
+  "address": "Adrès",
+  "balance": "Balans",
+  "channel": "Kanal Vant",
+  "edit": "Modifye",
+  "delete": "Efase",
+
+  "edit-customer": "Modifye Kliyan",
+  "new-customer": "Nouvo Kliyan",
+  "update-customer": "Mete Kliyan a Jou",
+  "create-customer": "Kreye Kliyan",
+  "sales-channel": "Kanal Vant",
+  "customer-type": "Tip Kliyan",
+
+  "delete-this-customer": "efase kliyan sa",
+  "delete-specific-customer": "Efase Kliyan {{customerName}}",
+  "credit-customer-no-delete": "Kliyan {{customerName}} gen kredi li dwe, donk li poko ka efase",
+
+  "order-summary": "Kòmand",
+  "cart": "Charyo",
+
+  "order-total": "Total Kòmand",
+  "item": "Pwodui",
+  "quantity": "Kantite",
+  "charge": "Fakti",
+  "pay": "Peye",
+
+  "cash": "Kach",
+  "loan": "Prè",
+  "mobile": "Mobil",
+  "sale-amount-due": "Kantite Lajan Dwe",
+  "previous-amount-due": "Kantite Lajan Dwe Avan",
+  "total-amount-due": "Kantite Lajan Dwe an Tou",
+  "complete-sale": "Konplete Vant",
+  "processing-order": "Trètman Kòmand...",
+
+  "sales": "Vant",
+  "inventory": "Envantè",
+
+  "cancel-this-order": "anile vant sa",
+  "cancel-order": "Anile Kòmand",
+
+  "daily-data": "Done Jounalye",
+
+  "liters-per-sku": "Lit/SKU",
+  "total-liters": "Total Lit",
+  "price-per-sku": "Pri/SKU",
+  "total-sales": "Total Vant",
+
+  "previous": "Avan",
+  "current": "Kounya",
+  "delta-liters": "Delta Lit",
+  "delta-inventory": "Delta Envantè",
+  "output": "Sòti",
+  "production": "Prodiksyon",
+  "previous-meter": "Kontè Avan",
+  "current-meter": "Kontè Kounya",
+  "total-production": "Prodiksyon Total",
+  "wastage": "Gaspiyaj",
+
+  "are-you-sure": "Èske ou si ou vle {{doThat}}?",
+  "cancel": "Anile",
+  "ok": "OK",
+  "no": "Non",
+  "yes": "Wi"
 }

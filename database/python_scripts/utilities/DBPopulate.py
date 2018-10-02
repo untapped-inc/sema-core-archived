@@ -70,18 +70,22 @@ class DBPopulate:
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM kiosk WHERE name = %s", (kiosk_name,))
         rows = cursor.fetchall()
+        newId = None
         if len(rows) == 0:
             try:
                 cursor.execute("SELECT * FROM region WHERE name = %s", (region_name,))
                 rows = cursor.fetchall()
                 cursor.execute("INSERT INTO kiosk (region_id, name ) VALUES(%s, %s )", (rows[0][0], kiosk_name))
                 self.connection.commit()
+                newId = cursor.lastrowid
                 print(kiosk_name, 'added')
             except mysql.connector.Error as err:
                 print('failed to add kiosk', kiosk_name, err)
         else:
+            newId = rows[0][0]
             print('Kiosk', kiosk_name, 'exists')
         cursor.close()
+        return newId
 
     """ Add a customer. Note: This assumes contact_name are unique """
 
@@ -133,6 +137,7 @@ class DBPopulate:
 
         cursor.execute("SELECT * FROM customer_account WHERE name = %s AND kiosk_id = %s", (customer_name, kioskId,))
         rows = cursor.fetchall()
+        newId = None
         if len(rows) == 0:
             try:
 
@@ -150,12 +155,15 @@ class DBPopulate:
                                (created_date, updated_date, customer_name, ct_rows[0][0], sales_channel_rows[0][0],
                                 kiosk_rows[0][0], "test_address", "gps", phone, guid, income, gender, distance))
                 self.connection.commit()
+                newId = cursor.lastrowid
                 print("Customer", customer_name, 'added')
             except mysql.connector.Error as err:
                 print('failed to add Customer', customer_name, err)
         else:
+            newId = rows[0][0]
             print('Contact_name', customer_name, 'exists')
         cursor.close()
+        return newId
 
     """ Add a product category  """
     def populate_product_category( self, description, name):
@@ -200,22 +208,60 @@ class DBPopulate:
             print('Product "',description,'" exists')
         cursor.close()
 
+    """ Add a product.Contains all fields used by the new db schema """
+
+    def populate_product_swn(self, active, name, sku, description, category, price_amount, price_currency,
+                                    minimum_quantity, maximum_quantity, unit_per_product, unit_measure,
+                                    cogs_amount, base64encoded_image):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT * FROM product WHERE sku = %s", (sku,))
+        rows = cursor.fetchall()
+        newId = None
+        if len(rows) == 0:
+            try:
+
+
+                cursor.execute("SELECT * FROM product_category WHERE name = %s", (category,))
+                cat_id_rows = cursor.fetchall()
+
+                cursor.execute("INSERT INTO product "
+                               "(active, name, sku, description, category_id, price_amount, price_currency, "
+                               "minimum_quantity, maximum_quantity, unit_per_product, unit_measure,"
+                               "cogs_amount, base64encoded_image ) "
+                               "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                               ( active, name, sku, description, cat_id_rows[0][0], price_amount, price_currency,
+                                 minimum_quantity, maximum_quantity, unit_per_product, unit_measure,
+                                 cogs_amount, base64encoded_image))
+                self.connection.commit()
+                newId = cursor.lastrowid
+                print("Product", description, 'added')
+            except mysql.connector.Error as err:
+                print('failed to add product', description, err)
+        else:
+            print('Product "',description,'" exists')
+            newId = rows[0][0]
+        cursor.close()
+        return newId
+
     """ Add a sales channel  """
     def populate_sales_channel( self, delayed_delivery, name):
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM sales_channel WHERE name = %s", (name,))
         rows = cursor.fetchall()
+        newId = None
         if len(rows) == 0:
             try:
                 cursor.execute("INSERT INTO sales_channel ( name ) VALUES( %s)", (name,))
                 self.connection.commit()
+                newId = cursor.lastrowid
                 print('sales channel', name, 'added')
             except mysql.connector.Error as err:
                 print('failed to add', name, err)
         else:
             print('sales channel "', name, '" exists')
+            newId = rows[0][0]
         cursor.close()
-
+        return newId
 
     """ Add a receipt. Note: This assumes recipts have unique date and time """
     def populate_receipt(self, created_date, currency, customer_ref,customer_amount, is_sponsor_selected,
@@ -303,6 +349,49 @@ class DBPopulate:
             print('Receipt for "', id, '" exists')
         cursor.close()
 
+
+    """ Add a receipt to the receipt based on sema_core schema using Ids """
+
+    def populate_receipt_sema_core_2(self, id, createdAt, updatedAt, currencyCode, customerAccountId,
+                                     kioskId, paymentType, salesChannelId, amountCash, amountMobile, amountLoan,
+                                     amountCard, total, cogs):
+
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT * FROM receipt WHERE id = %s", (id,))
+        rows = cursor.fetchall()
+        newId = None
+        if len(rows) == 0:
+            try:
+
+
+                cursor.execute("SELECT customer_type_id FROM customer_account WHERE id = %s",(customerAccountId, ))
+                found_rows = cursor.fetchall()
+                customer_type_id = found_rows[0][0]
+                guid = str(uuid.uuid1())
+                try:
+                    cursor.execute("INSERT INTO receipt "
+                                   "( id, created_at, updated_at, currency_code, customer_account_id, "
+                                   "amount_cash, amount_mobile, amount_loan, amount_card,"
+                                   "kiosk_id, payment_type, sales_channel_id, customer_type_id, total, cogs, uuid )"
+
+                                   " VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                                   (id, createdAt, updatedAt, currencyCode, customerAccountId,
+                                    amountCash, amountMobile, amountLoan, amountCard,
+                                    kioskId, paymentType, salesChannelId, customer_type_id, total, cogs, guid ))
+
+                except Exception as e:
+                    print(e.message)
+
+                self.connection.commit()
+                newId = cursor.lastrowid
+                print("Receipt", id, 'added')
+            except mysql.connector.Error as err:
+                print('failed to add receipt for', id, err)
+        else:
+            newId = rows[0][0]
+            print('Receipt for "', id, '" exists')
+        cursor.close()
+        return newId
 
     """ Add a receipt line item to a receipt """
 

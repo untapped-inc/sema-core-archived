@@ -1,8 +1,23 @@
 import React from "react";
+import PropTypes from "prop-types";
 import ReactTable from "react-table";
 import Button from "react-bootstrap/lib/Button";
 
 import "react-table/react-table.css";
+
+const propTypes = {
+  columns: PropTypes.array,
+  data: PropTypes.array,
+  onDeleteClick: PropTypes.func,
+  onEditClick: PropTypes.func
+};
+
+const defaultProps = {
+  columns: [],
+  data: [],
+  onDeleteClick: () => {},
+  onEditClick: () => {}
+}
 
 class UserList extends React.Component {
   render() {
@@ -37,16 +52,20 @@ class UserList extends React.Component {
             </Button>
           </div>
         )
-      }];
+      }
+    ];
 
     return (
       <ReactTable
-        data={this.props.data}
+        data={this.props.data[0]}
         columns={userColumns}
-        className="-striped -highlight"
+        className="-striped"
       />
     )
   }
 }
+
+UserList.propTypes = propTypes;
+UserList.defaultProps = defaultProps;
 
 export default UserList;

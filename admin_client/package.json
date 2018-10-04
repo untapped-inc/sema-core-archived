@@ -1,6 +1,6 @@
 {
   "name": "bootstrap_react",
-  "version": "0.0.1.0",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
@@ -11,6 +11,7 @@
     "history": "^4.7.2",
     "jsonwebtoken": "^8.3.0",
     "moment": "^2.21.0",
+    "prop-types": "^15.6.2",
     "rc-progress": "~2.2.5",
     "react": "^16.3.2",
     "react-bootstrap": "^0.32.1",
@@ -31,7 +32,16 @@
     "build": "NODE_ENV=production react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "postinstall": "./update_theme.sh"
+    "postinstall": "./update_theme.sh",
+    "lint": "eslint ./src/**/*.js ./src/**/*.jsx"
   },
-  "proxy": "http://localhost:3001"
+  "proxy": "http://localhost:3001",
+  "devDependencies": {
+    "eslint": "4.19.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-import": "2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "7.11.0"
+  }
 }

@@ -17,37 +17,44 @@ const defaultProps = {
   data: [],
   onDeleteClick: () => {},
   onEditClick: () => {}
-}
+};
 
 class UserList extends React.Component {
   render() {
-    const userColumns = [{
+    const userColumns = [
+      {
         Header: "Username",
         accessor: "username"
-      }, {
+      },
+      {
         Header: "Email",
         accessor: "email"
-      }, {
+      },
+      {
         id: "name",
         Header: "Name",
         accessor: d => `${d.firstName} ${d.lastName}`
-      }, {
+      },
+      {
         Header: "Role",
         accessor: "role"
-      }, {
+      },
+      {
         Header: "Actions",
         Cell: row => (
           <div>
             <Button
               bsStyle="primary"
               bsSize="small"
-              onClick={this.props.onEditClick}>
+              onClick={this.props.onEditClick}
+            >
               Edit
             </Button>
             <Button
               bsStyle="danger"
               bsSize="small"
-              onClick={this.props.onDeleteClick}>
+              onClick={this.props.onDeleteClick}
+            >
               Delete
             </Button>
           </div>
@@ -61,7 +68,7 @@ class UserList extends React.Component {
         columns={userColumns}
         className="-striped"
       />
-    )
+    );
   }
 }
 

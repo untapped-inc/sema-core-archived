@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
 import * as BButton from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
@@ -33,8 +33,9 @@ const Button = ({
     bsStyle={buttonStyle}
     bsSize={buttonSize}
     onClick={onClick}
-    className={className}>
-    { icon && <Glyphicon glyph={icon} /> }
+    className={className}
+  >
+    {icon && <Glyphicon glyph={icon} />}
     {buttonText}
   </BButton>
 );

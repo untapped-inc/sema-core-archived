@@ -132,11 +132,11 @@ class DBReadHaiti:
     def read_receipt_line_items(self):
         receipt_line_items = {}
         cursor = self.connection.cursor()
-        cursor.execute("SELECT id, gallons, price, quantity, receipt_id, sku, type FROM receipt_line_item" )
+        cursor.execute("SELECT id, currency_code, gallons, price, quantity, receipt_id, sku, type FROM receipt_line_item" )
         rows = cursor.fetchall()
         for row in rows:
-            receipt_line_items[row[0]] = {"id":row[0], "gallons":row[1], "price": row[2], "quantity": row[3], "receipt_id":row[4],
-                                 "sku":row[5], "type":row[6]}
+            receipt_line_items[row[0]] = {"id":row[0], "currency_code":row[1], "gallons":row[2], "price": row[3], "quantity": row[4], "receipt_id":row[5],
+                                 "sku":row[6], "type":row[7]}
 
         cursor.close()
         return receipt_line_items

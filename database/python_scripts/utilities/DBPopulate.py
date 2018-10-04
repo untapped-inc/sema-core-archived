@@ -441,6 +441,32 @@ class DBPopulate:
         cursor.close()
 
 
+    def populate_receipt_line_item_sema_core(self, receiptLineItem):
+
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT * FROM receipt_line_item WHERE receipt_id = %s AND product_id = %s", (receiptLineItem["receiptId"], receiptLineItem["productId"]))
+        rows = cursor.fetchall()
+        if len(rows) == 0:
+            try:
+
+                cursor.execute("INSERT INTO receipt_line_item "
+                               "( created_at, updated_at, currency_code, "
+                               "price_total, quantity, receipt_id, "
+                               "product_id, cogs_total )"
+
+                               " VALUES(%s, %s, %s, %s, %s, %s, %s, %s)",
+                               (receiptLineItem["createdAt"], receiptLineItem["updatedAt"], receiptLineItem["currencyCode"],
+                                receiptLineItem["priceTotal"], receiptLineItem["quantity"], receiptLineItem["receiptId"],
+                                receiptLineItem["productId"], receiptLineItem["cogsTotal"] ))
+
+                self.connection.commit()
+                print("Receipt_line_item", receiptLineItem["receiptId"], 'added')
+            except mysql.connector.Error as err:
+                print('failed to add Receipt_line_item for', receiptLineItem["receiptId"], err)
+        else:
+            print('Receipt_line_item for "', receiptLineItem["receiptId"], '" exists')
+        cursor.close()
+
     """ Add a parameter """
     def populate_parameter( self, name):
         cursor = self.connection.cursor()

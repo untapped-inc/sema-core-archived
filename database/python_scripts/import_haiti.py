@@ -136,7 +136,7 @@ def importHaitDb( dbPopulate, dbReadHaiti):
             newId = dbPopulate.populate_product_swn(active, name, sku, description,category, price_amount,price_currency,
                                             minimum_quantity, maximum_quantity, unit_per_product,unit_measure,
                                             cogs_amount, base64encoded_image)
-            productMapOldIdToNewId[product['id']] = newId
+            productMapOldIdToNewId[sku] = newId
 
         with open('products-tmp.txt', 'w') as outfile:
             json.dump(productMapOldIdToNewId, outfile)
@@ -173,6 +173,7 @@ def importHaitDb( dbPopulate, dbReadHaiti):
 
 
     #receipts
+    count = 0
     if USE_CACHE:
         with open('receipts-tmp.txt') as json_file:
             receiptMapOldIdToNewId = json.load(json_file)
@@ -181,7 +182,10 @@ def importHaitDb( dbPopulate, dbReadHaiti):
 
         receiptMapOldIdToNewId = {}
         receipts = dbReadHaiti.read_receipts( "2017-6-1")  # After June, 2017
-        for receipt in receipts.values():
+        for receipt in receipts.values():  #count is temp
+            # if  count > 100:
+            #     break
+            count = count+1
             try:
                 newReceipt ={}
                 newReceipt["id"] = receipt['id']
@@ -205,7 +209,10 @@ def importHaitDb( dbPopulate, dbReadHaiti):
                                                                 newReceipt["amountCash"], newReceipt["amountMobile"],
                                                                 newReceipt["amountLoan"], newReceipt["amountCard"],
                                                                 newReceipt["total"], newReceipt["cogs"] )
-                receiptMapOldIdToNewId[newReceipt['id']] = newId
+
+                createdAt = newReceipt["createdAt"].strftime('%m/%d/%Y %I:%M %p')
+                receiptMapOldIdToNewId[newReceipt['id']] = {"id":newId, "createdAt":createdAt}
+                print( "Count", count)
             except Exception as e:
                 print(e.args[0], "error adding receipt", receipt['customer_account_id'] )
 
@@ -216,11 +223,20 @@ def importHaitDb( dbPopulate, dbReadHaiti):
     receipt_line_items = dbReadHaiti.read_receipt_line_items()
     for receipt_line_item in receipt_line_items.values():
         try:
-            receiptId = str(receipt_line_item['receipt_id'] )
-            if receiptId in receiptMapOldIdToNewId:
-                print("Processing", receiptId)
-            else:
-                print("skipping", receiptId)
+            receipt = str(receipt_line_item['receipt_id'] )
+            if receipt in receiptMapOldIdToNewId:
+                oldReceipt = receiptMapOldIdToNewId[receipt]
+                newReceiptLineItem ={}
+                createdAt = datetime.datetime.strptime( oldReceipt['createdAt'], '%m/%d/%Y %I:%M %p' )
+                newReceiptLineItem["createdAt"] = createdAt
+                newReceiptLineItem["updatedAt"] = createdAt
+                newReceiptLineItem["currencyCode"] = receipt_line_item["currency_code"]
+                newReceiptLineItem["priceTotal"] = receipt_line_item["price"]
+                newReceiptLineItem["quantity"] = receipt_line_item["quantity"]
+                newReceiptLineItem["receiptId"] = oldReceipt["id"]
+                newReceiptLineItem["productId"] = productMapOldIdToNewId[receipt_line_item["sku"]]
+                newReceiptLineItem["cogsTotal"] = receipt_line_item["price"] * decimal.Decimal(.5)
+                dbPopulate.populate_receipt_line_item_sema_core(newReceiptLineItem )
 
         except Exception as e:
             print(e.args[0], "error adding receipt_line", receipt_line_item['receipt_id'] )

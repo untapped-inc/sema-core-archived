@@ -140,3 +140,17 @@ class DBReadHaiti:
 
         cursor.close()
         return receipt_line_items
+
+    ## Get specific customer
+    def read_customer(self, id):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT id, address, contact_name, customer_type_id, due_amount, gps_coordinates, kiosk_id," 
+                       "phone_number, active, serviceable_customer_base FROM customer_account WHERE id = %s", (id,))
+        rows = cursor.fetchall()
+        row = rows[0]
+        customer  = {"id":row[0], "address": row[1], "contact_name": row[2], "customer_type_id":row[3],
+                             "due_amount":row[4], "gps_coordinates":row[5], "kiosk_id":row[6], "phone_number":row[7],
+                             "active":row[8], "servicable_customer_base":row[9]}
+
+        cursor.close()
+        return customer

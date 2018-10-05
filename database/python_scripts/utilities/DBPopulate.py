@@ -624,3 +624,13 @@ class DBPopulate:
         else:
             print('Product_mrp for ',sku_name, '/', sales_channel_name, ' exists')
         cursor.close()
+
+    def update_customer(self, id, gps_coordinates):
+        cursor = self.connection.cursor()
+
+        # sql = "UPDATE customer_account SET gps_coordinates = %s WHERE id = %s",(gps_coordinates, id )
+
+        cursor.execute("UPDATE customer_account SET gps_coordinates = %s WHERE id = %s", (gps_coordinates, id ))
+
+        self.connection.commit()
+        cursor.close()

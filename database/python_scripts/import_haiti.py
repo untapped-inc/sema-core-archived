@@ -25,6 +25,7 @@ import math
 import decimal
 import json
 import pickle
+import sys
 
 from enum import Enum
 
@@ -243,9 +244,24 @@ def importHaitDb( dbPopulate, dbReadHaiti):
 
     print("foo")
 
+## Update gps from haiti database. (Due to bug in original import where gps is not imported
+## this requires that the old->new mapping file is valid...
+
+def fix_gps(dbPopulate, dbReadHaiti):
+    with open('customers-tmp.txt') as json_file:
+        customerMapOldIdToNewId = json.load(json_file)
+        for key, value in customerMapOldIdToNewId.items():
+            haiti = dbReadHaiti.read_customer(key)
+            print("Customer", haiti['contact_name'], haiti['gps_coordinates'])
+            dbPopulate.update_customer(value, haiti['gps_coordinates'])
+    print("Done")
+
+
+
 if __name__ == "__main__":
     print('Python', python_version())
 
+    print( 'Number of arguments:', len(sys.argv), 'arguments.')
 
     DBConfig = dbConfig()
     dbConnection = DBConnection(DBConfig.host, DBConfig.user, DBConfig.password,DBConfig.dbName)
@@ -266,7 +282,14 @@ if __name__ == "__main__":
         if "sample" in db_name.lower():
             dbPopulate = DBPopulate(connection)
             dbReadHaiti = DBReadHaiti(connectionHaiti )
-            importHaitDb( dbPopulate, dbReadHaiti)
+            if len(sys.argv) == 1:
+                importHaitDb( dbPopulate, dbReadHaiti)
+            else:
+                if sys.argv[1] == "gps":
+                    #fix gps
+                    print("reimporting gps")
+                    fix_gps(dbPopulate, dbReadHaiti)
+
 
         else:
             print("You are not connected to a 'sample' database")

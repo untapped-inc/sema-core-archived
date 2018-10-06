@@ -1,8 +1,12 @@
 import React from 'react';
 import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap/lib/';
+import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 
-const SelectField = ({ id, label, input, options, ...props }) => (
-  <FormGroup controlId={id}>
+const SelectField = ({ id, label, input, options, meta, ...props }) => (
+  <FormGroup
+    controlId={id}
+    validationState={meta.invalid && meta.touched ? 'error' : null}
+  >
     <ControlLabel>{label}</ControlLabel>
     <FormControl componentClass="select" {...input} {...props}>
       <option />
@@ -12,6 +16,9 @@ const SelectField = ({ id, label, input, options, ...props }) => (
         </option>
       ))}
     </FormControl>
+    {meta.invalid &&
+      meta.touched &&
+      meta.error && <HelpBlock>{meta.error}</HelpBlock>}
   </FormGroup>
 );
 

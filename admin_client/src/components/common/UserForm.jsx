@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, submit } from 'redux-form';
 import TextField from './TextField';
 import SelectField from './SelectField';
 import roles from '../constants/roles';
+
+import { validateUserForm } from './validate';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -35,5 +37,7 @@ UserForm.propTypes = propTypes;
 UserForm.defaultProps = defaultProps;
 
 export default reduxForm({
-  form: 'userForm' // a unique identifier for this form
+  form: 'userForm', // a unique identifier for this form
+  validate: validateUserForm,
+  onSubmit: submit
 })(UserForm);

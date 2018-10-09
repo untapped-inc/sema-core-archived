@@ -6,18 +6,23 @@
 
 }
 
+.SalesProgress {
+	grid-column: 1;
+	grid-row:1;
+	display: flex;
+}
 
 .SalesContainer {
 	grid-column: 2;
 	grid-row:2;
 	display: grid;
-	grid-template-rows: 140px auto;
+	grid-template-rows: 5px 140px auto;
 	background-color: rgb(240, 240, 240 );
 
 }
 .SalesSummaryContainer {
 	grid-column: 1;
-	grid-row:1;
+	grid-row:2;
 	display: grid;
 	grid-template-columns:	auto auto auto;
 	background-color: rgb(240, 240, 0 );
@@ -51,7 +56,7 @@
 
 .SalesContentContainer {
 	grid-column: 1;
-	grid-row:2;
+	grid-row:3;
 	display: grid;
 	grid-template-columns:	1fr 350px ;
 	grid-template-rows:  1fr 1fr ;

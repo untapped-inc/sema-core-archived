@@ -12,6 +12,7 @@ CREATE VIEW `receipt_details` AS
         receipt.amount_card,
 		product.unit_per_product,
         receipt_line_item.quantity * product.unit_per_product AS volume,
+        receipt.total,
         customer_account.name,
         customer_account.income_level,
         customer_account.customer_type_id

@@ -154,3 +154,30 @@ class DBReadHaiti:
 
         cursor.close()
         return customer
+
+    def getSamplingSiteId(self, name ):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT id FROM sampling_site WHERE name = %s", (name,))
+        rows = cursor.fetchall()
+        id = rows[0][0]
+        cursor.close()
+        return id
+
+    def getParameterId(self, name ):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT id FROM parameter WHERE name = %s", (name,))
+        rows = cursor.fetchall()
+        id = rows[0][0]
+        cursor.close()
+        return id
+
+    def read_readings(self, startDate, kioskId, samplingSiteId, parameterId):
+        """ Access records for a parameter from a sampling site after date """
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT reading.created_date, measurement.value FROM reading "
+            "INNER JOIN measurement ON reading.id = measurement.reading_id "
+            "WHERE  measurement.parameter_id = %s AND reading.sampling_site_id = %s "
+            "AND reading.kiosk_id = %s AND reading.created_date > %s", (parameterId, samplingSiteId, kioskId, startDate))
+        rows = cursor.fetchall()
+        cursor.close()
+        return rows

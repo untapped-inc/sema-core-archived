@@ -257,6 +257,31 @@ def fix_gps(dbPopulate, dbReadHaiti):
     print("Done")
 
 
+def importReading( dbPopulate, dbReadHaiti, samplingSiteIdSrc, parameterIdSrc, samplingSiteIdDest, parameterIdDest):
+
+    countries = dbReadHaiti.read_countries()
+    regions = dbReadHaiti.read_regions( countries )
+
+    kioskMapOldIdToNewId = {}
+    kiosks = dbReadHaiti.read_kiosks(regions)
+    for kiosk in kiosks.values():
+        newId = dbPopulate.populate_kiosk( kiosk['region'], kiosk['name'])
+        kioskMapOldIdToNewId[kiosk['id']] = newId
+
+        readings = dbReadHaiti.read_readings( "2017-6-1", kiosk['id'], samplingSiteIdSrc, parameterIdSrc)
+        for reading in readings:
+            # Note that the user_id is hard coded here...
+            dbPopulate.insertReading( reading, newId, samplingSiteIdDest, parameterIdDest, 1 )
+
+
+def importHaitiDbTotalChlorine( dbPopulate, dbReadHaiti ):
+    """ Import total chlorine"""
+    waterTreatmentIdSrc = dbReadHaiti.getSamplingSiteId( "Water Treatment Unit" )
+    waterTreatmentIdDest = dbPopulate.getSamplingSiteId( "Water Treatment Unit" )
+    chlorineIdSrc = dbReadHaiti.getParameterId( "Total Chlorine" )
+    chlorineIdDest = dbPopulate.getParameterId( "Total Chlorine" )
+    importReading( dbPopulate, dbReadHaiti, waterTreatmentIdSrc, chlorineIdSrc, waterTreatmentIdDest, chlorineIdDest)
+
 
 if __name__ == "__main__":
     print('Python', python_version())
@@ -284,12 +309,14 @@ if __name__ == "__main__":
             dbReadHaiti = DBReadHaiti(connectionHaiti )
             if len(sys.argv) == 1:
                 importHaitDb( dbPopulate, dbReadHaiti)
-            else:
-                if sys.argv[1] == "gps":
+            elif sys.argv[1] == "gps":
                     #fix gps
                     print("reimporting gps")
                     fix_gps(dbPopulate, dbReadHaiti)
-
+            elif  len(sys.argv) == 3 and sys.argv[1] == "chart":
+                if sys.argv[2] == "totalchlorine":
+                    print( "importing chlorine data")
+                    importHaitiDbTotalChlorine( dbPopulate, dbReadHaiti)
 
         else:
             print("You are not connected to a 'sample' database")

@@ -59,7 +59,7 @@
 	grid-row:3;
 	display: grid;
 	grid-template-columns:	1fr 350px ;
-	grid-template-rows:  1fr 1fr ;
+	grid-template-rows:  62vh 1fr ;
 	grid-gap:5px;
 	background: rgb(40,88,167);
 	padding:10px;
@@ -69,7 +69,7 @@
 .SalesMapItem {
 	grid-row: 1;
 	grid-column: 1;
-	height: 62vh;
+	/*height: 62vh;*/
 	background: #fff;
 }
 .SalesListItem {
@@ -77,7 +77,7 @@
 	grid-column: 2;
 	background:white;
 	overflow-y: scroll;
-	height: 62vh;
+	/*height: 62vh;*/
 }
 
 .SalesBottomContainer {

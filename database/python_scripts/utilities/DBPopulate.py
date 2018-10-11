@@ -634,3 +634,33 @@ class DBPopulate:
 
         self.connection.commit()
         cursor.close()
+
+    def getSamplingSiteId(self, name):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT id FROM sampling_site WHERE name = %s", (name,))
+        rows = cursor.fetchall()
+        id = rows[0][0]
+        cursor.close()
+        return id
+
+    def getParameterId(self, name):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT id FROM parameter WHERE name = %s", (name,))
+        rows = cursor.fetchall()
+        id = rows[0][0]
+        cursor.close()
+        return id
+
+    def insertReading(self, reading, kiosk_id, samplingSiteId, parameterId, user_id):
+        cursor = self.connection.cursor()
+        cursor.execute("INSERT INTO reading "
+                       "(created_at, kiosk_id, parameter_id, sampling_site_id, value, user_id) "
+                       "VALUES(%s, %s, %s, %s, %s, %s)",
+                       (reading[0], kiosk_id, parameterId, samplingSiteId, reading[1], user_id))
+
+        self.connection.commit()
+        newId = cursor.lastrowid
+        cursor.close()
+        return newId
+
+

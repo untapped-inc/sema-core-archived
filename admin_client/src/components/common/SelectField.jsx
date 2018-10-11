@@ -2,9 +2,9 @@ import React from 'react';
 import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap/lib/';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 
-const SelectField = ({ id, label, input, options, meta, ...props }) => (
+const SelectField = ({ name, label, input, options, meta, ...props }) => (
   <FormGroup
-    controlId={id}
+    controlId={name}
     validationState={meta.invalid && meta.touched ? 'error' : null}
   >
     <ControlLabel>{label}</ControlLabel>

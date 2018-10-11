@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import * as BButton from "react-bootstrap/lib/Button";
-import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import React from 'react';
+import PropTypes from 'prop-types';
+import * as BButton from 'react-bootstrap/lib/Button';
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 const propTypes = {
   buttonSize: PropTypes.string,
@@ -13,12 +13,12 @@ const propTypes = {
 };
 
 const defaultProps = {
-  buttonSize: "small",
-  buttonStyle: "primary",
+  buttonSize: 'small',
+  buttonStyle: 'primary',
   onClick: () => {},
-  buttonText: "",
+  buttonText: '',
   icon: null,
-  className: ""
+  className: ''
 };
 
 const Button = ({

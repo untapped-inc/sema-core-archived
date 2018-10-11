@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, submit } from 'redux-form';
 import TextField from './TextField';
-import SelectField from './SelectField';
+// import SelectField from './SelectField';
+import CheckboxGroup from './CheckboxGroup';
 import roles from '../constants/roles';
 
 import { validateUserForm } from './validate';
@@ -29,7 +30,8 @@ const UserForm = ({ handleSubmit }) => (
       label="Password"
       type="password"
     />
-    <Field name="role" component={SelectField} label="Role" options={roles} />
+    <Field name="role" component={CheckboxGroup} label="Role" options={roles} />
+    {/* <Field name="role" component={SelectField} label="Role" options={roles} /> */}
   </form>
 );
 

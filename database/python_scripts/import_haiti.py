@@ -282,6 +282,49 @@ def importHaitiDbTotalChlorine( dbPopulate, dbReadHaiti ):
     chlorineIdDest = dbPopulate.getParameterId( "Total Chlorine" )
     importReading( dbPopulate, dbReadHaiti, waterTreatmentIdSrc, chlorineIdSrc, waterTreatmentIdDest, chlorineIdDest)
 
+def importHaitiDbTds( dbPopulate, dbReadHaiti ):
+    """ Import total disolved solids"""
+    waterTreatmentIdSrc = dbReadHaiti.getSamplingSiteId( "Water Treatment Unit" )
+    waterTreatmentIdDest = dbPopulate.getSamplingSiteId( "Water Treatment Unit" )
+    tdsIdSrc = dbReadHaiti.getParameterId( "Total Dissolved Solids" )
+    tdsIdDest = dbPopulate.getParameterId( "Total Dissolved Solids" )
+    importReading( dbPopulate, dbReadHaiti, waterTreatmentIdSrc, tdsIdSrc, waterTreatmentIdDest, tdsIdDest)
+
+def importXLSReading( dbPopulate, samplingSite, volumeId):
+    xls = pd.ExcelFile("spreadsheets/sema-haiti-volumes.xls")
+    sheet = xls.parse(0)    # Just one sheet
+    col_date = 1                    # column for date
+    col_sampling_site_id = 4        # column for the sampling site
+    col_value = 5                   # column for the reading value
+    for row in range( sheet.shape[0]):
+        kiosk_id = 1    # Hard coded for now
+        user_id = 1    # Hard coded for now
+
+        date = sheet[sheet.columns[col_date]][row]
+        sampling_site_id = sheet[sheet.columns[col_sampling_site_id]][row]
+        value = sheet[sheet.columns[col_value]][row]
+        if sampling_site_id == samplingSite:
+            print("Date", date, "sampling_site_id", sampling_site_id, "value", value)
+            reading = [date, decimal.Decimal(value)]
+            dbPopulate.insertReading(reading, kiosk_id, samplingSite, volumeId, user_id)
+
+    print("done")
+
+def importXlsVolume( dbPopulate ):
+    """ Import total volume data from the 'mock' Xls spreadsheet"""
+    A_FeedIdDest = dbPopulate.getSamplingSiteId( "A:Feed" )
+    volumeIdDest = dbPopulate.getParameterId( "Volume" )
+    print("Importing A:Feed")
+    importXLSReading( dbPopulate, A_FeedIdDest, volumeIdDest)
+
+    B_Product = dbPopulate.getSamplingSiteId( "B:Product" )
+    print("Importing B:Product")
+    importXLSReading( dbPopulate, B_Product, volumeIdDest)
+
+    D_Fill = dbPopulate.getSamplingSiteId( "D:Fill" )
+    print("Importing D:Fill")
+    importXLSReading( dbPopulate, D_Fill, volumeIdDest)
+
 
 if __name__ == "__main__":
     print('Python', python_version())
@@ -317,6 +360,13 @@ if __name__ == "__main__":
                 if sys.argv[2] == "totalchlorine":
                     print( "importing chlorine data")
                     importHaitiDbTotalChlorine( dbPopulate, dbReadHaiti)
+                elif sys.argv[2] == "tds":
+                    print( "importing total disolved solids")
+                    importHaitiDbTds( dbPopulate, dbReadHaiti)
+                elif sys.argv[2] == "Volume":
+                    print( "importing water volume")
+                    importXlsVolume( dbPopulate)
+
 
         else:
             print("You are not connected to a 'sample' database")

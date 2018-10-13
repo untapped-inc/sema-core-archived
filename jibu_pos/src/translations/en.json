@@ -5,6 +5,10 @@
   "site": "Site",
   "logout": "Logout",
 
+  "sign-in": "Sign In",
+  "signing-in": "Signing in...",
+  "invalid-credentials": "Invalid user name and/or password",
+
   "settings": "Settings",
   "service-url-label": "SEMA Service URL",
   "service-url-placeholder": "SEMA Service URL, (http://sema-service)",
@@ -18,6 +22,11 @@
   "connect": "Connect",
   "clear": "Clear...",
   "sync-now": "Synchronize Now",
+  "successful-connection": "Successfully connected to the SEMA service",
+  "successful-connection-but": "Successfully connected to the SEMA service but site '{{what}}' {{happened}}",
+  "does-not-exist": "does not exist",
+  "is-not-active": "is not active",
+  "network-connection": "Network Connection",
 
   "search-placeholder": "Search by Name or Telephone",
   "account-name": "Account Name",
@@ -35,6 +44,7 @@
   "create-customer": "Create Customer",
   "sales-channel": "Sales Channel",
   "customer-type": "Customer Type",
+  "updating": "Updating...",
 
   "delete-this-customer": "delete this customer",
   "delete-specific-customer": "Delete Customer {{customerName}}",

@@ -5,9 +5,13 @@
   "site": "Kyòsk",
   "logout": "Dekonekte",
 
+  "sign-in": "Konekte",
+  "signing-in": "Koneksyon an kou...",
+  "invalid-credentials": "Non itilizatè avèk/oswa email envalid",
+
   "settings": "Konfigirasyon",
   "service-url-label": "URL Sèvis SEMA",
-  "service-url-placeholder": "URL sèvis SEMA, (http://sèvis-sema)",
+  "service-url-placeholder": "URL Sèvis SEMA, (http://sèvis-sema)",
   "site-label": "Kyòsk",
   "site-placeholder": "Kyòsk",
   "username-or-email-label": "Non Itilizatè Oswa Email",
@@ -18,6 +22,11 @@
   "connect": "Konekte",
   "clear": "Efase...",
   "sync-now": "Senkronize Kounya",
+  "successful-connection": "Koneksyon ak sèvis SEMA a fèt avèk siksè",
+  "successful-connection-but": "Koneksyon ak sèvis SEMA a fèt avèk siksè men kyòsk '{{what}}' lan {{happened}}",
+  "does-not-exist": "pa ekziste",
+  "is-not-active": "pa aktif",
+  "network-connection": "Koneksyon Rezo",
 
   "search-placeholder": "Chèche pa Non Oswa pa Nimewo",
   "account-name": "Non Kliyan",
@@ -35,6 +44,7 @@
   "create-customer": "Kreye Kliyan",
   "sales-channel": "Kanal Vant",
   "customer-type": "Tip Kliyan",
+  "updating": "Modifikasyon an kou...",
 
   "delete-this-customer": "efase kliyan sa",
   "delete-specific-customer": "Efase Kliyan {{customerName}}",

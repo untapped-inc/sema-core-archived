@@ -290,6 +290,30 @@ def importHaitiDbTds( dbPopulate, dbReadHaiti ):
     tdsIdDest = dbPopulate.getParameterId( "Total Dissolved Solids" )
     importReading( dbPopulate, dbReadHaiti, waterTreatmentIdSrc, tdsIdSrc, waterTreatmentIdDest, tdsIdDest)
 
+def importHaitiDbPressureIn( dbPopulate, dbReadHaiti ):
+    """ Import pre-membrane pressure"""
+    waterTreatmentIdSrc = dbReadHaiti.getSamplingSiteId( "Water Treatment Unit" )
+    waterTreatmentIdDest = dbPopulate.getSamplingSiteId( "Water Treatment Unit" )
+    pressureIdSrc = dbReadHaiti.getParameterId( "PRE-FILTER PRESSURE IN" )
+    pressureIdDest = dbPopulate.getParameterId( "PRE-FILTER PRESSURE IN" )
+    importReading( dbPopulate, dbReadHaiti, waterTreatmentIdSrc, pressureIdSrc, waterTreatmentIdDest, pressureIdDest)
+
+def importHaitiDbPressureOut( dbPopulate, dbReadHaiti ):
+    """ Import post-membrane pressure"""
+    waterTreatmentIdSrc = dbReadHaiti.getSamplingSiteId( "Water Treatment Unit" )
+    waterTreatmentIdDest = dbPopulate.getSamplingSiteId( "Water Treatment Unit" )
+    pressureIdSrc = dbReadHaiti.getParameterId( "PRE-FILTER PRESSURE OUT" )
+    pressureIdDest = dbPopulate.getParameterId( "PRE-FILTER PRESSURE OUT" )
+    importReading( dbPopulate, dbReadHaiti, waterTreatmentIdSrc, pressureIdSrc, waterTreatmentIdDest, pressureIdDest)
+
+def importHaitiDbMembranePressure( dbPopulate, dbReadHaiti ):
+    """ Import post-membrane pressure"""
+    waterTreatmentIdSrc = dbReadHaiti.getSamplingSiteId( "Water Treatment Unit" )
+    waterTreatmentIdDest = dbPopulate.getSamplingSiteId( "Water Treatment Unit" )
+    pressureIdSrc = dbReadHaiti.getParameterId( "MEMBRANE FEED PRESSURE" )
+    pressureIdDest = dbPopulate.getParameterId( "MEMBRANE FEED PRESSURE" )
+    importReading( dbPopulate, dbReadHaiti, waterTreatmentIdSrc, pressureIdSrc, waterTreatmentIdDest, pressureIdDest)
+
 def importXLSReading( dbPopulate, samplingSite, volumeId):
     xls = pd.ExcelFile("spreadsheets/sema-haiti-volumes.xls")
     sheet = xls.parse(0)    # Just one sheet
@@ -366,6 +390,15 @@ if __name__ == "__main__":
                 elif sys.argv[2] == "Volume":
                     print( "importing water volume")
                     importXlsVolume( dbPopulate)
+                elif sys.argv[2] == "pin":
+                    print( "importing prefilter pressure in")
+                    importHaitiDbPressureIn( dbPopulate, dbReadHaiti)
+                elif sys.argv[2] == "pout":
+                    print( "importing prefilter pressure out")
+                    importHaitiDbPressureOut( dbPopulate, dbReadHaiti)
+                elif sys.argv[2] == "pmembrane":
+                    print( "importing prefilter pressure out")
+                    importHaitiDbMembranePressure( dbPopulate, dbReadHaiti)
 
 
         else:

@@ -70,7 +70,7 @@ class UserList extends React.Component {
 
     return (
       <ReactTable
-        data={this.props.data[0]}
+        data={this.props.data}
         columns={userColumns}
         className="-striped"
       />

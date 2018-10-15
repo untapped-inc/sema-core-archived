@@ -314,6 +314,28 @@ def importHaitiDbMembranePressure( dbPopulate, dbReadHaiti ):
     pressureIdDest = dbPopulate.getParameterId( "MEMBRANE FEED PRESSURE" )
     importReading( dbPopulate, dbReadHaiti, waterTreatmentIdSrc, pressureIdSrc, waterTreatmentIdDest, pressureIdDest)
 
+def importHaitiDbFeedFlowRate( dbPopulate, dbReadHaiti ):
+    """ Import feed flowrate"""
+    waterTreatmentIdSrc = dbReadHaiti.getSamplingSiteId( "Water Treatment Unit" )
+    waterTreatmentIdDest = dbPopulate.getSamplingSiteId( "Water Treatment Unit" )
+    paramIdSrc = dbReadHaiti.getParameterId( "Feed Flow Rate" )
+    paramIdDest = dbPopulate.getParameterId( "Feed Flow Rate" )
+    importReading( dbPopulate, dbReadHaiti, waterTreatmentIdSrc, paramIdSrc, waterTreatmentIdDest, paramIdDest)
+
+def importHaitiDbProductFlowRate( dbPopulate, dbReadHaiti ):
+    """ Import product flowrate"""
+    waterTreatmentIdSrc = dbReadHaiti.getSamplingSiteId( "Water Treatment Unit" )
+    waterTreatmentIdDest = dbPopulate.getSamplingSiteId( "Water Treatment Unit" )
+    paramIdSrc = dbReadHaiti.getParameterId( "Product Flow Rate" )
+    paramIdDest = dbPopulate.getParameterId( "Product Flow Rate" )
+    importReading( dbPopulate, dbReadHaiti, waterTreatmentIdSrc, paramIdSrc, waterTreatmentIdDest, paramIdDest)
+
+def redoFeedFlowRate( dbPopulate, flowRate, samplingSite ):
+    samplingSiteId = dbPopulate.getSamplingSiteId( samplingSite )
+    paramId = dbPopulate.getParameterId(flowRate)
+    newParamId = dbPopulate.getParameterId("Flow Rate")
+    dbPopulate.updateFlowRate( paramId, samplingSiteId, newParamId );
+
 def importXLSReading( dbPopulate, samplingSite, volumeId):
     xls = pd.ExcelFile("spreadsheets/sema-haiti-volumes.xls")
     sheet = xls.parse(0)    # Just one sheet
@@ -399,6 +421,18 @@ if __name__ == "__main__":
                 elif sys.argv[2] == "pmembrane":
                     print( "importing prefilter pressure out")
                     importHaitiDbMembranePressure( dbPopulate, dbReadHaiti)
+                elif sys.argv[2] == "ffr":
+                    print( "importing feed flow rate")
+                    importHaitiDbFeedFlowRate( dbPopulate, dbReadHaiti)
+                elif sys.argv[2] == "pfr":
+                    print( "importing product flow rate")
+                    importHaitiDbProductFlowRate( dbPopulate, dbReadHaiti)
+                elif sys.argv[2] == "redoFFR":
+                    print( "Fixup feed flow rate")
+                    redoFeedFlowRate( dbPopulate, "Feed Flow Rate", "A:Feed")
+                elif sys.argv[2] == "redoPFR":
+                    print( "Fixup Product flow rate")
+                    redoFeedFlowRate( dbPopulate, "Product Flow Rate", "B:Product")
 
 
         else:

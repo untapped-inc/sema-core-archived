@@ -663,4 +663,13 @@ class DBPopulate:
         cursor.close()
         return newId
 
-
+    def updateFlowRate( self, paramId, samplingSiteId, newParamId ):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT * FROM reading WHERE parameter_id = %s", (paramId,))
+        rows = cursor.fetchall()
+        cursor.close()
+        for row in rows:
+            cursor = self.connection.cursor()
+            cursor.execute("UPDATE reading SET sampling_site_id = %s, parameter_id = %s where id = %s", (samplingSiteId, newParamId, row[0] ))
+            self.connection.commit()
+            cursor.close()

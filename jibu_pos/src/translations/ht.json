@@ -27,6 +27,15 @@
   "does-not-exist": "pa ekziste",
   "is-not-active": "pa aktif",
   "network-connection": "Koneksyon Rezo",
+  "sync-results": "Rezilta Senkronizasyon an",
+  "sync-error": "Erè Senkronizasyon: {{error}}",
+  "data-is-up-to-date": "Done yo a jou",
+  "customers-updated": "kliyan senkronize",
+  "products-updated": "pwodui senkronize",
+  "sales-receipts-updated": "resi vant senkronize",
+  "product-sales-channel-prices-updated": "pri pwodui/kanal vant senkronize",
+  "clear-all-data": "Efase Tout Done yo",
+  "delete-all-data": "efase tout done yo (ou pap ka rekipere yo aprè)",
 
   "search-placeholder": "Chèche pa Non Oswa pa Nimewo",
   "account-name": "Non Kliyan",
@@ -54,8 +63,9 @@
   "cart": "Charyo",
 
   "order-total": "Total Kòmand",
-  "item": "Pwodui",
+  "item": "Pwodui senkronizeui",
   "quantity": "Kantite",
+
   "charge": "Fakti",
   "pay": "Peye",
 

@@ -5,10 +5,11 @@ CREATE VIEW `customer_details` AS
         customer_account.name as customer_name,
         customer_account.income_level,
         customer_account.gender,
+        customer_account.distance,
         kiosk.name as kiosk_name,
         kiosk.id as kiosk_id,
 		kiosk.consumer_base
    FROM
-        sema_swn_core.customer_account
+        customer_account
             INNER JOIN
-        sema_swn_core.kiosk ON customer_account.kiosk_id = kiosk.id
+        kiosk ON customer_account.kiosk_id = kiosk.id

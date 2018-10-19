@@ -10,6 +10,7 @@ CREATE VIEW `receipt_details` AS
         receipt.amount_loan,
         receipt.amount_mobile,
         receipt.amount_card,
+        receipt.customer_account_id,
 		product.unit_per_product,
         receipt_line_item.quantity * product.unit_per_product AS volume,
         receipt.total,

@@ -87,6 +87,7 @@ CREATE TABLE `customer_account` (
   `multimedia3` longtext COMMENT 'Additional reference to photo, file, etc. related to the customer.',
   `multimedia4` longtext COMMENT 'Additional reference to photo, file, etc. related to the customer.',
   `income_level` decimal(19,2) DEFAULT NULL COMMENT 'Estimated daily income as captured during customer registration.',
+  `gender` varchar(255) DEFAULT NULL COMMENT 'Optional account property. (Useful when there are no other contacts associated with the customer account)',
   `distance` int(11) DEFAULT NULL COMMENT 'Distance from the kiosk. (This is used in demographics to group customers by distance from the kiosk)',
   PRIMARY KEY (`id`),
   KEY `customer_account_sales_channel_id_fk_idx` (`sales_channel_id`),
@@ -263,6 +264,7 @@ CREATE TABLE `kiosk` (
   `name` varchar(150) NOT NULL COMMENT 'Name of kiosk.',
   `region_id` bigint(20) NOT NULL COMMENT 'Kiosk region reference.',
   `consumer_base` int(11) DEFAULT NULL COMMENT 'BIGINT Manually entered value on number of ‘customers’ potentially served by the kiosk. (For example a kiosk could server a geographic area that has 1000 households with an average household population to 2.5 resulting in a consumer base of 2500',
+  `gps_coordinates` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `kiosk_region_id_fk_idx` (`region_id`),
   CONSTRAINT `kiosk_region_id_fk` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION

@@ -151,6 +151,7 @@ CREATE TABLE `customer_type` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
   `description` varchar(255) DEFAULT NULL COMMENT 'Type description.',
   `name` varchar(255) NOT NULL COMMENT 'Type name.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -401,6 +402,7 @@ CREATE TABLE `product_mrp` (
   `price_amount` decimal(19,2) NOT NULL COMMENT 'Price for that product for specific kiosk/channel combo.',
   `price_currency` varchar(255) NOT NULL COMMENT 'Currency used for price.',
   `cogs_amount` decimal(19,2) NOT NULL COMMENT 'Cost of product for gross margin calculation purposes.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
   PRIMARY KEY (`id`),
   KEY `product_mrp_kiosk_id_fk_idx` (`kiosk_id`),
   KEY `product_mrp_product_id_fk_idx` (`product_id`),
@@ -805,4 +807,4 @@ CREATE TABLE `vehicle` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-19 15:37:40
+-- Dump completed on 2018-10-19 16:18:17

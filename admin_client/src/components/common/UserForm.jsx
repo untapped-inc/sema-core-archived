@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm, submit } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import TextField from './TextField';
 // import SelectField from './SelectField';
 import CheckboxGroup from './CheckboxGroup';
@@ -31,7 +31,6 @@ const UserForm = ({ handleSubmit }) => (
       type="password"
     />
     <Field name="role" component={CheckboxGroup} label="Role" options={roles} />
-    {/* <Field name="role" component={SelectField} label="Role" options={roles} /> */}
   </form>
 );
 
@@ -40,6 +39,5 @@ UserForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: 'userForm', // a unique identifier for this form
-  validate: validateUserForm,
-  onSubmit: submit
+  validate: validateUserForm
 })(UserForm);

@@ -73,6 +73,7 @@ class UserList extends React.Component {
         data={this.props.data}
         columns={userColumns}
         className="-striped"
+        defaultPageSize={15}
       />
     );
   }

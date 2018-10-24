@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import Button from 'react-bootstrap/lib/Button';
+import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 
 import 'react-table/react-table.css';
 
@@ -24,7 +25,7 @@ class UserList extends React.Component {
     const userId = row.original.id;
     const { onEditClick, onDeleteClick } = this.props;
     return (
-      <div>
+      <ButtonToolbar>
         <Button
           bsStyle="primary"
           bsSize="small"
@@ -39,7 +40,7 @@ class UserList extends React.Component {
         >
           Delete
         </Button>
-      </div>
+      </ButtonToolbar>
     );
   }
 

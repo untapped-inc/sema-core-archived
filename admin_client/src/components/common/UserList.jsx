@@ -21,6 +21,11 @@ const defaultProps = {
 };
 
 class UserList extends React.Component {
+  renderRole(row) {
+    const roles = row.original.role;
+    return roles.join(' ').toUpperCase();
+  }
+
   renderButtons(row) {
     const userId = row.original.id;
     const { onEditClick, onDeleteClick } = this.props;
@@ -61,7 +66,7 @@ class UserList extends React.Component {
       },
       {
         Header: 'Role',
-        accessor: 'role'
+        Cell: row => this.renderRole(row)
       },
       {
         Header: 'Actions',

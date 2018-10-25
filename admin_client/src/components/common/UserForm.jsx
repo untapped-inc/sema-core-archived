@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import get from 'lodash/get';
 import TextField from './TextField';
-// import SelectField from './SelectField';
 import CheckboxGroup from './CheckboxGroup';
 import roles from '../constants/roles';
 
@@ -37,7 +38,20 @@ const UserForm = ({ handleSubmit }) => (
 UserForm.propTypes = propTypes;
 UserForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: 'userForm', // a unique identifier for this form
-  validate: validateUserForm
-})(UserForm);
+const mapStateToProps = (state, ownProps) => ({
+  initialValues: {
+    id: get(ownProps, 'user[0].id', ''),
+    firstName: get(ownProps, 'user[0].firstName', ''),
+    lastName: get(ownProps, 'user[0].lastName', ''),
+    email: get(ownProps, 'user[0].email', ''),
+    username: get(ownProps, 'user[0].username', ''),
+    role: get(ownProps, 'user[0].role', '')
+  }
+});
+
+export default connect(mapStateToProps)(
+  reduxForm({
+    form: 'userForm',
+    validate: validateUserForm
+  })(UserForm)
+);

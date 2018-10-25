@@ -24,6 +24,7 @@ const CheckboxGroup = ({
         onChange={handleChange}
         value={option.value}
         label={option.label}
+        checked={input.value.indexOf(option.value) > -1}
       />
     ));
 

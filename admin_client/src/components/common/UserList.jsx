@@ -25,7 +25,7 @@ const defaultProps = {
 class UserList extends React.Component {
   renderRole(row) {
     const roles = row.original.role;
-    return roles.join(' ').toUpperCase();
+    return roles ? roles.join(' ').toUpperCase() : '';
   }
 
   renderButtons(row) {
@@ -35,7 +35,7 @@ class UserList extends React.Component {
     return (
       <ButtonToolbar>
         <Button
-          bsStyle="info"
+          bsStyle={active ? 'success' : 'info'}
           bsSize="small"
           onClick={e => onToggleUser(userId)}
         >

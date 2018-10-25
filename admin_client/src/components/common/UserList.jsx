@@ -10,14 +10,16 @@ const propTypes = {
   columns: PropTypes.array,
   data: PropTypes.array,
   onDeleteClick: PropTypes.func,
-  onEditClick: PropTypes.func
+  onEditClick: PropTypes.func,
+  onToggleUser: PropTypes.func
 };
 
 const defaultProps = {
   columns: [],
   data: [],
   onDeleteClick: () => {},
-  onEditClick: () => {}
+  onEditClick: () => {},
+  onToggleUser: () => {}
 };
 
 class UserList extends React.Component {
@@ -28,9 +30,17 @@ class UserList extends React.Component {
 
   renderButtons(row) {
     const userId = row.original.id;
-    const { onEditClick, onDeleteClick } = this.props;
+    const active = row.original.active;
+    const { onEditClick, onDeleteClick, onToggleUser } = this.props;
     return (
       <ButtonToolbar>
+        <Button
+          bsStyle="info"
+          bsSize="small"
+          onClick={e => onToggleUser(userId)}
+        >
+          {active ? 'Deactivate' : 'Activate'}
+        </Button>
         <Button
           bsStyle="primary"
           bsSize="small"
@@ -80,6 +90,7 @@ class UserList extends React.Component {
         columns={userColumns}
         className="-striped"
         defaultPageSize={15}
+        loading={this.props.loading}
       />
     );
   }

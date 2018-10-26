@@ -24,8 +24,9 @@ const defaultProps = {
 
 class UserList extends React.Component {
   renderRole(row) {
-    const roles = row.original.role;
-    return roles ? roles.join(' ').toUpperCase() : '';
+    const roles = row.original.role || [];
+    const displayRole = roles.map(role => role.authority);
+    return displayRole.join(' ');
   }
 
   renderButtons(row) {

@@ -45,7 +45,7 @@ const mapStateToProps = (state, ownProps) => ({
     lastName: get(ownProps, 'user[0].lastName', ''),
     email: get(ownProps, 'user[0].email', ''),
     username: get(ownProps, 'user[0].username', ''),
-    role: get(ownProps, 'user[0].role', '')
+    role: get(ownProps, 'user[0].role', []).map(r => r.code)
   }
 });
 

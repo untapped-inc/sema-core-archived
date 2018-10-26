@@ -233,7 +233,7 @@ if __name__ == "__main__":
 
             dbPopulate = DBPopulate(connection)
 
-            xls = pd.ExcelFile("spreadsheets/SWN-Dummy Data-8.31kw.xlsx")
+            xls = pd.ExcelFile("spreadsheets/SWN-Dummy Data-Amasamam.xlsx")
             for i in range(len(xls.sheet_names)):
                 importSheet( xls, i, xls.sheet_names[i], dbPopulate)
         else:

@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.6.35, for macos10.12 (x86_64)
 --
--- Host: 167.99.229.86    Database: sema_dlo_core
+-- Host: 167.99.229.86    Database: sema_core
 -- ------------------------------------------------------
 -- Server version	5.7.23-0ubuntu0.16.04.1
 
@@ -34,7 +34,9 @@ CREATE TABLE `contact` (
   `notes` varchar(255) DEFAULT NULL COMMENT 'Additional notes about the customer.',
   `multimedia1` longtext COMMENT 'Reference to photo, file, etc. related to the contact.',
   `multimedia2` longtext COMMENT 'Additional reference to photo, file, etc. related to the contact.',
-  PRIMARY KEY (`id`)
+  `unique_identifier` varchar(255) NOT NULL COMMENT 'A numerical or alphanumerical code that uniquely identifies the contact.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_identifier_UNIQUE` (`unique_identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -85,6 +87,8 @@ CREATE TABLE `customer_account` (
   `multimedia3` longtext COMMENT 'Additional reference to photo, file, etc. related to the customer.',
   `multimedia4` longtext COMMENT 'Additional reference to photo, file, etc. related to the customer.',
   `income_level` decimal(19,2) DEFAULT NULL COMMENT 'Estimated daily income as captured during customer registration.',
+  `gender` varchar(255) DEFAULT NULL COMMENT 'Optional account property. (Useful when there are no other contacts associated with the customer account)',
+  `distance` int(11) DEFAULT NULL COMMENT 'Distance from the kiosk. (This is used in demographics to group customers by distance from the kiosk)',
   PRIMARY KEY (`id`),
   KEY `customer_account_sales_channel_id_fk_idx` (`sales_channel_id`),
   KEY `customer_account_kiosk_id_fk_idx` (`kiosk_id`),
@@ -148,6 +152,7 @@ CREATE TABLE `customer_type` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date/Time when updated.',
   `description` varchar(255) DEFAULT NULL COMMENT 'Type description.',
   `name` varchar(255) NOT NULL COMMENT 'Type name.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -258,6 +263,8 @@ CREATE TABLE `kiosk` (
   `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
   `name` varchar(150) NOT NULL COMMENT 'Name of kiosk.',
   `region_id` bigint(20) NOT NULL COMMENT 'Kiosk region reference.',
+  `consumer_base` int(11) DEFAULT NULL COMMENT 'BIGINT Manually entered value on number of ‘customers’ potentially served by the kiosk. (For example a kiosk could server a geographic area that has 1000 households with an average household population to 2.5 resulting in a consumer base of 2500',
+  `gps_coordinates` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `kiosk_region_id_fk_idx` (`region_id`),
   CONSTRAINT `kiosk_region_id_fk` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -397,6 +404,7 @@ CREATE TABLE `product_mrp` (
   `price_amount` decimal(19,2) NOT NULL COMMENT 'Price for that product for specific kiosk/channel combo.',
   `price_currency` varchar(255) NOT NULL COMMENT 'Currency used for price.',
   `cogs_amount` decimal(19,2) NOT NULL COMMENT 'Cost of product for gross margin calculation purposes.',
+  `active` bit(1) NOT NULL DEFAULT b'1' COMMENT '1 to display item on UI, 0 to hide.',
   PRIMARY KEY (`id`),
   KEY `product_mrp_kiosk_id_fk_idx` (`kiosk_id`),
   KEY `product_mrp_product_id_fk_idx` (`product_id`),
@@ -441,9 +449,11 @@ DROP TABLE IF EXISTS `reading`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reading` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `kiosk_id` bigint(20) NOT NULL COMMENT 'Kiosk reference.',
   `parameter_id` bigint(20) NOT NULL COMMENT 'Parameter reference.',
   `sampling_site_id` bigint(20) NOT NULL COMMENT 'Sampling site reference.',
+  `value` decimal(19,2) NOT NULL COMMENT 'The reading value',
   `user_id` bigint(20) NOT NULL COMMENT 'User reference.',
   PRIMARY KEY (`id`),
   KEY `reading_kiosk_id_fk_idx` (`kiosk_id`),
@@ -495,6 +505,7 @@ CREATE TABLE `receipt` (
   `delivery_id` bigint(20) DEFAULT NULL COMMENT 'Delivery reference.',
   `is_sponsor_selected` bit(1) NOT NULL DEFAULT b'0' COMMENT '1 for sponsor selected, 0 otherwise.',
   `kiosk_id` bigint(20) NOT NULL COMMENT 'Kiosk reference.',
+  `user_id` bigint(20) DEFAULT NULL COMMENT 'The user/kiosk staff who entered the sale.',
   `payment_type` varchar(255) NOT NULL,
   `sales_channel_id` bigint(20) NOT NULL COMMENT 'Sales channel reference.',
   `customer_type_id` bigint(20) NOT NULL COMMENT 'Customer type reference.',
@@ -509,11 +520,13 @@ CREATE TABLE `receipt` (
   KEY `receipt_customer_type_id_fk_idx` (`customer_type_id`),
   KEY `receipt_customer_account_id_fk_idx` (`customer_account_id`),
   KEY `receipt_sponsor_id_fk_idx` (`sponsor_id`),
+  KEY `receipt_user_id_fk_idx` (`user_id`),
   CONSTRAINT `receipt_customer_account_id_fk` FOREIGN KEY (`customer_account_id`) REFERENCES `customer_account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `receipt_customer_type_id_fk` FOREIGN KEY (`customer_type_id`) REFERENCES `customer_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `receipt_kiosk_id_fk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `receipt_sales_channel_id_fk` FOREIGN KEY (`sales_channel_id`) REFERENCES `sales_channel` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `receipt_sponsor_id_fk` FOREIGN KEY (`sponsor_id`) REFERENCES `sponsor` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `receipt_sponsor_id_fk` FOREIGN KEY (`sponsor_id`) REFERENCES `sponsor` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `receipt_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -796,4 +809,4 @@ CREATE TABLE `vehicle` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-14 20:01:09
+-- Dump completed on 2018-10-24 22:05:28

@@ -2,7 +2,7 @@
 --
 -- Host: 167.99.229.86    Database: sema_core
 -- ------------------------------------------------------
--- Server version	5.7.23-0ubuntu0.16.04.1
+-- Server version	5.7.24-0ubuntu0.16.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -34,7 +34,7 @@ CREATE TABLE `contact` (
   `notes` varchar(255) DEFAULT NULL COMMENT 'Additional notes about the customer.',
   `multimedia1` longtext COMMENT 'Reference to photo, file, etc. related to the contact.',
   `multimedia2` longtext COMMENT 'Additional reference to photo, file, etc. related to the contact.',
-  `unique_identifier` varchar(255) NOT NULL COMMENT 'A numerical or alphanumerical code that uniquely identifies the contact.',
+  `unique_identifier` varchar(255) DEFAULT NULL COMMENT 'A numerical or alphanumerical code that uniquely identifies the contact.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_identifier_UNIQUE` (`unique_identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -809,4 +809,4 @@ CREATE TABLE `vehicle` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-24 22:05:28
+-- Dump completed on 2018-10-26  0:53:04

@@ -36,7 +36,7 @@ class UserList extends React.Component {
     return (
       <ButtonToolbar>
         <Button
-          bsStyle={active ? 'success' : 'info'}
+          bsStyle={active ? 'info' : 'success'}
           bsSize="small"
           onClick={e => onToggleUser(userId)}
         >
@@ -90,7 +90,7 @@ class UserList extends React.Component {
         data={this.props.data}
         columns={userColumns}
         className="-striped"
-        defaultPageSize={15}
+        defaultPageSize={20}
         loading={this.props.loading}
       />
     );

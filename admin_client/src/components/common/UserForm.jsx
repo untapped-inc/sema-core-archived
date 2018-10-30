@@ -18,8 +18,11 @@ const defaultProps = {
   handleSubmit: () => {},
   roles
 };
-
-const UserForm = ({ handleSubmit }) => (
+const validatePassword = (values, allValues, props) => {
+  if (props.editMode) return;
+  if (!values) return 'Required';
+};
+const UserForm = ({ handleSubmit, editMode }) => (
   <form onSubmit={handleSubmit}>
     <Field name="firstName" component={TextField} label="First Name" />
     <Field name="lastName" component={TextField} label="Last Name" />
@@ -28,8 +31,9 @@ const UserForm = ({ handleSubmit }) => (
     <Field
       name="password"
       component={TextField}
-      label="Password"
+      label={editMode ? 'Change Password' : 'Password'}
       type="password"
+      validate={validatePassword}
     />
     <Field name="role" component={CheckboxGroup} label="Role" options={roles} />
   </form>

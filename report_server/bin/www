@@ -32,7 +32,10 @@ models.sequelize.sync().then(() => {
 	/**
 	 * Listen on provided port, on all network interfaces.
 	 */
-	server.listen(port);
+	if (process.env.NODE_ENV !== 'test') {
+  	server.listen(port);
+	}
+	// server.listen(port);
 	server.on('error', onError(port));
 	server.on('listening', onListening(server, debug));
 });

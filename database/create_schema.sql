@@ -78,7 +78,7 @@ CREATE TABLE `customer_account` (
   `address_line1` varchar(255) NOT NULL COMMENT 'Required business address.',
   `address_line2` varchar(255) DEFAULT NULL COMMENT 'Optional business address.',
   `address_line3` varchar(255) DEFAULT NULL COMMENT 'Optional business address.',
-  `gps_coordinates` varchar(255) NOT NULL,
+  `gps_coordinates` varchar(255) DEFAULT NULL,
   `what3words` varchar(255) DEFAULT NULL COMMENT 'Alternative coordinate system.',
   `phone_number` varchar(255) NOT NULL COMMENT 'Main contact phone (may be same as contact phone).',
   `notes` varchar(255) DEFAULT NULL COMMENT 'Additional notes about the customer.',
@@ -809,4 +809,4 @@ CREATE TABLE `vehicle` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-30 12:37:49
+-- Dump completed on 2018-10-30 12:42:08

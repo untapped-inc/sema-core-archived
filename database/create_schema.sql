@@ -78,7 +78,7 @@ CREATE TABLE `customer_account` (
   `address_line1` varchar(255) NOT NULL COMMENT 'Required business address.',
   `address_line2` varchar(255) DEFAULT NULL COMMENT 'Optional business address.',
   `address_line3` varchar(255) DEFAULT NULL COMMENT 'Optional business address.',
-  `gps_coordinates` varchar(255) NOT NULL,
+  `gps_coordinates` varchar(255) DEFAULT NULL,
   `what3words` varchar(255) DEFAULT NULL COMMENT 'Alternative coordinate system.',
   `phone_number` varchar(255) NOT NULL COMMENT 'Main contact phone (may be same as contact phone).',
   `notes` varchar(255) DEFAULT NULL COMMENT 'Additional notes about the customer.',
@@ -264,7 +264,7 @@ CREATE TABLE `kiosk` (
   `name` varchar(150) NOT NULL COMMENT 'Name of kiosk.',
   `region_id` bigint(20) NOT NULL COMMENT 'Kiosk region reference.',
   `consumer_base` int(11) DEFAULT NULL COMMENT 'BIGINT Manually entered value on number of ‘customers’ potentially served by the kiosk. (For example a kiosk could server a geographic area that has 1000 households with an average household population to 2.5 resulting in a consumer base of 2500',
-  `gps_coordinates` varchar(255) NOT NULL,
+  `gps_coordinates` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `kiosk_region_id_fk_idx` (`region_id`),
   CONSTRAINT `kiosk_region_id_fk` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -809,4 +809,4 @@ CREATE TABLE `vehicle` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-26  0:53:04
+-- Dump completed on 2018-10-30 12:42:08

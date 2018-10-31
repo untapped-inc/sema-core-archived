@@ -44,14 +44,14 @@ The client is a React application
 In development mode, the dashboard server runs on locathost:3001 and the React App on port 3000. REST calls from the app to the server are proxied through port 3001.
 
 ## Android build
-The Android POS application is a React-Native application used by Jibu to record sales of water products
+The Android POS application is a React-Native application used by the SWE to record sales of water products
 To build the POS application:
 * Follow the Android setup steps at: https://facebook.github.io/react-native/docs/getting-started.html#content. Make sure you select the appropriate tabs in the instructions. 
 "Building Projects with **Native Code**"
 "Development OS: **macOS** or **Windows** or **Linux** Target OS:  **Android**"
-* Change to folder jib_pos `cd jibu_pos`
+* Change to folder mobile_client `cd mobile_client`
 * Install dependencies `yarn install`
-* Open the Android project in the folder jibu_pos with Android Studio. Note. Do not open the folder jibu_pos, open **jibu_pos/android**
+* Open the Android project in the folder mobile_client with Android Studio. Note. Do not open the folder mobile_client, open **mobile_client/android**
 Build the project from Build menu
 * Additional instructions for debugging can be found at with JetBrains WebStorm and Visual Studio Code can be found at https://dlohaiti.atlassian.net/wiki/spaces/DLODOC/pages/34078783/React+Native+on+Android?atlOrigin=eyJpIjoiNGFmMDEwNGVjMTYwNDNhMWJkODZmODgzODQ5NzJiNjIiLCJwIjoiYyJ9
 

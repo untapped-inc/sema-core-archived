@@ -9,7 +9,7 @@
   "test": "yarn populate && TZ='America/Los_Angeles' mocha --exit --timeout 10000",
   "dbdoc": "cd ../documentations && java -jar schemaspy.jar",
   "dbdump": "sh ../database/db_dump.sh",
-  "buildapk": "sh ../jibu_pos/build_sema_apk.sh"
+  "buildapk": "sh ../mobile_client/build_sema_apk.sh"
  },
  "dependencies": {
   "bcrypt": "^2.0.1",

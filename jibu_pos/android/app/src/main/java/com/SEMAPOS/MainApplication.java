@@ -1,4 +1,4 @@
-package com.jibu_pos;
+package com.SEMAPOS;
 
 import android.app.Application;
 

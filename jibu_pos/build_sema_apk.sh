@@ -1,5 +1,5 @@
 # Move to POS folder
-cd ../jibu_pos
+cd ../mobile_client
 
 # Create bundle
 echo Generating the signing key

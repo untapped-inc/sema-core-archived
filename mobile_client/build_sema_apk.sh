@@ -1,11 +1,9 @@
-# Move to POS folder
-cd ../mobile_client
-
 # Create bundle
 echo Generating the signing key
 sudo keytool -genkey -v -keystore android/app/sema-pos-key.keystore -alias sema-pos-key -keyalg RSA -keysize 2048 -validity 10000
 
 # Get keystore password from user
+echo # Add a blank line so the user can clearly see the input request
 read -s -p "Enter your keystore password again: " password
 echo
 

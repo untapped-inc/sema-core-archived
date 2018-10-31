@@ -1,0 +1,7 @@
+/* TODO move to CSS MODULES */
+.spinner {
+  margin: 0px auto;
+  top: 100px;
+  position: relative;
+  width: 0;
+}

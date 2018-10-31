@@ -14,11 +14,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React Native!"
 
-@interface jibu_posTests : XCTestCase
+@interface SEMAPOSTests : XCTestCase
 
 @end
 
-@implementation jibu_posTests
+@implementation SEMAPOSTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL(^)(UIView *view))test
 {

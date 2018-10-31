@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "jibu_pos-tvOS.app"
-               BlueprintName = "jibu_pos-tvOS"
-               ReferencedContainer = "container:jibu_pos.xcodeproj">
+               BuildableName = "SEMAPOS-tvOS.app"
+               BlueprintName = "SEMAPOS-tvOS"
+               ReferencedContainer = "container:SEMAPOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "jibu_pos-tvOSTests.xctest"
-               BlueprintName = "jibu_pos-tvOSTests"
-               ReferencedContainer = "container:jibu_pos.xcodeproj">
+               BuildableName = "SEMAPOS-tvOSTests.xctest"
+               BlueprintName = "SEMAPOS-tvOSTests"
+               ReferencedContainer = "container:SEMAPOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "jibu_pos-tvOSTests.xctest"
-               BlueprintName = "jibu_pos-tvOSTests"
-               ReferencedContainer = "container:jibu_pos.xcodeproj">
+               BuildableName = "SEMAPOS-tvOSTests.xctest"
+               BlueprintName = "SEMAPOS-tvOSTests"
+               ReferencedContainer = "container:SEMAPOS.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "jibu_pos-tvOS.app"
-            BlueprintName = "jibu_pos-tvOS"
-            ReferencedContainer = "container:jibu_pos.xcodeproj">
+            BuildableName = "SEMAPOS-tvOS.app"
+            BlueprintName = "SEMAPOS-tvOS"
+            ReferencedContainer = "container:SEMAPOS.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "jibu_pos-tvOS.app"
-            BlueprintName = "jibu_pos-tvOS"
-            ReferencedContainer = "container:jibu_pos.xcodeproj">
+            BuildableName = "SEMAPOS-tvOS.app"
+            BlueprintName = "SEMAPOS-tvOS"
+            ReferencedContainer = "container:SEMAPOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "jibu_pos-tvOS.app"
-            BlueprintName = "jibu_pos-tvOS"
-            ReferencedContainer = "container:jibu_pos.xcodeproj">
+            BuildableName = "SEMAPOS-tvOS.app"
+            BlueprintName = "SEMAPOS-tvOS"
+            ReferencedContainer = "container:SEMAPOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

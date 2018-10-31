@@ -20,7 +20,7 @@ import base64
 
 if __name__ == "__main__":
     print('Python', python_version())
-    imageDir = "jibu_images/"
+    imageDir = "sema_images/"
     f = open("URIs/base64_images.txt")
     URIs = f.readlines()
 
@@ -54,7 +54,7 @@ if __name__ == "__main__":
         if "sema" in db_name.lower():
 
             dbPopulate = DBPopulate(connection)
-            dbPopulate.populate_product_category("Water products for Jibu", "water_products")
+            dbPopulate.populate_product_category("Water products", "water_products")
             for product in products:
                 file_name = imageDir + product.base64encodedImage
                 with open(file_name, "rb") as image_file:

@@ -108,7 +108,7 @@ if __name__ == "__main__":
         db_name = cursor.fetchone()[0]
 
 
-        # Verify you are connected to a jibu database
+        # Verify you are connected to a SEMA database
         if "swn" in db_name.lower():
 
 

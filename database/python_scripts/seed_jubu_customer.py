@@ -40,8 +40,8 @@ if __name__ == "__main__":
         db_name = cursor.fetchone()[0]
 
 
-        # Verify you are connected to a jibu database
-        if "jibu" in db_name.lower():
+        # Verify you are connected to a SEMA database
+        if "sema" in db_name.lower():
 
             dbPopulate = DBPopulate(connection)
             dbPopulate.populate_country('Uganda')
@@ -63,7 +63,7 @@ if __name__ == "__main__":
                 dbPopulate.populate_customer('Kiswa', "generic", customer.channel, customer.name,
                                              customer.created_date, customer.updated_date, customer.phone)
         else:
-            print("You are not connected to a 'jibu' database")
+            print("You are not connected to a 'sema' database")
         dbConnection.close()
     else:
         print('failed to connect')

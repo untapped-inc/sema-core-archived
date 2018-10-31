@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "rename": "sh rename.sh"
+    "rename": "sh rename.sh",
+    "buildapk": "sh build_sema_apk.sh"
   },
   "dependencies": {
     "i18n-js": "^3.0.11",

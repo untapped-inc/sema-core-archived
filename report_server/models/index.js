@@ -6,6 +6,8 @@ const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const associations = require('./associations');
 const customMethods = require('./custom-methods');
+const Op = Sequelize.Op;
+
 const db = {};
 
 const sequelize = new Sequelize(
@@ -15,7 +17,8 @@ const sequelize = new Sequelize(
 	{
 		host: __dbConfig.host,
 		dialect: __dbConfig.dialect,
-		logging: false // No need to see all those boring SQL queries
+		logging: false, // No need to see all those boring SQL queries
+		operatorsAliases: Op // turn off string deprecation error
 	}
 );
 

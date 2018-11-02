@@ -6,6 +6,7 @@ import { persistReducer } from 'redux-persist';
 import healthCheck from './HealthcheckReducer';
 import auth from './AuthReducer';
 import userReducer from './UserReducer';
+import productReducer from './ProductReducer';
 import loadingReducer from './LoadingReducer';
 import alertReducer from './AlertReducer';
 
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   auth,
   users: userReducer,
   form: formReducer,
+  products: productReducer,
   loading: loadingReducer,
   alert: alertReducer
 });

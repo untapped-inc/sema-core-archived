@@ -98,7 +98,7 @@ app.use('/sema/dashboard/site/water-chart/', sema_water_chart);
 app.use('/sema/dashboard/site/water-summary/', sema_water_summary);
 
 app.use('/sema/users', isAuthenticated, sema_users);
-app.use('/sema/admin/products', sema_admin_products);
+app.use('/sema/admin/products', isAuthenticated, sema_admin_products);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

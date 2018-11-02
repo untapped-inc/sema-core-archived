@@ -5,3 +5,8 @@
   position: relative;
   width: 0;
 }
+
+.product-image {
+  margin: auto;
+  height: 100px;
+}

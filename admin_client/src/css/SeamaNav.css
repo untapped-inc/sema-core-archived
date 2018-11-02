@@ -1,5 +1,5 @@
-.SeamaNav {
-    display: grid;
+/* .SeamaNav { */
+/* display: grid;
     grid-template-columns: 240px auto;
     grid-template-rows: auto auto;
     background-color: rgb(255, 255, 255);
@@ -17,16 +17,16 @@
 	padding: 3px;
     background: rgb(0, 0 ,255);
     height:100vh;
-}
+} */
 
 /*.SeamaNavContent {*/
-    /*display: grid;*/
-    /*grid-column: 2;*/
-    /*grid-row:2;*/
-    /*background: rgb(200, 200 ,200);*/
+/*display: grid;*/
+/*grid-column: 2;*/
+/*grid-row:2;*/
+/*background: rgb(200, 200 ,200);*/
 /*}*/
 
-.SeamaNavSidebar li a {
+/* .SeamaNavSidebar li a {
     color: white;
     background:rgb(24, 55, 106)
-}
+} */

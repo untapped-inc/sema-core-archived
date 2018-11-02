@@ -13,7 +13,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  buttonSize: 'small',
   buttonStyle: 'primary',
   onClick: () => {},
   buttonText: '',
@@ -31,11 +30,11 @@ const Button = ({
 }) => (
   <BButton
     bsStyle={buttonStyle}
-    bsSize={buttonSize}
+    bsSize={buttonSize || null}
     onClick={onClick}
     className={className}
   >
-    {icon && <Glyphicon glyph={icon} />}
+    {icon && <Glyphicon glyph={icon} style={{ marginRight: '3px' }} />}
     {buttonText}
   </BButton>
 );

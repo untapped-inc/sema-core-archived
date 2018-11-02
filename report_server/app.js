@@ -28,7 +28,7 @@ var sema_sales_ex = require('./routes/sema_sales_ex');
 var sema_units = require('./routes/sema_units');
 var sema_water_chart = require('./routes/sema_water_chart');
 var sema_water_summary = require('./routes/sema_water_summary');
-
+const getIotileData = require('./routes/getIotileData');
 
 var sema_users = require('./routes/sema_user');
 
@@ -72,6 +72,7 @@ app.use('/Sales', index);
 app.use('/Volumes', index);
 app.use('/Demographics', index);
 
+app.use('/iotile', getIotileData);
 app.use('/untapped/health-check', seama_health_check);
 app.use('/untapped/login', seama_login);
 app.use('/untapped/kiosks', isAuthenticated, seama_kiosks);

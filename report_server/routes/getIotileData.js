@@ -5,15 +5,14 @@ const axios = require('axios');
 
 /* GET users listing. */
 router.get('/', async (req, res) => {
-    try {
-        const user = await getUserInfo();
-        return res.json({
-            message: user
-        });
-    } catch (err) {
-        console.log('error');
+    const [err, user] = await __hp(getUserInfo());
+    if (err) {
         console.log(err);
+        return __te(err, res, 500, {});
     }
+    return res.json({
+        message: user
+    })
 });
 
 const getUserInfo = () => {

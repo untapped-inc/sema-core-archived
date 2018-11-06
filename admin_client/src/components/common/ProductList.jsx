@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 import Image from 'react-bootstrap/lib/Image';
 import 'react-table/react-table.css';
@@ -19,7 +20,7 @@ const defaultProps = {
 
 class ProductList extends React.Component {
   renderImage(row) {
-    const image = row.original.base64encoded_image || '';
+    const image = row.original.base64Image || '';
     return (
       <Image
         className="product-image"
@@ -27,6 +28,12 @@ class ProductList extends React.Component {
         responsive
       />
     );
+  }
+
+  renderName(row) {
+    const productId = row.original.id || '';
+    const productName = row.original.name || '';
+    return <Link to={`/products/${productId}`}>{productName}</Link>;
   }
 
   render() {
@@ -37,7 +44,8 @@ class ProductList extends React.Component {
       },
       {
         Header: 'Name',
-        accessor: 'name'
+        Cell: row => this.renderName(row)
+        // accessor: 'name'
       },
       {
         Header: 'Description',
@@ -54,7 +62,7 @@ class ProductList extends React.Component {
       {
         id: 'price',
         Header: 'Price',
-        accessor: d => `${d.price_amount} ${d.price_currency}`
+        accessor: d => `${d.priceAmount} ${d.priceCurrency}`
       },
       {
         Header: 'Quantity',

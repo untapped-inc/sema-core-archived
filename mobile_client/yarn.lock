@@ -3678,6 +3678,10 @@ ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
+murmurhash-js@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/murmurhash-js/-/murmurhash-js-1.0.0.tgz#b06278e21fc6c37fa5313732b0412bcb6ae15f51"
+
 mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
@@ -4203,6 +4207,12 @@ punycode@^2.1.0:
 qs@~6.5.1:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
+
+random-material-color@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/random-material-color/-/random-material-color-1.0.3.tgz#14d60d20413b9b46bf02f9a2f2cd4aa21a139a37"
+  dependencies:
+    murmurhash-js "^1.0.0"
 
 randomatic@^3.0.0:
   version "3.0.0"

@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, TouchableHighlight} from 'react-native';
 import * as colors from '../../styles/sema_colors';
 import SalesReport from './SalesReport';
 import InventoryReport from './InventoryReport';
+import RemindersReport from './RemindersReport';
 import Sidebar from './Sidebar';
 
 export default class SiteReport extends Component {
@@ -23,6 +24,7 @@ class Report extends Component {
 			<View style ={{flex:4,backgroundColor:colors.COLOR_REPORT__BACKGROUND}}>
 				<SalesReport/>
 				<InventoryReport/>
+				<RemindersReport/>
 			</View>
 		);
 	}

@@ -17,6 +17,9 @@ class Sidebar extends Component {
 					<TouchableHighlight onPress={() => this.onInventory()}>
 						<Text style={this.getInventoryMenuStyle()}>{i18n.t('inventory')}</Text>
 					</TouchableHighlight>
+					<TouchableHighlight onPress={() => this.onReminders()}>
+						<Text style={this.getReminderMenuStyle()}>Reminders</Text>
+					</TouchableHighlight>
 				</View>
 		);
 	}
@@ -27,6 +30,10 @@ class Sidebar extends Component {
 	onInventory = () =>{
 		this.props.reportActions.setReportType("inventory");
 	};
+	
+	onReminders = () => {
+		this.props.reportActions.setReportType("reminders");
+	}
 
 	getSalesMenuStyle(){
 		return (this.props.reportType === "sales") ?
@@ -35,6 +42,11 @@ class Sidebar extends Component {
 	}
 	getInventoryMenuStyle(){
 		return (this.props.reportType === "inventory") ?
+			[styles.menuText, { color: "#3C93FC" }] :
+			[styles.menuText]
+	}
+	getReminderMenuStyle() {
+		return (this.props.reportType === "reminders") ?
 			[styles.menuText, { color: "#3C93FC" }] :
 			[styles.menuText]
 	}

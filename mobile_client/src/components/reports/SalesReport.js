@@ -230,7 +230,6 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		height: 36,
 		flexDirection:'row',
-
 	},
 
 	leftHeader: {

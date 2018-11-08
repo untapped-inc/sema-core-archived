@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 import Image from 'react-bootstrap/lib/Image';
 import 'react-table/react-table.css';
@@ -19,33 +18,38 @@ const defaultProps = {
 };
 
 class ProductList extends React.Component {
-  renderImage(row) {
-    const image = row.original.base64Image || '';
-    return (
-      <Image
-        className="product-image"
-        src={`data:image/png;base64,${image}`}
-        responsive
-      />
-    );
+  constructor(props) {
+    super(props);
+    this.handleRowClick = this.handleRowClick.bind(this);
   }
 
-  renderName(row) {
+  handleRowClick(row) {
     const productId = row.original.id || '';
+    this.props.history.push(`/products/${productId}`);
+  }
+
+  renderProduct(row) {
+    const image = row.original.base64Image || '';
     const productName = row.original.name || '';
-    return <Link to={`/products/${productId}`}>{productName}</Link>;
+    return (
+      <div className="product">
+        <Image
+          className="product-image"
+          src={`data:image/png;base64,${image}`}
+          responsive
+        />
+        <span className="product-name">{productName}</span>
+      </div>
+    );
   }
 
   render() {
     const productColumns = [
       {
-        Header: 'Thumbnail',
-        Cell: row => this.renderImage(row)
-      },
-      {
-        Header: 'Name',
-        Cell: row => this.renderName(row)
-        // accessor: 'name'
+        Header: 'Product',
+        className: 'sticky',
+        headerClassName: 'sticky',
+        Cell: row => this.renderProduct(row)
       },
       {
         Header: 'Description',
@@ -53,7 +57,7 @@ class ProductList extends React.Component {
       },
       {
         Header: 'Category',
-        accessor: 'category_id'
+        accessor: 'category'
       },
       {
         Header: 'SKU',
@@ -77,6 +81,9 @@ class ProductList extends React.Component {
         className="-striped -highlight"
         defaultPageSize={20}
         loading={this.props.loading}
+        getTrProps={(state, rowInfo, column, instance) => ({
+          onClick: e => this.handleRowClick(rowInfo)
+        })}
       />
     );
   }

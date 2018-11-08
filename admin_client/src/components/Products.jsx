@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import Button from './common/Button';
 import ProductList from './common/ProductList';
 
@@ -20,10 +21,11 @@ class Products extends Component {
           // loading={this.props.loading}
           products={this.props.products}
           // onEditClick={id => this.editUser(id)}
+          {...this.props}
         />
       </div>
     );
   }
 }
 
-export default Products;
+export default withRouter(Products);

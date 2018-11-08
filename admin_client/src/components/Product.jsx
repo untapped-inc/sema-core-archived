@@ -3,7 +3,6 @@ import ProductForm from './common/ProductForm';
 
 class Product extends Component {
   render() {
-    console.log('Product page');
     return (
       <div className="">
         <ProductForm />

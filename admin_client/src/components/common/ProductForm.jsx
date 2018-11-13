@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import get from 'lodash/get';
 import TextField from './TextField';
+import ImageUpload from './ImageUpload';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired
@@ -16,6 +17,7 @@ const defaultProps = {
 
 const ProductForm = ({ handleSubmit }) => (
   <Form horizontal onSubmit={handleSubmit}>
+    <ImageUpload />
     <Field name="name" label="Product Name" component={TextField} horizontal />
     <Field name="sku" label="SKU" component={TextField} horizontal />
     <Field

@@ -33,14 +33,12 @@ const getLatestFeedFlowmeterEntry = () => {
     return new Promise((resolve, reject) => {
         __pool.getConnection(async (err, connection) => {
             connection.query(latestFeedFlowmeterEntryQuery, (err, result) => {
-                if (!err) {
-                    if (Array.isArray(result) && result.length > 0) {
-                        return resolve(result);
-                    } else {
-                        return resolve();
-                    }
+                if (err) return reject(err);
+                if (Array.isArray(result) && result.length > 0) {
+                    return resolve(result);
+                } else {
+                    return resolve(null);
                 }
-                return reject(err);
             });
         });
     });

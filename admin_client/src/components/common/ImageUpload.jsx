@@ -31,6 +31,9 @@ const img = {
   width: 'auto',
   height: '100%'
 };
+const p = {
+  margin: '10px'
+};
 
 class ImageUpload extends React.Component {
   constructor(props) {
@@ -38,10 +41,22 @@ class ImageUpload extends React.Component {
 
     this.onDrop = this.onDrop.bind(this);
     this.onCancel = this.onCancel.bind(this);
+    this.updateFormValue = this.updateFormValue.bind(this);
+    this.renderThumbnail = this.renderThumbnail.bind(this);
     this.state = { files: [] };
   }
 
+  updateFormValue(event) {
+    const imageString = event.target.result;
+    const encodedImage = imageString.replace(/^data:image\/[a-z]+;base64,/, '');
+    this.props.input.onChange(encodedImage);
+  }
+
   onDrop(files) {
+    const file = files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = this.updateFormValue;
     this.setState({
       files: files.map(file => ({
         ...file,
@@ -56,28 +71,45 @@ class ImageUpload extends React.Component {
     });
   }
 
-  render() {
-    const thumbs = this.state.files.map(file => (
-      <div style={thumb}>
-        <div style={thumbInner}>
-          <img src={file.preview} style={img} />
+  renderThumbnail() {
+    const { files } = this.state;
+    const {
+      input: { value }
+    } = this.props;
+    return (
+      <aside style={thumbsContainer}>
+        <div style={thumb}>
+          <div style={thumbInner}>
+            <img
+              src={
+                files[0] ? files[0].preview : `data:image/png;base64,${value}`
+              }
+              style={img}
+              alt="product"
+            />
+          </div>
         </div>
-      </div>
-    ));
+      </aside>
+    );
+  }
+
+  render() {
     return (
       <section>
         <div className="dropzone">
           <Dropzone
+            {...this.props.input}
+            multiple={false}
             accept="image/*"
             onDrop={this.onDrop}
             onFileDialogCancel={this.onCancel}
           >
-            <p>
+            <p style={p}>
               Try dropping some files here, or click to select files to upload.
             </p>
           </Dropzone>
         </div>
-        <aside style={thumbsContainer}>{thumbs}</aside>
+        {this.renderThumbnail()}
       </section>
     );
   }

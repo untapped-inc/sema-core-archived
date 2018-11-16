@@ -11,14 +11,14 @@ const TextField = ({ name, label, input, meta, horizontal, ...props }) => (
     validationState={meta.invalid && meta.touched ? 'error' : null}
   >
     {horizontal ? (
-      <Col componentClass={ControlLabel} sm={2}>
+      <Col componentClass={ControlLabel} sm={3}>
         {label}
       </Col>
     ) : (
       <ControlLabel>{label}</ControlLabel>
     )}
     {horizontal ? (
-      <Col sm={10}>
+      <Col sm={9}>
         <FormControl {...input} {...props} />
       </Col>
     ) : (

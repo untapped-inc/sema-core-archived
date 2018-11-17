@@ -1,27 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { getProductCategories } from '../../actions/ProductActions';
 import SelectField from './SelectField';
 
 class ProductCategoryDropdown extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      categories: []
-    };
-  }
-
   componentDidMount() {
     this.props.getProductCategories();
   }
 
   render() {
-    return <SelectField {...this.props} options={this.state.categories} />;
+    const { categories, getProductCategories, ...rest } = this.props;
+
+    const categoryOptions = categories.map(category => ({
+      value: category.name,
+      label: category.name
+    }));
+
+    return <SelectField {...rest} options={categoryOptions} />;
   }
 }
 
 export default connect(
-  null,
+  state => ({
+    categories: state.productCategories
+  }),
   { getProductCategories }
 )(ProductCategoryDropdown);

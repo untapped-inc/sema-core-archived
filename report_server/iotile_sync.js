@@ -45,11 +45,6 @@ const getIotileToken = () => {
     });
 };
 
-// TODO: save the received token to local storage and check its validity before calling for
-// a new one. Using a sample token for now to make development fast.
-// const [err2, {token}] = await hp(getIotileToken());
-const sample_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0ODQsInVzZXJuYW1lIjoidW50YXBwZWQiLCJleHAiOjE1NDI4MzM5OTEsImVtYWlsIjoiamltQHVudGFwcGVkLWluYy5jb20iLCJvcmlnX2lhdCI6MTU0MjIyOTE5MX0.lauApXJs2oG8yeG5yu4qxatEzDDKEH0vPOVLEaR2g1c";
-
 const selectLatestEntryQuery = `SELECT 
     *
 FROM
@@ -157,7 +152,7 @@ const syncReading = (readingData, mapping, pool) => {
     });
 };
 
-// TODO: Handle errors correctly
+// TODO: Handle errors
 iotileConfig.mappings.forEach(async mapping => {
 
     // Skip inactive devices
@@ -172,8 +167,12 @@ iotileConfig.mappings.forEach(async mapping => {
     const [err, latestEntry] = await hp(getLatestEntry(mapping, pool));
     const lastSyncDate = latestEntry && latestEntry[0] && latestEntry[0].created_at;
 
+    // TODO: save the received token to local storage and check its validity before calling for
+    // a new one. For now, it's getting a new token every 10 minutes
+    const [err2, {token}] = await hp(getIotileToken());
+
     // Pull the data from IoTile using the token and the latest sync date
-    const [err2, streamData] = await hp(getStreamData(sample_token, lastSyncDate, mapping));
+    const [err3, streamData] = await hp(getStreamData(token, lastSyncDate, mapping));
 
     // Get rid of the first value of the stream data if it's of the exact same
     // date as the last sync date because currently, IoTile includes

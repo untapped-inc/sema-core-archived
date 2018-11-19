@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import {Line} from 'react-chartjs-2';
+import {Line, Chart} from 'react-chartjs-2';
 import moment from "moment/moment";
 import { utilService } from 'services';
 import 'css/SemaChart.css';
 
+// Chart.defaults.global.defaultFontColor = '#666';
 
 class SemaChlorineChart extends Component {
 
@@ -77,12 +78,13 @@ class SemaChlorineChart extends Component {
 			chlorine.datasets[0].backgroundColor='rgb(53, 91, 183)';
 			chlorine.datasets[0].fill=false;
 			chlorine.datasets[0].pointRadius=0;
+			chlorine.datasets[0].borderWidth = 4;
 			chlorine.datasets[0].borderColor='rgb(53, 91, 183)';
 			chlorine.labels = chlorine.labels.map(function(time)
 				{return moment(time ).format("MMM Do YY")});
-			createGuide(chlorine.datasets, 0.9, "red", "High");
-			createGuide(chlorine.datasets, 0.4, "yellow", "Low");
-			createGuide(chlorine.datasets, 0.6, "green", "ideal");
+			createGuide(chlorine.datasets, 0.9, 'rgba(255,0,0,1.0)', "High");
+			createGuide(chlorine.datasets, 0.4, 'rgba(0,255,0,1.0)', "Low");
+			createGuide(chlorine.datasets, 0.6, 'rgba(255,255,0,1.0)', "ideal");
 			return chlorine;
 		}
 	}

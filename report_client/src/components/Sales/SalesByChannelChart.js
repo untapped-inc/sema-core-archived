@@ -3,12 +3,11 @@ import {Doughnut} from 'react-chartjs-2';
 import { utilService } from 'services';
 import 'css/SemaChart.css';
 
-class WaterVolumeChannelChart extends Component {
+class SalesByChannelChart extends Component {
     render() {
 		if( this.props.chartData.loaded ) {
 			return (
-				<div className="ChartContainer">
-					<div className="chart" style={{backgroundColor: 'white', margin: "2px"}}>
+				<div className="chart" style={{backgroundColor: 'white', margin: "2px"}}>
 						<Doughnut
 							data={this.getVolumeData()}
 							// data = {{
@@ -37,7 +36,6 @@ class WaterVolumeChannelChart extends Component {
 							}}
 						/>
 					</div>
-				</div>
 			);
 		}else{
 			return  (<div style={{textAlign:"center"}}>
@@ -46,42 +44,43 @@ class WaterVolumeChannelChart extends Component {
 					No Data available
 				</div>
 			);
+
 		}
     }
 	getVolumeData(){
 		let data = {labels:[], datasets:[]}
 		if( this.props.chartData.loaded ) {
-    		if( this.props.chartData.volumeInfo.hasOwnProperty('volumeByChannel') &&
-				this.props.chartData.volumeInfo.volumeByChannel.hasOwnProperty('volume') ){
-				data.datasets.push( {label: "Volume by Sales Channel", backgroundColor:[], data:[]});
+    		if( this.props.chartData.salesInfo.hasOwnProperty('salesByChannel')){
 
-				this.props.chartData.volumeInfo.volumeByChannel.volume.data.forEach((salesChannel, index) => {
+				data.datasets.push( {label: "Revenue Channel", backgroundColor:[], data:[]});
+
+				this.props.chartData.salesInfo.salesByChannel.total.data.forEach((salesChannel, index) => {
 					data.labels.push(salesChannel.salesChannel);
 					data.datasets[0].backgroundColor.push( utilService.getBackgroundColorByIndex( index ) );
-					data.datasets[0].data.push(salesChannel.volume );
+					data.datasets[0].data.push(salesChannel.total );
 				});
 
-				console.log("WaterVolumeChannelChart - Volume data loaded");
+				console.log("SalesByChannelChart - Revenue data loaded");
 			}
 		}
 		return data;
 	}
 	getChartText( ) {
-		let title =  "Volume By Sales Channel";
+		let title =  "Revenue By Sales Channel";
 		let total = 0;
 		if (this.props.chartData.loaded) {
-			if (this.props.chartData.volumeInfo.hasOwnProperty('volumeByChannel')) {
-				this.props.chartData.volumeInfo.volumeByChannel.volume.data.forEach( (channel) =>{
-					total += channel.volume;
+			if (this.props.chartData.salesInfo.hasOwnProperty('salesByChannel')) {
+				this.props.chartData.salesInfo.salesByChannel.total.data.forEach( (channel) =>{
+					total += channel.total;
 				} );
 			}
 			if( total === 0 ){
 				title = title + " (No data available)";
 			}else {
-				title = title + " (" + total.toFixed(1) + " for this period)";
+				title = title + " (" + utilService.formatDollar(this.props.chartData.salesInfo.currencyUnits, total) + " for this period)";
 			}
 		}
 		return title;
 	}
 }
-export default WaterVolumeChannelChart;
+export default SalesByChannelChart;

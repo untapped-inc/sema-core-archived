@@ -91,15 +91,17 @@ class SemaProductionChart extends Component {
 		// Calculate number of days in range...
 		let movingAvg = null;
 		const count = productionData.data.time.length;
-		if (count > 1) {
-			const daysInRange = Math.round((Date.parse(productionData.data.time[count-1]) - Date.parse(productionData.data.time[0])) / (1000 * 60 * 60 * 24));
-			if (daysInRange > 10) {
-				// Use a 10% moving average, about 3 days for a monthly range, 36 days for a year
-				const window = Math.round(daysInRange * .10);
-				if (window > 1) {
-					movingAvg = calcMovingAvg(productionData.data.values, window, null);
-				}
-			}
+		if (count > 5) {
+			// Use a 3 sample moving average for trending
+			movingAvg = calcMovingAvg(productionData.data.values, 3, null);
+			// const daysInRange = Math.round((Date.parse(productionData.data.time[count-1]) - Date.parse(productionData.data.time[0])) / (1000 * 60 * 60 * 24));
+			// if (daysInRange > 10) {
+			// 	// Use a 10% moving average, about 3 days for a monthly range, 36 days for a year
+			// 	const window = 3;
+			// 	if (window > 1) {
+			// 		movingAvg = calcMovingAvg(productionData.data.values, window, null);
+			// 	}
+			// }
 		}
 		return movingAvg;
 	}

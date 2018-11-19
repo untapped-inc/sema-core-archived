@@ -164,8 +164,8 @@ class SemaToolbar extends Component {
 						<a href="/">Logout</a>
 					</Label>
 					<Label style={LabelStyleRight}>
-						{ `${this.props.currentUser.first_name}
-						${this.props.currentUser.last_name}`}
+						{ `${this.props.currentUser.firstName}
+						${this.props.currentUser.lastName}`}
 					</Label>
 				</Navbar>
 			</div>

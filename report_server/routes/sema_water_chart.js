@@ -21,13 +21,21 @@ const sqlReadingChart =
     AND reading.created_at BETWEEN ? AND ? \
     ORDER BY reading.created_at';
 
-const sqlVolumeReadingChart =
+const sqlVolumeReadingChartDay =
 	'SELECT  YEAR(reading.created_at), MONTH(reading.created_at),  DAY(reading.created_at), MAX(value), MIN(value) \
 	FROM reading \
 	WHERE reading.kiosk_id = ? AND reading.parameter_id = ? AND reading.sampling_site_id = ? \
     AND reading.created_at BETWEEN ? AND ? \
 	GROUP BY YEAR(reading.created_at), MONTH(reading.created_at), DAY(reading.created_at) \
 	ORDER BY  YEAR(reading.created_at) ASC, MONTH(reading.created_at) ASC, DAY(reading.created_at) ASC';
+
+const sqlVolumeReadingChartMonth =
+	'SELECT  YEAR(reading.created_at), MONTH(reading.created_at), MAX(value), MIN(value) \
+	FROM reading \
+	WHERE reading.kiosk_id = ? AND reading.parameter_id = ? AND reading.sampling_site_id = ? \
+    AND reading.created_at BETWEEN ? AND ? \
+	GROUP BY YEAR(reading.created_at), MONTH(reading.created_at)  \
+	ORDER BY  YEAR(reading.created_at) ASC, MONTH(reading.created_at) ASC ';
 
 router.get('/', async( request, response ) => {
 	semaLog.info( 'sema_water_chart Entry - SiteId: - ', request.query["site-id"]);
@@ -92,7 +100,11 @@ router.get('/', async( request, response ) => {
 				const parameterId = getParameterIdFromMap(parameter);
 				const samplingSiteId = getSamplingSiteIdFromMap(samplingSite);
 				if( request.query.type === 'production'){
-					await getProductionReading(connection, request.query["site-id"], beginDate, endDate, parameterId, samplingSiteId, waterChart);
+					let groupBy = "day";
+					if( request.query.hasOwnProperty("group-by")){
+						groupBy = request.query["group-by"];
+					}
+					await getProductionReading(connection, request.query["site-id"], beginDate, endDate, parameterId, samplingSiteId, groupBy, waterChart);
 
 				}else {
 					await getReading(connection, request.query["site-id"], beginDate, endDate, parameterId, samplingSiteId, waterChart);
@@ -133,17 +145,25 @@ const getReading = (connection, siteId, beginDate, endDate, parameterId, samplin
 }
 
 
-const getProductionReading = (connection, siteId, beginDate, endDate, parameterId, samplingSiteId, waterChart) =>{
+const getProductionReading = (connection, siteId, beginDate, endDate, parameterId, samplingSiteId, groupBy, waterChart) =>{
 
 	return new Promise((resolve, reject) => {
-		connection.query(sqlVolumeReadingChart, [siteId, parameterId, samplingSiteId, beginDate, endDate], function (err, result) {
+		let sqlQuery = sqlVolumeReadingChartDay;
+		if( groupBy === "month"){
+			sqlQuery = sqlVolumeReadingChartMonth;
+		}
+		connection.query(sqlQuery, [siteId, parameterId, samplingSiteId, beginDate, endDate], function (err, result) {
 			if (err) {
 				reject(err);
 			} else {
 				try {
 					if (Array.isArray(result) && result.length >= 1) {
 						const timeTicks = result.map(item =>{
-							return new Date(item["YEAR(reading.created_at)"], item["MONTH(reading.created_at)"]-1, item["DAY(reading.created_at)"] );
+							if( groupBy === "month"){
+								return new Date(item["YEAR(reading.created_at)"], item["MONTH(reading.created_at)"] - 1 );
+							}else {
+								return new Date(item["YEAR(reading.created_at)"], item["MONTH(reading.created_at)"] - 1, item["DAY(reading.created_at)"]);
+							}
 						});
 						const values = result.map(item =>{return item["MAX(value)"] - item["MIN(value)"]});
 						waterChart.setData({time: timeTicks, values: values});

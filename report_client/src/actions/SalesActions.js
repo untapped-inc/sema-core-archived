@@ -23,7 +23,8 @@ function initializeSales() {
 			customerCount:null,
 			currencyUnits:'USD',
 			customerSales:[],
-			salesByChannel: {beginDate: null, endDate: null, datasets: []}
+			salesByChannel: {beginDate: null, endDate: null, datasets: []},
+			salesByChannelHistory: {beginDate: null, endDate: null, datasets: []}
 		}
 	}
 }
@@ -32,6 +33,7 @@ function fetchSales(params) {
 	return (dispatch) => {
 		return fetchSalesData(params)
 			.then(salesInfo => {
+				console.log( JSON.stringify(salesInfo));
 				dispatch(receiveSales(salesInfo));
 			});
 	};
@@ -43,14 +45,25 @@ const fetchSalesData = ( params) => {
 		try {
 			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:0}} ));
 			salesInfo = await fetchSalesSummary(params);
-			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:33}} ));
+			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:25}} ));
 
 			let units = await fetchMeasureUnits();
 			salesInfo.currencyUnits = units.currencyUnits;
-			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:66}} ));
+			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:50}} ));
 
 			salesInfo.salesByChannel = await fetchSalesByChannel(params);
+			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:75}} ));
+
+			// Decimate the results by 'month' for periods a year or longer
+			let groupBy = null;
+			if( params.hasOwnProperty("groupBy") &&
+				(params.groupBy === "none" || params.groupBy === "year")){
+				groupBy = "month";
+			}
+
+			salesInfo.salesByChannelHistory = await fetchSalesByChannelHistory(params, groupBy);
 			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:100}} ));
+
 			resolve(salesInfo);
 		} catch (error) {
 			console.log("fetchVolumeData - Failed ");
@@ -113,6 +126,36 @@ function fetchSalesByChannel( params ) {
 			});
 	});
 }
+
+function fetchSalesByChannelHistory( params, groupBy ) {
+	return new Promise((resolve, reject ) => {
+		let url = '/sema/dashboard/site/sales-by-channel-history?site-id=' + params.kioskID;
+
+		if( params.hasOwnProperty("startDate") ){
+			url = url + "&begin-date=" + utilService.formatDateForUrl(params.startDate);
+		}
+		if( params.hasOwnProperty("endDate") ){
+			url = url + "&end-date=" + utilService.formatDateForUrl(params.endDate);
+		}
+		if( groupBy ){
+			url = url + "&group-by=" + groupBy;
+
+		}
+		axiosService
+			.get(url)
+			.then(response => {
+				if(response.status === 200){
+					resolve(response.data)
+				}else{
+					reject({})
+				}
+			})
+			.catch(function(error){
+				reject( error)
+			});
+	});
+}
+
 function fetchMeasureUnits(){
 	return new Promise((resolve, reject ) => {
 		axiosService

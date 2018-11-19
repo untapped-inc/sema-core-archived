@@ -38,22 +38,22 @@ class SemaVolume extends Component {
 				<div className = "WaterVolumeChannelAndLabels">
 					<div className = "WaterVolumeLabels">
 						<div className = "WaterVolumeLabel1">"
-							<CustomerSummaryPanel title = {this.getTitleVolumePeriod(this.props.volume)} valueColor = "rgb(40,88,197)"
+							<CustomerSummaryPanel title = {this.getTitleVolumePeriod(this.props.volume)} valueColor = "rgb(35,75,125)"
 												  value = {this.calcTotalVolume()}
 												  units = ""/>
 						</div>
 						<div className = "WaterVolumeLabel2">"
-							<CustomerSummaryPanel title = {this.getTitleLitersPerPerson(this.props.volume)} valueColor = "rgb(40,88,197)"
+							<CustomerSummaryPanel title = {this.getTitleLitersPerPerson(this.props.volume)} valueColor = "rgb(35,75,125)"
 												  value = {this.calcTotalLitersPerPerson()}
 												  units = ""/>
 						</div>
 						<div className = "WaterVolumeLabel3">"
-							<CustomerSummaryPanel title = {this.getTitlePurchaseFrequency(this.props.volume)} valueColor = "rgb(40,88,197)"
+							<CustomerSummaryPanel title = {this.getTitlePurchaseFrequency(this.props.volume)} valueColor = "rgb(35,75,125)"
 												  value = {this.calcPurchaseFrequency()}
 												  units = ""/>
 						</div>
 						<div className = "WaterVolumeLabel4">"
-							<CustomerSummaryPanel title = {this.getTitleVolumePerPurchase(this.props.volume)} valueColor = "rgb(40,88,197)"
+							<CustomerSummaryPanel title = {this.getTitleVolumePerPurchase(this.props.volume)} valueColor = "rgb(35,75,125)"
 												  value = {this.calcVolumePerPurchase()}
 												  units = ""/>
 						</div>

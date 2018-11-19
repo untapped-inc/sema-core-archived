@@ -60,17 +60,23 @@ const fetchWaterOperationsData = ( params) => {
 
 			let production = Object.assign({}, params);
 			production.type = "production";
-			waterInfo.waterOperationsInfo.production = await fetchChart(production );
+			// For water production, decimate the results by 'month' for periods a year or longer
+			let groupBy = null;
+			if( params.hasOwnProperty("groupBy") &&
+				(params.groupBy === "none" || params.groupBy === "year")){
+				groupBy = "month";
+			}
+			waterInfo.waterOperationsInfo.production = await fetchChart(production, groupBy );
 			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:50}} ));
 
 			let chlorine = Object.assign({}, params);
 			chlorine.type = "totalchlorine";
-			waterInfo.waterOperationsInfo.chlorine = await fetchChart(chlorine );
+			waterInfo.waterOperationsInfo.chlorine = await fetchChart(chlorine, null );
 			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:75}} ));
 
 			let tds = Object.assign({}, params);
 			tds.type = "tds";
-			waterInfo.waterOperationsInfo.tds = await fetchChart(tds );
+			waterInfo.waterOperationsInfo.tds = await fetchChart(tds, null );
 			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:100}} ));
 
 			resolve(waterInfo);
@@ -82,7 +88,7 @@ const fetchWaterOperationsData = ( params) => {
 	});
 }
 
-function fetchChart( params ) {
+function fetchChart( params, groupBy ) {
 	return new Promise((resolve, reject ) => {
 		let url = '/sema/dashboard/site/water-chart?site-id=' + params.kioskID ;
 		if( params.hasOwnProperty("startDate") ){
@@ -94,7 +100,10 @@ function fetchChart( params ) {
 		if( params.hasOwnProperty("type") ){
 			url = url + "&type=" + params.type;
 		}
+		if( groupBy ){
+			url = url + "&group-by=" + groupBy;
 
+		}
 		axiosService
 			.get(url)
 			.then(response => {

@@ -13,6 +13,7 @@ import SalesMapContainer from './Sales/SalesMapContainer';
 import SalesRetailerList from './Sales/SalesRetailerList';
 import * as salesActions from 'actions/SalesActions';
 import SalesByChannelChart from "./Sales/SalesByChannelChart";
+import SalesByChannelTimeChart from "./Sales/SalesByChannelTimeChart";
 import LoadProgress from "./LoadProgress";
 import { utilService } from 'services';
 
@@ -72,13 +73,14 @@ class SemaSales extends Component {
 						<SalesRetailerList retailers={this.props.sales.salesInfo.customerSales}/>
 					</div>
 					<div className= "SalesBottomContainer">
-						<div className= "SalesBottomLeftTop">
-							<SalesSummaryPanel2 title="Revenue/Customer"
-												value={ formatRevenuePerCustomer(this.props.sales.salesInfo)}
-												valueColor = "rgb(24, 55, 106)"
-												title2 = {formatNoOfCustomers(this.props.sales.salesInfo)} />
-						</div>
 						<div className= "SalesBottomRight">
+							<SalesByChannelTimeChart chartData={this.props.sales}/>
+							{/*<SalesSummaryPanel2 title="Revenue/Customer"*/}
+												{/*value={ formatRevenuePerCustomer(this.props.sales.salesInfo)}*/}
+												{/*valueColor = "rgb(24, 55, 106)"*/}
+												{/*title2 = {formatNoOfCustomers(this.props.sales.salesInfo)} />*/}
+						</div>
+						<div className= "SalesBottomLeft">
 							<SalesByChannelChart chartData={this.props.sales}/>
 						</div>
 					</div>

@@ -69,13 +69,14 @@ class SemaTDSChart extends Component {
 			tds.datasets[0].backgroundColor='rgb(53, 91, 183)';
 			tds.datasets[0].fill=false;
 			tds.datasets[0].pointRadius=0;
+			tds.datasets[0].borderWidth = 4;
 			tds.datasets[0].borderColor='rgb(53, 91, 183)';
 			tds.labels = tds.labels.map(function(time)
 				{return moment(time ).format("MMM Do YY")});
-			createGuide(tds.datasets, 150, "red", "Shutdown");
-			createGuide(tds.datasets, 70, "yellow", "Risk");
-			createGuide(tds.datasets, 110, "rgb(198,209,232", "Fair");
-			createGuide(tds.datasets, 30, "green", "Good");
+			createGuide(tds.datasets, 150, 'rgba(255,0,0,1.0)', "Shutdown");
+			createGuide(tds.datasets, 70, 'rgba(255,255,0,1.0)', "Risk");
+			createGuide(tds.datasets, 110, "rgba(198,209,232,1.0", "Fair");
+			createGuide(tds.datasets, 30, 'rgba(0,255,0,1.0)', "Good");
 			return tds;
 		}
 	}

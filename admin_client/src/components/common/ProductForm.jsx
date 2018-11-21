@@ -1,12 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Grid, Row, Col } from 'react-bootstrap';
+import {
+  Form,
+  Grid,
+  Row,
+  Col,
+  Table,
+  ControlLabel,
+  FormGroup
+} from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, arrayPush, reduxForm } from 'redux-form';
 import get from 'lodash/get';
 import TextField from './TextField';
+import SelectField from './SelectField';
 import ImageUpload from './ImageUpload';
 import ProductCategoryDropdown from './ProductCategoryDropdown';
+import units from '../constants/units';
+import currency from '../constants/currency';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired
@@ -16,7 +27,19 @@ const defaultProps = {
   handleSubmit: () => {}
 };
 
-const ProductForm = ({ handleSubmit }) => (
+const renderPricing = ({ fields, meta: { error, submitFailed } }) => {
+  const renderRow = fields.map((field, index) => (
+    <tr key={index}>
+      <td>default</td>
+      <td />
+      <td />
+      <td />
+    </tr>
+  ));
+  return renderRow;
+};
+
+const ProductForm = ({ handleSubmit, ...props }) => (
   <Form horizontal onSubmit={handleSubmit}>
     <Grid>
       <Row>
@@ -56,8 +79,9 @@ const ProductForm = ({ handleSubmit }) => (
           <Field
             name="priceCurrency"
             label="Currency"
-            component={TextField}
+            component={SelectField}
             horizontal
+            options={currency}
           />
           <Field
             name="minQuantity"
@@ -80,7 +104,8 @@ const ProductForm = ({ handleSubmit }) => (
           <Field
             name="unitMeasurement"
             label="Units of Measurement"
-            component={TextField}
+            component={SelectField}
+            options={units}
             horizontal
           />
           <Field
@@ -92,6 +117,37 @@ const ProductForm = ({ handleSubmit }) => (
         </Col>
         <Col md={4}>
           <Field name="image" label="image" component={ImageUpload} />
+        </Col>
+      </Row>
+      <Row>
+        <Col md={2}>
+          <FormGroup>
+            <ControlLabel style={{ width: '100%', paddingRight: '10px' }}>
+              Pricing
+            </ControlLabel>
+          </FormGroup>
+        </Col>
+        <Col md={8}>
+          <span
+            onClick={() => {
+              props.addKiosk('productForm', 'kiosks', {});
+            }}
+          >
+            Add Kiosk
+          </span>
+          <Table striped bordered hover responsive>
+            <thead>
+              <tr>
+                <th>Kiosk</th>
+                <th>Amount</th>
+                <th>Currency</th>
+                <th>Cost of Goods</th>
+              </tr>
+            </thead>
+            <tbody>
+              <FieldArray name="kiosks" component={renderPricing} />
+            </tbody>
+          </Table>
         </Col>
       </Row>
     </Grid>
@@ -118,7 +174,11 @@ const mapStateToProps = state => ({
     image: get(state, 'selectedProduct.base64Image', '')
   }
 });
-export default connect(mapStateToProps)(
+
+export default connect(
+  mapStateToProps,
+  { addKiosk: arrayPush }
+)(
   reduxForm({
     form: 'productForm',
     enableReinitialize: true

@@ -48,10 +48,6 @@ class CustomerList extends Component {
 	render() {
 		return (
 			<View >
-				{/*<FlatList*/}
-					{/*data={[{key: 'aaaaaaa'}, {key: 'bbbbbbbb'}]}*/}
-					{/*renderItem={({item}) => <Text>{item.key}</Text>}*/}
-				{/*/>*/}
 				<FlatList
 					ref={(ref) => { this.flatListRef = ref; }}
 					// getItemLayout={this.getItemLayout}
@@ -191,10 +187,10 @@ class CustomerList extends Component {
 					this.onPopupError,
 					this.onPopupEvent.bind(this)
 				)
-
 			}
 		}
 	};
+
 	onPopupEvent(eventName, index) {
 		if (eventName !== 'itemSelected') return;
 		if (index === 0){
@@ -203,6 +199,7 @@ class CustomerList extends Component {
 			this.deleteCustomer();
 		}
 	}
+	
 	deleteCustomer(){
 		let alertMessage = i18n.t('delete-specific-customer', {customerName: this.props.selectedCustomer.name});
 		if (this.props.selectedCustomer.dueAmount === 0) {
@@ -216,7 +213,6 @@ class CustomerList extends Component {
 							PosStorage.deleteCustomer(this.props.selectedCustomer);	// Delete from storage
 							this.props.customerActions.CustomerSelected({});		// Clear selected customer
 							this.props.customerActions.setCustomers(PosStorage.getCustomers());
-
 						}
 					},
 				],

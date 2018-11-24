@@ -4,6 +4,7 @@ import { REMOVE_PRODUCT } from "./OrderActions";
 export const SALES_REPORT_FROM_ORDERS = 'SALES_REPORT_FROM_ORDERS';
 export const INVENTORY_REPORT = 'INVENTORY_REPORT';
 export const REPORT_TYPE = 'REPORT_TYPE';
+export const REMINDER_REPORT = 'REMINDER_REPORT'
 export const REPORT_FILTER = 'REPORT_FILTER';
 
 
@@ -107,6 +108,36 @@ export function GetInventoryReportData( beginDate, endDate, products ) {
 			});
 	}
 
+}
+
+const computeReminders = () => {
+	return new Promise((resolve,reject) => {
+		let reminders = []
+		let customers = PosStorage.getCustomers()
+		let mostRecentReceipts = PosStorage.getReminderData()
+		customers.forEach(customer => {
+			let currentReceipt = mostRecentReceipts[customer.customerId]
+			let date_diff = Math.floor((new Date() - Date.parse(currentReceipt.createdDate))/86400000)
+			if (date_diff > customer.frequency) {
+				reminders.push(customer)
+			}
+		})
+		resolve(reminders)
+	})
+} 
+
+export function getRemindersData() {
+	console.log("Get Reminders action")
+	return (dispatch) => {
+		computeReminders()
+			.then( reminders => {
+				dispatch({type: REMINDER_REPORT, data:{reminderData:reminders}})
+			})
+			.catch((error) => {
+				console.log( "GetReminderData - Error " + error.message);
+				dispatch({type: REMINDER_REPORT, data:{reminderData:[]}})
+			});
+		}
 }
 
 const getInventoryData = (beginDate, endDate, products) =>{

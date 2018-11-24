@@ -20,6 +20,7 @@ import * as CustomerActions from '../actions/CustomerActions';
 import * as NetworkActions from '../actions/NetworkActions';
 import * as SettingsActions from '../actions/SettingsActions';
 import * as ProductActions from '../actions/ProductActions';
+import * as ReportActions from '../actions/ReportActions';
 
 
 import PosStorage from "../database/PosStorage";
@@ -57,6 +58,7 @@ class PosApp extends Component {
 				// Data already configured
 				this.props.customerActions.setCustomers(this.posStorage.getCustomers());
 				this.props.productActions.setProducts(this.posStorage.getProducts());
+				this.props.reportActions.getRemindersData()
 			}
 			// if (isInitialized && this.posStorage.getCustomers().length > 0) {
 			// 	// Data already configured
@@ -235,7 +237,9 @@ function mapDispatchToProps(dispatch) {
 		productActions:bindActionCreators(ProductActions, dispatch),
 		networkActions:bindActionCreators(NetworkActions, dispatch),
 		toolbarActions:bindActionCreators(ToolbarActions, dispatch),
-		settingsActions:bindActionCreators(SettingsActions, dispatch)};
+		settingsActions:bindActionCreators(SettingsActions, dispatch),
+		reportActions:bindActionCreators(ReportActions, dispatch),
+	};
 }
 
 //Connect everything

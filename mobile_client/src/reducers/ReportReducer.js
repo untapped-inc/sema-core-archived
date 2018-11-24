@@ -1,7 +1,11 @@
 
-import { SALES_REPORT_FROM_ORDERS, REPORT_TYPE, INVENTORY_REPORT, REPORT_FILTER, initializeSalesData, initializeInventoryData } from "../actions/ReportActions"
+import { SALES_REPORT_FROM_ORDERS, REPORT_TYPE,REMINDER_REPORT,INVENTORY_REPORT, REPORT_FILTER, initializeSalesData, initializeInventoryData } from "../actions/ReportActions"
 
-let initialState = {salesData:initializeSalesData(), reportType:"sales", inventoryData:initializeInventoryData(),dateFilter:{}};
+let initialState = {salesData:initializeSalesData(),
+					reportType:"sales",
+					inventoryData:initializeInventoryData(),
+					dateFilter:{},
+					reminderData: []};
 
 const reportReducer = (state = initialState, action) => {
 	console.log("reportReducer: " +action.type);
@@ -26,6 +30,11 @@ const reportReducer = (state = initialState, action) => {
 			newState = {...state};
 			newState.reportType = action.data ;
 			return newState;
+		
+		case REMINDER_REPORT:
+			newState = {...state}
+			newState.reminderData = action.data.reminderData;
+			return newState
 
 		default:
 			return state;

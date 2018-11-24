@@ -80,6 +80,11 @@ class Synchronization {
 								.then(productSync => {
 									syncResult.products = productSync;
 								});
+							const promiseReminders = this.synchronizeReminders()
+								.then(remindersSync => {
+									console.log("Synchronizing reminders")
+									syncResult.reminders = remindersSync
+								})
 							const promiseSales = this.synchronizeSales()
 								.then(saleSync => {
 									syncResult.sales = saleSync;
@@ -89,7 +94,7 @@ class Synchronization {
 									syncResult.productMrps = productMrpSync;
 								});
 
-							Promise.all([promiseCustomers, promiseProducts, promiseSales, promiseProductMrps])
+							Promise.all([promiseCustomers, promiseProducts, promiseSales, promiseProductMrps, promiseReminders])
 								.then(values => {
 									resolve(syncResult);
 								});
@@ -282,6 +287,22 @@ class Synchronization {
 					console.log("Synchronization.ProductsMrpsUpdated - error " + error);
 				});
 		});
+	}
+
+	synchronizeReminders() {
+		return new Promise( resolve => {
+			console.log("Synchronization: synchronizeReminders")
+			Communications.getMostRecentReceipts()
+				.then( receipts => {
+					resolve({error: null})
+					console.log("Synchronization:synchronizeReminders. Receipt data length", receipts.customers.length);
+					PosStorage.saveReminderData(receipts.customers)
+				})
+				.catch( error => {
+					resolve({ error: error.message})
+					console.log("Synchronization.SynchronizeErrors:Updated - error " + error);
+				})
+		})
 	}
 
 	_refreshToken(){

@@ -27,6 +27,7 @@ const tokenExpirationKey = '@Sema:TokenExpirationKey';
 const salesChannelsKey = '@Sema:SalesChannelsKey';
 const customerTypesKey = '@Sema:CustomerTypesKey';
 const productMrpsKey = '@Sema:ProductMrpsKey';
+const reminderDataKey = '@Sema:ReminderDataKey';
 
 const syncIntervalKey = '@Sema:SyncIntervalKey';
 
@@ -71,6 +72,7 @@ class PosStorage {
 		this.salesChannels = [];
 		this.customerTypes = [];
 		this.productMrpDict = {};
+		this.reminderDataDict = {}
 
 		this.syncInterval = {interval: 2*60*1000};
 		this.inventoriesKeys = [];	// 30 days of inventories
@@ -98,13 +100,12 @@ class PosStorage {
 						    [tokenExpirationKey, this.stringify(this.tokenExpiration)],
 							[salesChannelsKey, this.stringify(this.salesChannels)],
 							[customerTypesKey, this.stringify(this.customerTypes)],
-							[productMrpsKey, this.stringify(this.productMrpDict)],
 							[syncIntervalKey, this.stringify(this.syncInterval)],
-							[inventoriesKey, this.stringify(this.inventoriesKeys)]];
+							[inventoriesKey, this.stringify(this.inventoriesKeys)],
+							[reminderDataKey, this.stringify(this.reminderDataDict)]];
 						AsyncStorage.multiSet(keyArray ).then( error =>{
 							console.log( "PosStorage:initialize: Error: " + error );
 							resolve(false)})
-
 					} else {
 						console.log("Pos Storage: Version = " + version);
 						this.version = version;
@@ -112,7 +113,7 @@ class PosStorage {
 							lastSalesSyncKey,lastProductsSyncKey,
 							pendingCustomersKey, pendingSalesKey,
 							settingsKey, tokenExpirationKey, salesChannelsKey,
-							customerTypesKey, productMrpsKey, syncIntervalKey, inventoriesKey];
+							customerTypesKey, productMrpsKey, syncIntervalKey, inventoriesKey,reminderDataKey];
 						AsyncStorage.multiGet(keyArray ).then( function(results){
 							console.log( "PosStorage Multi-Key" + results.length );
 							for( let i = 0; i < results.length; i++ ){
@@ -133,6 +134,7 @@ class PosStorage {
 							this.productMrpDict = this.parseJson(results[12][1]);		// products MRP dictionary
 							this.syncInterval = this.parseJson(results[13][1]);		// SyncInterval
 							this.inventoriesKeys =  this.parseJson(results[14][1]); //inventoriesKey
+							this.reminderDataDict = this.parseJson(results[15][1]);
 							this.loadCustomersFromKeys()
 								.then(()=>{
 									this.loadProductsFromKeys()
@@ -179,6 +181,7 @@ class PosStorage {
 		this.lastProductsSync = firstSyncDate;
 		this.inventoriesKeys = [];
 		this.productMrpDict = {};
+		this.reminderDataDict = {}
 		let keyArray = [
 			[customersKey,  this.stringify(this.customersKeys)],
 			[productsKey,  this.stringify(this.productsKeys)],
@@ -191,7 +194,8 @@ class PosStorage {
 			[customerTypesKey,this.stringify(this.customerTypes)],
 			[salesChannelsKey,this.stringify(this.salesChannels)],
 			[productMrpsKey, this.stringify(this.productMrpDict)],
-			[inventoriesKey, this.stringify(this.inventoriesKeys)]];
+			[inventoriesKey, this.stringify(this.inventoriesKeys)],
+			[reminderDataKey, this.stringify(this.reminderDataDict)]];
 
 		AsyncStorage.multiSet( keyArray).then( error => {
 			if( error ) {
@@ -224,7 +228,8 @@ class PosStorage {
 			salesChannelId:salesChannelId,
 			customerTypeId:customerTypeId,
 			createdDate:createdDate,
-			updatedDate:updatedDate
+			updatedDate:updatedDate,
+			frequency: 3
 
 		};
 		let key = this.makeCustomerKey(newCustomer);
@@ -785,11 +790,11 @@ class PosStorage {
 		})
 		return customerTypesForDisplay;
 	}
-
-
+	
 	getCustomerTypes(){
 		return this.customerTypes;
 	}
+
 	getCustomerTypeByName( name ){
 		for( let i = 0; i < this.customerTypes.length; i++ ){
 			if( this.customerTypes[i].name === name ){
@@ -813,6 +818,24 @@ class PosStorage {
 		this.setKey( productMrpsKey, this.stringify( this.productMrpDict));
 
 	}
+
+	saveReminderData(reminderDataArray) {
+		console.log("reminderArray",reminderDataArray)
+		this.reminderDataDict = {}
+		reminderDataArray.forEach(reminder => {
+			const key = this.getReminderDataKey(reminder)
+			this.reminderDataDict[key] = reminder
+		});
+		this.setKey(reminderDataKey, this.stringify(this.reminderDataDict))
+	}
+	getReminderDataKey(reminderData) {
+		return reminderData.customerId
+	}
+
+	getReminderData() {
+		return this.reminderDataDict
+	}
+
 	getProductMrps(){
 		return this.productMrpDict;
 	}

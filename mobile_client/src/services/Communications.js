@@ -105,6 +105,7 @@ class Communications {
 		return fetch(this._url + url, options)
 			.then((response) => response.json())
 			.then((responseJson) => {
+				console.log("Fetched JSON data", responseJson)
 				return responseJson
 			})
 			.catch((error) => {
@@ -261,6 +262,17 @@ class Communications {
 					reject();
 				});
 		});
+	}
+	getMostRecentReceipts() {
+		let options = { method: 'GET', headers: { Authorization: 'Bearer ' + this._token } }
+		let url = 'sema/site/customers?site-id=' + this._siteId;
+		return fetch(this._url + url, options)
+			.then((response => response.json()))
+			.then((responseJson) => { return responseJson })
+			.catch((error) => {
+				console.log("Communications:getMostRecentReceipts: " + error);
+				throw( error );
+			});
 	}
 	getSalesChannels( ) {
 		let options = { method: 'GET', headers: { Authorization: 'Bearer ' + this._token } }

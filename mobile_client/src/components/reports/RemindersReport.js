@@ -13,6 +13,10 @@ import DateFilter from './DateFilter'
 import i18n from '../../app/i18n';
 
 class RemindersReport extends Component {
+	componentWillMount() {
+		console.log("Mounting")
+		this.props.reportActions.getRemindersData()
+	}
 	getReminders() {
 		this.props.reportActions.getRemindersData()
 	}
@@ -104,6 +108,27 @@ class RemindersReport extends Component {
 			return "Walk-up";
 		}
 	}
+	displayReminders() {
+		if (this.props.reminderData.length == 0 ) {
+			return (<Text style={styles.titleText}>No Reminders Available</Text>)
+		} else {
+			return (
+				<FlatList
+					ListHeaderComponent = {this.showHeader}
+					data={this.props.reminderData}
+						renderItem={({item, index, separators}) => (
+						<TouchableHighlight
+							onPress={() => this.onPressItem(item)}
+							onShowUnderlay={separators.highlight}
+							onHideUnderlay={separators.unhighlight}>
+							{this.getRow(item, index, separators)}
+						</TouchableHighlight>
+					)}
+					keyExtractor={item => item.customerId}
+				/>
+			)
+		}
+	}
 
     render() {
 		console.log("props", this.props)
@@ -117,19 +142,7 @@ class RemindersReport extends Component {
 								<Text style = {styles.titleItem}>Reminders</Text>
 							</View>
 						</View>
-						<FlatList
-							ListHeaderComponent = {this.showHeader}
- 							data={this.props.reminderData}
-							 renderItem={({item, index, separators}) => (
-								<TouchableHighlight
-									onPress={() => this.onPressItem(item)}
-									onShowUnderlay={separators.highlight}
-									onHideUnderlay={separators.unhighlight}>
-									{this.getRow(item, index, separators)}
-								</TouchableHighlight>
-							)}
-							keyExtractor={item => item.customerId}
-						/>
+						{ this.displayReminders() }
 					</View>
                 </View>
             ) 

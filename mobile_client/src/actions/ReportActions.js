@@ -113,14 +113,19 @@ export function GetInventoryReportData( beginDate, endDate, products ) {
 const computeReminders = () => {
 	return new Promise((resolve,reject) => {
 		let reminders = []
+		let pendingSalesReceipts = []
 		let customers = PosStorage.getCustomers()
 		let mostRecentReceipts = PosStorage.getReminderData()
-		customers.forEach(customer => {
-			let currentReceipt = mostRecentReceipts[customer.customerId]
-			let date_diff = Math.floor((new Date() - Date.parse(currentReceipt.createdDate))/86400000)
-			if (date_diff > customer.frequency) {
-				reminders.push(customer)
-			}
+		let pendingSales = PosStorage.loadSalesReceipts(null).then( salesReceipts => { pendingSalesReceipts = salesReceipts })
+		console.log("pendingSalesReceipts",pendingSalesReceipts)
+		customers.forEach( customer => { 
+			if (mostRecentReceipts.hasOwnProperty(customer.customerId))  {
+				let currentReceipt = mostRecentReceipts[customer.customerId]
+				let date_diff = Math.floor((new Date() - Date.parse(currentReceipt.created_at))/86400000)
+				if (date_diff >= customer.frequency) {
+					reminders.push(customer)
+				}
+			}	
 		})
 		resolve(reminders)
 	})

@@ -265,7 +265,7 @@ class Communications {
 	}
 	getMostRecentReceipts() {
 		let options = { method: 'GET', headers: { Authorization: 'Bearer ' + this._token } }
-		let url = 'sema/site/customers?site-id=' + this._siteId;
+		let url = 'sema/site/receipts?site-id=' + this._siteId;
 		return fetch(this._url + url, options)
 			.then((response => response.json()))
 			.then((responseJson) => { return responseJson })

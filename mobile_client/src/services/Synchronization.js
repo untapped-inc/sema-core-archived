@@ -295,8 +295,9 @@ class Synchronization {
 			Communications.getMostRecentReceipts()
 				.then( receipts => {
 					resolve({error: null})
-					console.log("Synchronization:synchronizeReminders. Receipt data length", receipts.customers.length);
-					PosStorage.saveReminderData(receipts.customers)
+					console.log("Untapped Receipts", receipts)
+					console.log("Synchronization:synchronizeReminders. Receipt data length", receipts.length);
+					PosStorage.saveReminderData(receipts)
 				})
 				.catch( error => {
 					resolve({ error: error.message})

@@ -829,7 +829,7 @@ class PosStorage {
 		this.setKey(reminderDataKey, this.stringify(this.reminderDataDict))
 	}
 	getReminderDataKey(reminderData) {
-		return reminderData.customerId
+		return reminderData.customer_account_id
 	}
 
 	getReminderData() {

@@ -14,8 +14,11 @@ var sqlInsertReceiptLineItem = "INSERT INTO receipt_line_item " +
 				"(created_at, updated_at, currency_code, price_total, quantity, receipt_id, product_id, cogs_total) " +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-
-
+var sqlFetchMostRecentReceiptForCustomer = "SELECT DISTINCT r.* from receipt r " +
+										   "INNER JOIN " +
+										   "(SELECT customer_account_id, max(created_at) as mostrecent FROM receipt " +
+										   "WHERE kiosk_id = ? " +
+										   "GROUP BY customer_account_id) s ON r.customer_account_id = s.customer_account_id and r.created_at = s.mostrecent";
 
 router.post('/', async (req, res) => {
 	semaLog.info('CREATE RECEIPT sema_receipts- Enter');
@@ -64,6 +67,25 @@ router.post('/', async (req, res) => {
 	});
 
 });
+
+router.get('/', async(req, res) => {
+	semaLog.info('GET Receipts - Enter');
+
+	req.check("site-id", "Parameter site-id is missing").exists();
+
+	req.getValidationResult().then(function(result){
+		if (!result.isEmpty()) {
+			const errors = result.array().map((elem) => {
+				return elem.msg;
+			});
+			semaLog.error("GET Receipts validation error: ", errors);
+			res.status(400).send(errors.toString());
+		} else {
+			semaLog.info("Site-id: " + req.query['site-id']);
+			getMostRecentReceipts(sqlFetchMostRecentReceiptForCustomer,[req.query["site-id"]], res)
+		}
+	})
+} )
 
 const insertReceipt = (receipt, query, params, res ) => {
 	__pool.getConnection((err, connection) => {
@@ -147,6 +169,34 @@ const commitTransaction = ( receipt, connection, res) => {
 
 	})
 }
+
+const getMostRecentReceipts = (query, params, res ) => {
+	return new Promise((resolve, reject) => {
+		__pool.getConnection((err, connection) => {
+
+			connection.query(query, params, function(err, result) {
+				connection.release();
+
+				if (err) {
+					semaLog.error('GET Receipts - failed', { err });
+					res.status(500).send(err.message);
+					reject(err);
+				}
+				else {
+					semaLog.info('GET Receipts - succeeded');
+					try {
+						resolve(res.json(result))
+					} catch (err) {
+						semaLog.error('GET Customers - failed', { err });
+						res.status(500).send(err.message);
+						reject(err);
+					}
+				}
+			});
+
+		})
+	});
+};
 
 const insertReceiptLineItem = (query, params, connection) => {
 	return new Promise((resolve, reject) => {

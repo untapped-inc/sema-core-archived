@@ -350,16 +350,10 @@ const getCustomers = (query, params, res ) => {
 								customer.databaseToClass(item);
 								return customer.classToPlain(item);
 							});
-
-
 							resolve(res.json({ customers: values }));
 						} else {
 							resolve(res.json({ customers: [] }));
 						}
-
-
-
-
 					} catch (err) {
 						semaLog.error('GET Customers - failed', { err });
 						res.status(500).send(err.message);

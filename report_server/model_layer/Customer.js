@@ -9,7 +9,6 @@ class Customer {
 		this._dueAmount = value;
 	}
 
-
 	constructor() {
 		this._id = "";
 		this._address = "";
@@ -22,6 +21,7 @@ class Customer {
 		this._updatedDate = null;
 		this._gender = null;
 		this._dueAmount = 0;
+		this._frequency = 3;
 	}
 
 	databaseToClass(res) {
@@ -35,6 +35,7 @@ class Customer {
 		this._salesChannelId = res["sales_channel_id"];
 		this._siteId = res["kiosk_id"];
 		this._dueAmount = res["due_amount"];
+		this._frequency = res["frequency"]
 		if( this._dueAmount === null ){
 			this._dueAmount = 0;
 		}
@@ -55,6 +56,7 @@ class Customer {
 		this._salesChannelId = req.body["salesChannelId"];
 		this._siteId = req.body["siteId"];
 		this._active = true;
+		this._frequency = req.body["frequency"];
 
 		if (req.body.hasOwnProperty("customerId")) {
 			this._customerId = req.body["customerId"]
@@ -131,6 +133,7 @@ class Customer {
 			siteId: this._siteId,
 			phoneNumber: this._phoneNumber,
 			dueAmount: this._dueAmount,
+			frequency: this._frequency
 		};
 	}
 

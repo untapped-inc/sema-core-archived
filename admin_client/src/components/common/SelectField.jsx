@@ -9,18 +9,24 @@ const SelectField = ({
   options,
   meta,
   horizontal,
+  size,
   ...props
 }) => (
   <FormGroup
     controlId={name}
     validationState={meta.invalid && meta.touched ? 'error' : null}
+    bsSize={size}
   >
     {horizontal ? (
-      <Col componentClass={ControlLabel} sm={3}>
+      label && (
+        <Col componentClass={ControlLabel} sm={3}>
+          {label}
+        </Col>
+      )
+    ) : (
+      <Col componentClass={ControlLabel} sm={12}>
         {label}
       </Col>
-    ) : (
-      <ControlLabel>{label}</ControlLabel>
     )}
     {horizontal ? (
       <Col sm={9}>
@@ -34,14 +40,16 @@ const SelectField = ({
         </FormControl>
       </Col>
     ) : (
-      <FormControl componentClass="select" {...input} {...props}>
-        <option />
-        {options.map((option, index) => (
-          <option key={index} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </FormControl>
+      <Col sm={12}>
+        <FormControl componentClass="select" {...input} {...props}>
+          <option />
+          {options.map((option, index) => (
+            <option key={index} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </FormControl>
+      </Col>
     )}
 
     {meta.invalid &&

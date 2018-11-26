@@ -5,24 +5,39 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import Col from 'react-bootstrap/lib/Col';
 
-const TextField = ({ name, label, input, meta, horizontal, ...props }) => (
+const TextField = ({
+  name,
+  label,
+  input,
+  meta,
+  horizontal,
+  size,
+  ...props
+}) => (
   <FormGroup
     controlId={name}
     validationState={meta.invalid && meta.touched ? 'error' : null}
+    bsSize={size}
   >
     {horizontal ? (
-      <Col componentClass={ControlLabel} sm={3}>
+      label && (
+        <Col componentClass={ControlLabel} sm={3}>
+          {label}
+        </Col>
+      )
+    ) : (
+      <Col componentClass={ControlLabel} sm={12}>
         {label}
       </Col>
-    ) : (
-      <ControlLabel>{label}</ControlLabel>
     )}
     {horizontal ? (
       <Col sm={9}>
         <FormControl {...input} {...props} />
       </Col>
     ) : (
-      <FormControl {...input} {...props} />
+      <Col sm={12}>
+        <FormControl {...input} {...props} />
+      </Col>
     )}
 
     {meta.invalid &&

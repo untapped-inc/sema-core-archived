@@ -14,7 +14,10 @@ import { Field, FieldArray, arrayPush, reduxForm } from 'redux-form';
 import get from 'lodash/get';
 import TextField from './TextField';
 import SelectField from './SelectField';
+import KioskDropdown from './KioskDropdown';
+import SalesChannelDropdown from './SalesChannelDropdown';
 import ImageUpload from './ImageUpload';
+import Button from './Button';
 import ProductCategoryDropdown from './ProductCategoryDropdown';
 import units from '../constants/units';
 import currency from '../constants/currency';
@@ -30,10 +33,30 @@ const defaultProps = {
 const renderPricing = ({ fields, meta: { error, submitFailed } }) => {
   const renderRow = fields.map((field, index) => (
     <tr key={index}>
-      <td>default</td>
-      <td />
-      <td />
-      <td />
+      <td>
+        <Field name="kiosk" component={KioskDropdown} size="small" />
+      </td>
+      <td>
+        <Field
+          name="salesChannel"
+          component={SalesChannelDropdown}
+          size="small"
+        />
+      </td>
+      <td>
+        <Field name="priceAmount" component={TextField} size="small" />
+      </td>
+      <td>
+        <Field
+          name="priceCurrency"
+          component={SelectField}
+          options={currency}
+          size="small"
+        />
+      </td>
+      <td>
+        <Field name="costOfGoods" component={TextField} size="small" />
+      </td>
     </tr>
   ));
   return renderRow;
@@ -128,17 +151,18 @@ const ProductForm = ({ handleSubmit, ...props }) => (
           </FormGroup>
         </Col>
         <Col md={8}>
-          <span
+          <Button
             onClick={() => {
               props.addKiosk('productForm', 'kiosks', {});
             }}
-          >
-            Add Kiosk
-          </span>
+            buttonText="Add Kiosk"
+            buttonSize="xsmall"
+          />
           <Table striped bordered hover responsive>
             <thead>
               <tr>
                 <th>Kiosk</th>
+                <th>Sales Channel</th>
                 <th>Amount</th>
                 <th>Currency</th>
                 <th>Cost of Goods</th>

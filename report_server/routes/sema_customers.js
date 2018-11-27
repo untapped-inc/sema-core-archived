@@ -40,7 +40,8 @@ const sqlInsertCustomer = "INSERT INTO customer_account " +
 const sqlUpdateCustomers = 	"UPDATE customer_account " +
 	"SET name = ?, sales_channel_id = ?, customer_type_id = ?," +
 		"due_amount = ?, address_line1 = ?, gps_coordinates = ?, " +
-		"phone_number = ?, active = ? " +
+		"phone_number = ?, frequency = ?, " +
+		"show_reminders = ?,  active = ? " +
 	"WHERE id = ?";
 
 
@@ -60,22 +61,32 @@ router.put('/:id', async (req, res) => {
 		else {
 			semaLog.info("CustomerId: " + req.params.id);
 			findCustomers(sqlGetCustomerById, req.params.id).then(function(result) {
-				let customer = new Customer();
-				customer.databaseToClass(result[0]);
-				customer.updateClass(req.body );
+				let _customer = new Customer();
+				_customer.databaseToClass(result[0]);
+				_customer.updateClass(req.body);
+
+				let customer = _customer.classToPlain()
 
 				// Note - Don't set the updated date... JIRA XXXX
 				let customerParams = [ customer.name, customer.salesChannelId, customer.customerTypeId,
-				customer.dueAmount, customer.address, customer.gpsCoordinates, customer.phoneNumber ];
+				customer.dueAmount, customer.address, customer.gpsCoordinates, customer.phoneNumber,
+				customer.frequency ];
+
+				// Show Reminders is set via 'bit'
+				if (customer.showReminders) {
+					customerParams.push(1)
+				} else {
+					customerParams.push(0)
+				}
 
 				// Active is set via a 'bit;
-				if(! customer.active){
+				if(!customer.active){
 					customerParams.push(0);
 				}else{
 					customerParams.push(1);
 				}
 				customerParams.push( customer.customerId );
-				updateCustomers(sqlUpdateCustomers, customerParams, res, customer);
+				updateCustomers(sqlUpdateCustomers, customerParams, res, _customer);
 
 			}, function(reason) {
 				res.status(404).send("PUT customer: Could not find customer with id " + req.params.id);
@@ -97,7 +108,6 @@ const updateCustomers = (query, params, res, customer ) => {
 			}
 			else {
 				semaLog.info('updateCustomers customers - succeeded');
-
 				try {
 					res.json(customer.classToPlain());
 				} catch (err) {

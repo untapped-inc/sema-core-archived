@@ -1,3 +1,4 @@
+import _ from "lodash";
 import PosStorage from "../database/PosStorage";
 import { REMOVE_PRODUCT } from "./OrderActions";
 
@@ -21,7 +22,6 @@ export function GetSalesReportData( beginDate, endDate ) {
 				dispatch({type: SALES_REPORT_FROM_ORDERS, data:{salesData:[]}})
 			});
 		}
-
 }
 
 export function setReportType( reportType ) {
@@ -113,21 +113,45 @@ export function GetInventoryReportData( beginDate, endDate, products ) {
 const computeReminders = () => {
 	return new Promise((resolve,reject) => {
 		let reminders = []
-		let pendingSalesReceipts = []
+		let pendingSalesReceiptsCustomerIDs = []
 		let customers = PosStorage.getCustomers()
 		let mostRecentReceipts = PosStorage.getReminderData()
-		let pendingSales = PosStorage.loadSalesReceipts(null).then( salesReceipts => { pendingSalesReceipts = salesReceipts })
-		console.log("pendingSalesReceipts",pendingSalesReceipts)
-		customers.forEach( customer => { 
-			if (mostRecentReceipts.hasOwnProperty(customer.customerId))  {
-				let currentReceipt = mostRecentReceipts[customer.customerId]
-				let date_diff = Math.floor((new Date() - Date.parse(currentReceipt.created_at))/86400000)
-				if (date_diff >= customer.frequency) {
-					reminders.push(customer)
-				}
-			}	
-		})
+
+		//  await PosStorage.loadSalesReceipts(null).then( salesReceipts => {
+		// 	console.log("Here's sales receipt", salesReceipts)
+		// 	salesReceipts.forEach(salesReceipt => {
+		// 		console.log("Individual", salesReceipt)
+		// 		pendingSalesReceiptsCustomerIDs.push(salesReceipt.sale.customerId)
+		// 	})
+		// 	console.log("Here's sales receipt customer ids", pendingSalesReceiptsCustomerIDs)
+			customers.forEach(customer => { 
+				if (mostRecentReceipts.hasOwnProperty(customer.customerId) &&
+					customer.showReminders) 
+					// !pendingSalesReceiptsCustomerIDs.includes(customer.customerId)) 
+					 {	
+						 console.log("Customer In class",customer)
+						let currentReceipt = mostRecentReceipts[customer.customerId]
+						let date_diff = Math.floor((new Date() - Date.parse(currentReceipt.created_at))/86400000)
+						if (date_diff >= customer.frequency) {
+							reminders.push(customer)
+					}
+				}	
+			})
+			
+		// })
+
 		resolve(reminders)
+
+		// customers.forEach(customer => { 
+		// 	if (mostRecentReceipts.hasOwnProperty(customer.customerId) && customer.showReminders)  {
+		// 		let currentReceipt = mostRecentReceipts[customer.customerId]
+		// 		let date_diff = Math.floor((new Date() - Date.parse(currentReceipt.created_at))/86400000)
+		// 		if (date_diff >= customer.frequency) {
+		// 			reminders.push(customer)
+		// 		}
+		// 	}	
+		// })
+		
 	})
 } 
 

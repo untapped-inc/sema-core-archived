@@ -274,7 +274,7 @@ class PosStorage {
 			});
 		}
 	}
-	updateCustomer( customer, phone, name, address, salesChannelId, customerTypeId){
+	updateCustomer( customer, phone, name, address, salesChannelId, customerTypeId, frequency, showReminders){
 		let key = this.makeCustomerKey(customer);
 		customer.name = name;
 		customer.phoneNumber = phone;
@@ -282,6 +282,8 @@ class PosStorage {
 		customer.salesChannelId = salesChannelId;
 		customer.customerTypeId = customerTypeId;
 		customer.updatedDate = new Date();
+		customer.frequency = parseInt(frequency);
+		customer.showReminders = showReminders;
 		customer.syncAction = "update";
 
 		this.pendingCustomers.push( key );
@@ -570,6 +572,7 @@ class PosStorage {
 						results.push({key:sales[resolvedCount], sale: sale});
 						resolvedCount++;
 						if ((resolvedCount) === sales.length) {
+							console.log("Pending sales in PosStorage", results)
 							resolve(results);
 						}
 					});

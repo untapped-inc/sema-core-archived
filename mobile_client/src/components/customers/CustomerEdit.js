@@ -47,8 +47,10 @@ class CustomerEdit extends Component {
 		this.phone = React.createRef();
 		this.name = React.createRef();
 		this.address = React.createRef();
+		this.frequency = React.createRef();
 		this.customerChannel = React.createRef();
 		this.customerType = React.createRef();
+		this.showReminders = React.createRef();
 		this.salesChannels = PosStorage.getSalesChannelsForDisplay();
 		this.channelOptions = this.salesChannels.map( channel =>{
 			return channel.displayName;
@@ -57,6 +59,7 @@ class CustomerEdit extends Component {
 		this.customerTypeOptions = this.customerTypes.map( customerType =>{
 			return customerType.displayName;
 		});
+		this.showReminderOptions = ["Hide Reminders","Show Reminders"]
 		this.customerTypesIndicies = this.customerTypes.map( customerType =>{
 			return customerType.id;
 		});
@@ -112,6 +115,14 @@ class CustomerEdit extends Component {
 								kbType = "default"
 								valueFn = {this.getAddress}
 								ref={this.address}/>
+							<CustomerProperty
+								reference = 'customerFrequency'
+								marginTop = "1%"
+								placeHolder = "Frequency"
+								parent ={this}
+								kbType = "numeric"
+								valueFn = {this.getFrequency}
+								ref={this.frequency}/>
 							<View style ={[{marginTop:"1%", flexDirection:'row',alignItems:'center'}]}>
 								<ModalDropdown
 									style ={{width:250}}
@@ -136,6 +147,20 @@ class CustomerEdit extends Component {
 									defaultValue = {this.getDefaultTypeValue()}
 									defaultIndex = {this.getDefaultTypeIndex()}
 									options={this.customerTypeOptions}/>
+								<TouchableHighlight underlayColor = '#c0c0c0'
+													onPress={() => this.onShowCustomerType()}>
+									<Text style={{fontSize:40}}>{"\u2B07"}</Text>
+								</TouchableHighlight>
+								<View style ={{width:50}}/>
+								<ModalDropdown
+									style ={{width:250}}
+									textStyle={styles.dropdownText}
+									dropdownTextStyle = {[styles.dropdownText, {width:250}]}
+									dropdownStyle ={{borderColor: 'black', borderWidth:2}}
+									ref = {this.showReminders}
+									defaultValue = {this.getShowReminderValue()}
+									defaultIndex = {this.getShowReminderIndex()}
+									options={this.showReminderOptions}/>
 								<TouchableHighlight underlayColor = '#c0c0c0'
 													onPress={() => this.onShowCustomerType()}>
 									<Text style={{fontSize:40}}>{"\u2B07"}</Text>
@@ -177,14 +202,43 @@ class CustomerEdit extends Component {
 			return ""
 		}
 	}
+
+	getShowReminderValue() {
+		if (this.props.isEdit) {
+			if (this.props.selectedCustomer.showReminders) {
+				return this.showReminderOptions[1]
+			} else {
+				return this.showReminderOptions[0]
+			}
+		}
+	}
+
+	getShowReminderIndex() {
+		if (this.props.isEdit) {
+			if (this.props.selectedCustomer.showReminders) {
+				return 1
+			} else {
+				return 0
+			}
+		}
+	}
+
+	getFrequency(me){
+		if( me.props.isEdit ){
+			return `${me.props.selectedCustomer.frequency}`;
+		}else{
+			return ""
+		}
+	}
+
 	getAddress(me){
 		if( me.props.isEdit ){
 			return me.props.selectedCustomer.address;
 		}else{
 			return ""
 		}
-
 	}
+
 	getDefaultChannelValue(){
 		if( this.props.isEdit ){
 			for( let i = 0; i < this.salesChannels.length; i++ ){
@@ -194,6 +248,10 @@ class CustomerEdit extends Component {
 			}
 		}
 		return i18n.t('sales-channel');
+	}
+
+	getDefaultReminderType() {
+		return "Show Reminders"
 	}
 
 	getDefaultTypeValue(){
@@ -250,6 +308,9 @@ class CustomerEdit extends Component {
 	onEdit(){
 		let salesChannelId = -1;
 		let customerTypeId = -1;
+		let showRemindersIndex = -1;
+		let showRemindersValue;
+
 		if( this._textIsEmpty( this.phone.current.state.propertyText) ){
 			this.phone.current.refs.customerNumber.focus();
 			return;
@@ -260,6 +321,11 @@ class CustomerEdit extends Component {
 		}
 		if( this._textIsEmpty( this.address.current.state.propertyText ) ){
 			this.address.current.refs.customerAddress.focus();
+			return;
+		}
+
+		if (this._textIsEmpty(this.frequency.current.state.propertyText)) {
+			this.frequency.current.refs.customerFrequency.focus();
 			return;
 		}
 		if( this.customerChannel.current.state.selectedIndex === -1){
@@ -276,6 +342,21 @@ class CustomerEdit extends Component {
 		}else{
 			customerTypeId = this.customerTypes[this.customerType.current.state.selectedIndex].id;
 		}
+
+		if( this.showReminders.current.state.selectedIndex === -1){
+			this.showReminders.current.show();
+			return;
+
+		}else{
+			showRemindersIndex = this.showReminders.current.state.selectedIndex
+			console.log("showRemindersIndex", showRemindersIndex)
+			if (showRemindersIndex == 0)  {
+				showRemindersValue = false
+			} else {
+				showRemindersValue = true
+			}
+		}
+
 		if( this.props.isEdit ){
 			PosStorage.updateCustomer(
 				this.props.selectedCustomer,
@@ -283,7 +364,10 @@ class CustomerEdit extends Component {
 				this.name.current.state.propertyText,
 				this.address.current.state.propertyText,
 				salesChannelId,
-				customerTypeId);
+				customerTypeId,
+				this.frequency.current.state.propertyText,
+				showRemindersValue
+				);
 		}else{
 			let newCustomer = PosStorage.createCustomer(
 				this.phone.current.state.propertyText,

@@ -31,31 +31,31 @@ const defaultProps = {
 };
 
 const renderPricing = ({ fields, meta: { error, submitFailed } }) => {
-  const renderRow = fields.map((field, index) => (
+  const renderRow = fields.map((mrp, index) => (
     <tr key={index}>
       <td>
-        <Field name="kiosk" component={KioskDropdown} size="small" />
+        <Field name={`${mrp}.kioskId`} component={KioskDropdown} size="small" />
       </td>
       <td>
         <Field
-          name="salesChannel"
+          name={`${mrp}.salesChannelId`}
           component={SalesChannelDropdown}
           size="small"
         />
       </td>
       <td>
-        <Field name="priceAmount" component={TextField} size="small" />
+        <Field name={`${mrp}.priceAmount`} component={TextField} size="small" />
       </td>
       <td>
         <Field
-          name="priceCurrency"
+          name={`${mrp}.priceCurrency`}
           component={SelectField}
           options={currency}
           size="small"
         />
       </td>
       <td>
-        <Field name="costOfGoods" component={TextField} size="small" />
+        <Field name={`${mrp}.costOfGoods`} component={TextField} size="small" />
       </td>
     </tr>
   ));
@@ -95,16 +95,22 @@ const ProductForm = ({ handleSubmit, ...props }) => (
           />
           <Field
             name="priceAmount"
-            label="Price"
+            label="Default Price"
             component={TextField}
             horizontal
           />
           <Field
             name="priceCurrency"
-            label="Currency"
+            label="Default Currency"
             component={SelectField}
             horizontal
             options={currency}
+          />
+          <Field
+            name="costOfGoods"
+            label="Cost of Goods"
+            component={TextField}
+            horizontal
           />
           <Field
             name="minQuantity"
@@ -131,29 +137,23 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             options={units}
             horizontal
           />
-          <Field
-            name="costOfGoods"
-            label="Cost of Goods"
-            component={TextField}
-            horizontal
-          />
         </Col>
         <Col md={4}>
           <Field name="image" label="image" component={ImageUpload} />
         </Col>
       </Row>
       <Row>
-        <Col md={2}>
+        {/* <Col md={2}>
           <FormGroup>
             <ControlLabel style={{ width: '100%', paddingRight: '10px' }}>
-              Pricing
+          Pricing
             </ControlLabel>
           </FormGroup>
-        </Col>
-        <Col md={8}>
+        </Col> */}
+        <Col md={10}>
           <Button
             onClick={() => {
-              props.addKiosk('productForm', 'kiosks', {});
+              props.addKiosk('productForm', 'productMrp', {});
             }}
             buttonText="Add Kiosk"
             buttonSize="xsmall"
@@ -169,7 +169,7 @@ const ProductForm = ({ handleSubmit, ...props }) => (
               </tr>
             </thead>
             <tbody>
-              <FieldArray name="kiosks" component={renderPricing} />
+              <FieldArray name="productMrp" component={renderPricing} />
             </tbody>
           </Table>
         </Col>
@@ -195,7 +195,8 @@ const mapStateToProps = state => ({
     unitsPerProduct: get(state, 'selectedProduct.unitsPerProduct', ''),
     unitMeasurement: get(state, 'selectedProduct.unitMeasurement', ''),
     costOfGoods: get(state, 'selectedProduct.costOfGoods', ''),
-    image: get(state, 'selectedProduct.base64Image', '')
+    image: get(state, 'selectedProduct.base64Image', ''),
+    productMrp: get(state, 'selectedProduct.productMrp', [])
   }
 });
 

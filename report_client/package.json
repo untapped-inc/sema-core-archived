@@ -1,6 +1,6 @@
 {
   "name": "bootstrap_react",
-  "version": "0.0.2.2",
+  "version": "0.0.2.4",
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",

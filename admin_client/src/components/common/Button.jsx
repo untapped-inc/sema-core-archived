@@ -13,7 +13,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  buttonStyle: 'primary',
+  buttonStyle: 'default',
   onClick: () => {},
   buttonText: '',
   icon: null,

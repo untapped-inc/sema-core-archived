@@ -1,9 +1,11 @@
 import React from 'react';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import HelpBlock from 'react-bootstrap/lib/HelpBlock';
-import Col from 'react-bootstrap/lib/Col';
+import {
+  FormGroup,
+  ControlLabel,
+  FormControl,
+  HelpBlock,
+  Col
+} from 'react-bootstrap';
 
 const TextField = ({
   name,
@@ -12,6 +14,7 @@ const TextField = ({
   meta,
   horizontal,
   size,
+  required,
   ...props
 }) => (
   <FormGroup
@@ -23,11 +26,13 @@ const TextField = ({
       label && (
         <Col componentClass={ControlLabel} sm={3}>
           {label}
+          {required ? ' *' : ''}
         </Col>
       )
     ) : (
       <Col componentClass={ControlLabel} sm={12}>
         {label}
+        {required ? ' *' : ''}
       </Col>
     )}
     {horizontal ? (

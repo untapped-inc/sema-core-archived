@@ -1,14 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Form,
-  Grid,
-  Row,
-  Col,
-  Table
-  // ControlLabel,
-  // FormGroup
-} from 'react-bootstrap';
+import { Form, Grid, Row, Col, Table, ButtonToolbar } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Field, FieldArray, arrayPush, reduxForm } from 'redux-form';
 import get from 'lodash/get';
@@ -21,6 +13,7 @@ import Button from './Button';
 import ProductCategoryDropdown from './ProductCategoryDropdown';
 import units from '../constants/units';
 import currency from '../constants/currency';
+import CheckboxField from './CheckboxField';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired
@@ -28,6 +21,11 @@ const propTypes = {
 
 const defaultProps = {
   handleSubmit: () => {}
+};
+
+const buttonToolbar = {
+  display: 'flex',
+  justifyContent: 'center'
 };
 
 const renderPricing = ({ fields, meta: { error, submitFailed } }) => {
@@ -57,6 +55,9 @@ const renderPricing = ({ fields, meta: { error, submitFailed } }) => {
       <td>
         <Field name={`${mrp}.costOfGoods`} component={TextField} size="small" />
       </td>
+      <td>
+        <Field name={`${mrp}.active`} component="input" type="checkbox" />
+      </td>
     </tr>
   ));
   return renderRow;
@@ -75,29 +76,45 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             disabled
           />
           <Field
+            required
+            name="active"
+            label="Active"
+            component={CheckboxField}
+          />
+          <Field
             name="name"
             label="Product Name"
             component={TextField}
             horizontal
+            required
           />
-          <Field name="sku" label="SKU" component={TextField} horizontal />
+          <Field
+            name="sku"
+            label="SKU"
+            component={TextField}
+            horizontal
+            required
+          />
           <Field
             name="description"
             label="Product Description"
             component={TextField}
             horizontal
+            required
           />
           <Field
             name="category"
             label="Product Category"
             component={ProductCategoryDropdown}
             horizontal
+            required
           />
           <Field
             name="priceAmount"
             label="Default Price"
             component={TextField}
             horizontal
+            required
           />
           <Field
             name="priceCurrency"
@@ -105,12 +122,14 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             component={SelectField}
             horizontal
             options={currency}
+            required
           />
           <Field
             name="costOfGoods"
             label="Cost of Goods"
             component={TextField}
             horizontal
+            required
           />
           <Field
             name="minQuantity"
@@ -151,30 +170,41 @@ const ProductForm = ({ handleSubmit, ...props }) => (
           </FormGroup>
         </Col> */}
         <Col md={10}>
-          <Button
-            onClick={() => {
-              props.addMrp('productForm', 'productMrp', {});
-            }}
-            buttonText="Add MRP"
-            buttonSize="xsmall"
-          />
-          <Table striped bordered hover responsive>
-            <thead>
-              <tr>
-                <th>Kiosk</th>
-                <th>Sales Channel</th>
-                <th>Amount</th>
-                <th>Currency</th>
-                <th>Cost of Goods</th>
-              </tr>
-            </thead>
-            <tbody>
-              <FieldArray name="productMrp" component={renderPricing} />
-            </tbody>
-          </Table>
+          <Row style={{ paddingBottom: '10px' }}>
+            <Button
+              onClick={() => {
+                props.addMrp('productForm', 'productMrp', {});
+              }}
+              buttonText="Add MRP"
+              buttonSize="small"
+              buttonStyle="primary"
+              className="pull-right"
+            />
+          </Row>
+          <Row>
+            <Table striped bordered hover responsive>
+              <thead>
+                <tr>
+                  <th>Kiosk</th>
+                  <th>Sales Channel</th>
+                  <th>Amount</th>
+                  <th>Currency</th>
+                  <th>Cost of Goods</th>
+                  <th>Active</th>
+                </tr>
+              </thead>
+              <tbody>
+                <FieldArray name="productMrp" component={renderPricing} />
+              </tbody>
+            </Table>
+          </Row>
         </Col>
       </Row>
     </Grid>
+    <ButtonToolbar className="text-center" style={buttonToolbar}>
+      <Button buttonText="Cancel" />
+      <Button buttonText="Save" buttonStyle="primary" />
+    </ButtonToolbar>
   </Form>
 );
 
@@ -184,6 +214,7 @@ ProductForm.defaultProps = defaultProps;
 const mapStateToProps = state => ({
   initialValues: {
     id: get(state, 'selectedProduct.id', ''),
+    active: get(state, 'selectedProduct.active', true),
     name: get(state, 'selectedProduct.name', ''),
     sku: get(state, 'selectedProduct.sku', ''),
     description: get(state, 'selectedProduct.description', ''),

@@ -10,6 +10,7 @@ const SelectField = ({
   meta,
   horizontal,
   size,
+  required,
   ...props
 }) => (
   <FormGroup
@@ -21,11 +22,13 @@ const SelectField = ({
       label && (
         <Col componentClass={ControlLabel} sm={3}>
           {label}
+          {required ? ' *' : ''}
         </Col>
       )
     ) : (
       <Col componentClass={ControlLabel} sm={12}>
         {label}
+        {required ? ' *' : ''}
       </Col>
     )}
     {horizontal ? (

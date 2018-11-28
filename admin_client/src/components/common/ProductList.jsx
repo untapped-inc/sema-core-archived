@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
-import Image from 'react-bootstrap/lib/Image';
+import Thumbnail from './Thumbnail';
 import 'react-table/react-table.css';
 import './style.css';
 
@@ -33,12 +33,17 @@ class ProductList extends React.Component {
     const productName = row.original.name || '';
     return (
       <div className="product">
-        <Image
-          className="product-image"
+        <Thumbnail
           src={`data:image/png;base64,${image}`}
-          responsive
+          imageSrc={`data:image/png;base64,${image}`}
+          captionText={productName}
         />
-        <span className="product-name">{productName}</span>
+        {/* <Image
+            className="product-image"
+            src={`data:image/png;base64,${image}`}
+            responsive
+            />
+          <span className="product-name">{productName}</span> */}
       </div>
     );
   }

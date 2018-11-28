@@ -10,6 +10,7 @@ const CheckboxGroup = ({
   label,
   meta,
   options,
+  required,
   ...rest
 }) => {
   const { onChange, onBlur } = input;
@@ -43,7 +44,10 @@ const CheckboxGroup = ({
         controlId={name}
         validationState={meta.invalid && meta.touched ? 'error' : null}
       >
-        <ControlLabel>{label}</ControlLabel>
+        <ControlLabel>
+          {label}
+          {required ? ' *' : ''}
+        </ControlLabel>
 
         {meta.invalid &&
           meta.touched &&

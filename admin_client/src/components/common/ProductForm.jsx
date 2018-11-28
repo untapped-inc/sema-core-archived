@@ -5,9 +5,9 @@ import {
   Grid,
   Row,
   Col,
-  Table,
-  ControlLabel,
-  FormGroup
+  Table
+  // ControlLabel,
+  // FormGroup
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Field, FieldArray, arrayPush, reduxForm } from 'redux-form';
@@ -153,9 +153,9 @@ const ProductForm = ({ handleSubmit, ...props }) => (
         <Col md={10}>
           <Button
             onClick={() => {
-              props.addKiosk('productForm', 'productMrp', {});
+              props.addMrp('productForm', 'productMrp', {});
             }}
-            buttonText="Add Kiosk"
+            buttonText="Add MRP"
             buttonSize="xsmall"
           />
           <Table striped bordered hover responsive>
@@ -202,7 +202,7 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addKiosk: arrayPush }
+  { addMrp: arrayPush }
 )(
   reduxForm({
     form: 'productForm',

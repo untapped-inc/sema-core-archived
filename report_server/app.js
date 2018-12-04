@@ -14,7 +14,7 @@ var index = require('./routes');
 var seama_health_check = require('./routes/sema_health_check');
 var seama_login = require('./routes/sema_login');
 var seama_kiosks = require('./routes/sema_kiosks');
-var seama_water_operations = require('./routes/sema_water_operations');
+var sema_water_operations = require('./routes/sema_water_operations');
 var sema_sales = require('./routes/sema_sales');
 var sema_sales_by_channel = require('./routes/sema_sales_by_channel');
 var sema_customers = require('./routes/sema_customers');
@@ -101,15 +101,17 @@ app.use('/Demographics', index);
 app.use('/untapped/health-check', seama_health_check);
 app.use('/untapped/login', seama_login);
 app.use('/untapped/kiosks', isAuthenticated, seama_kiosks);
-app.use('/untapped/water-operations', isAuthenticated, seama_water_operations);
 app.use('/untapped/sales', isAuthenticated, sema_sales);
 app.use('/untapped/sales-by-channel', isAuthenticated, sema_sales_by_channel);
 
 app.use('/sema/health-check', seama_health_check);
 app.use('/sema/login', seama_login);
 app.use('/sema/kiosks', isAuthenticated, seama_kiosks);
+app.use('/sema/water-ops/', isAuthenticated, sema_water_operations);
+
 app.use('/sema/site/customers/', isAuthenticated, sema_customers);
 app.use('/sema/site/receipts/', sema_receipts);
+
 app.use('/sema/products/', isAuthenticated, sema_products);
 app.use('/sema/sales-channels/', isAuthenticated, sema_sales_channels);
 app.use('/sema/customer-types/', isAuthenticated, sema_customer_types);

@@ -20,6 +20,7 @@ import * as CustomerActions from '../actions/CustomerActions';
 import * as NetworkActions from '../actions/NetworkActions';
 import * as SettingsActions from '../actions/SettingsActions';
 import * as ProductActions from '../actions/ProductActions';
+import * as WaterOpActions from '../actions/WaterOpActions';
 
 
 import PosStorage from "../database/PosStorage";
@@ -100,6 +101,7 @@ class PosApp extends Component {
 		Events.on('CustomersUpdated', 'customerUpdate1', this.onCustomersUpdated.bind(this));
 		Events.on('ProductsUpdated', 'productUpdate1', this.onProductsUpdated.bind(this));
 		Events.on('SalesChannelsUpdated', 'SalesChannelsUpdated1', this.onSalesChannelUpdated.bind(this));
+		Events.on('WaterOpConfigsUpdated', 'WaterOpConfigsUpdated1', this.onWaterOpConfigsUpdated.bind(this));
 
 		console.log("PosApp = Mounted-Done");
 
@@ -107,6 +109,7 @@ class PosApp extends Component {
 	componentWillUnmount(){
 		Events.rm('CustomersUpdated', 'customerUpdate1');
 		Events.rm('ProductsUpdated', 'productUpdate1');
+		Events.rm('WaterOpConfigsUpdated', 'WaterOpConfigsUpdated1');
 		NetInfo.isConnected.removeEventListener( 'connectionChange',this.handleConnectivityChange );
 	}
 
@@ -123,6 +126,10 @@ class PosApp extends Component {
 		CustomerViews.buildNavigator().then(() => {
 			this.forceUpdate();
 		});
+	}
+
+	onWaterOpConfigsUpdated(waterOpConfigs) {
+		this.props.waterOpActions.setWaterOpConfigs(waterOpConfigs);
 	}
 
 	handleConnectivityChange = isConnected => {
@@ -231,11 +238,13 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		customerActions:bindActionCreators(CustomerActions, dispatch),
-		productActions:bindActionCreators(ProductActions, dispatch),
-		networkActions:bindActionCreators(NetworkActions, dispatch),
-		toolbarActions:bindActionCreators(ToolbarActions, dispatch),
-		settingsActions:bindActionCreators(SettingsActions, dispatch)};
+		customerActions: bindActionCreators(CustomerActions, dispatch),
+		productActions: bindActionCreators(ProductActions, dispatch),
+		networkActions: bindActionCreators(NetworkActions, dispatch),
+		toolbarActions: bindActionCreators(ToolbarActions, dispatch),
+		settingsActions: bindActionCreators(SettingsActions, dispatch),
+		waterOpActions: bindActionCreators(WaterOpActions, dispatch)
+	};
 }
 
 //Connect everything

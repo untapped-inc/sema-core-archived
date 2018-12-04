@@ -80,13 +80,15 @@ class ImageUpload extends React.Component {
       <aside style={thumbsContainer}>
         <div style={thumb}>
           <div style={thumbInner}>
-            <img
-              src={
-                files[0] ? files[0].preview : `data:image/png;base64,${value}`
-              }
-              style={img}
-              alt="product"
-            />
+            {(files[0] || value) && (
+              <img
+                src={
+                  files[0] ? files[0].preview : `data:image/png;base64,${value}`
+                }
+                style={img}
+                alt="product"
+              />
+            )}
           </div>
         </div>
       </aside>

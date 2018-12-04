@@ -13,6 +13,7 @@ class Products extends Component {
             className="pull-right"
             icon="plus"
             buttonText="Create Product"
+            onClick={() => this.props.history.push('/products/new')}
           />
           <h2>Products</h2>
         </div>

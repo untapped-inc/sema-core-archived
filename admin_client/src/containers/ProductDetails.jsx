@@ -6,7 +6,7 @@ import PageHeader from 'react-bootstrap/lib/PageHeader';
 import { RingLoader } from 'react-spinners';
 
 import ProductForm from '../components/common/ProductForm';
-import { getProduct } from '../actions/ProductActions';
+import { getProduct, resetProduct } from '../actions/ProductActions';
 import { createLoadingSelector } from '../reducers/selectors';
 
 const propTypes = {
@@ -19,7 +19,7 @@ const defaultProps = {
 class ProductDetails extends Component {
   componentWillMount() {
     const { id } = this.props.match.params;
-    this.props.getProduct(id);
+    if (id && id !== 'new') this.props.getProduct(id);
   }
 
   render() {
@@ -56,7 +56,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getProduct: bindActionCreators(getProduct, dispatch)
+  getProduct: bindActionCreators(getProduct, dispatch),
+  resetProduct: dispatch(resetProduct())
 });
 
 export default connect(

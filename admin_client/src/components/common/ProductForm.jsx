@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 import { Form, Grid, Row, Col, Table, ButtonToolbar } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Field, FieldArray, arrayPush, reduxForm } from 'redux-form';
@@ -202,7 +203,10 @@ const ProductForm = ({ handleSubmit, ...props }) => (
       </Row>
     </Grid>
     <ButtonToolbar className="text-center" style={buttonToolbar}>
-      <Button buttonText="Cancel" />
+      <Button
+        buttonText="Cancel"
+        onClick={() => props.history.push('/products')}
+      />
       <Button buttonText="Save" buttonStyle="primary" />
     </ButtonToolbar>
   </Form>
@@ -231,12 +235,14 @@ const mapStateToProps = state => ({
   }
 });
 
-export default connect(
-  mapStateToProps,
-  { addMrp: arrayPush }
-)(
-  reduxForm({
-    form: 'productForm',
-    enableReinitialize: true
-  })(ProductForm)
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { addMrp: arrayPush }
+  )(
+    reduxForm({
+      form: 'productForm',
+      enableReinitialize: true
+    })(ProductForm)
+  )
 );

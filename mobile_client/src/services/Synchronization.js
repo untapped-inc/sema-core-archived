@@ -69,7 +69,8 @@ class Synchronization {
 					let lastProductSync = this.lastProductSync;
 					const promiseSalesChannels = this.synchronizeSalesChannels();
 					const promiseCustomerTypes = this.synchronizeCustomerTypes();
-					Promise.all([promiseSalesChannels, promiseCustomerTypes])
+					const promiseWaterOpConfigs = this.synchronizeWaterOpConfigs();
+					Promise.all([promiseSalesChannels, promiseCustomerTypes, promiseWaterOpConfigs])
 						.then( (values) => {
 							console.log("synchronize - SalesChannels and Customer Types: " + values);
 							const promiseCustomers = this.synchronizeCustomers()
@@ -215,6 +216,24 @@ class Synchronization {
 				});
 		});
 	}
+
+	// This saves the sampling sites and parameters into Redux for now
+	synchronizeWaterOpConfigs() {
+		return new Promise((resolve, reject) => {
+			console.log("Synchronization:synchronizeWaterOpConfigs - Begin");
+			Communications.getWaterOpConfigs()
+				.then(waterOpConfigs => {
+					// Emit event so we can save in redux from the main component
+					Events.trigger('WaterOpConfigsUpdated', waterOpConfigs);
+					// TODO: Also save them in POSStorage for offline use
+					resolve(waterOpConfigs);
+				})
+				.catch(err => {
+					reject(err);
+				});
+		});
+	}
+
 	synchronizeCustomerTypes(){
 		return new Promise((resolve ) => {
 			console.log("Synchronization:synchronizeCustomerTypes - Begin");

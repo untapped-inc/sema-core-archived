@@ -69,90 +69,32 @@ const sqlTDS =
     ORDER BY reading.created_date';
 
 const sqlParameter=
-	'SELECT id, name FROM parameter LIMIT 100';
+	'SELECT id, name, unit, minimum, maximum, active, is_used_in_totalizer FROM parameter';
 
 const sqlSamplingSite=
-	'SELECT id, name FROM sampling_site LIMIT 100';
+	'SELECT id, name, is_used_for_totalizer FROM sampling_site';
 
-/* GET water operations. */
+const sqlSamplingSiteParameterMapping = `
+SELECT * from kiosk_parameter where kiosk_id = ?
+`;
 
-router.get('/', function(request, response) {
-	semaLog.info( 'water-operations Entry - kiosk: - ', request.query.kioskID );
+/* GET configurations - parameters and site IDs */
 
-	let results = initResults();
-
-	request.check("kioskID", "Parameter kioskID is missing").exists();
-	request.check("groupby", "Parameter groupby is missing").exists();
-
-	request.getValidationResult().then(function(result) {
-		if (!result.isEmpty()) {
-			const errors = result.array().map((elem) => {
-				return elem.msg;
-			});
-			semaLog.error("water-operations VALIDATION ERROR: ", errors );
-			response.status(400).send(errors.toString());
-		} else {
-			let endDate = null;
-			let beginDate = null;
-			if (request.query.hasOwnProperty("enddate")) {
-				endDate = new Date(Date.parse(request.query.enddate));
+router.get('/configs/:siteId', function(request, response) {
+	semaLog.info('water-operations Entry');
+	__pool.getConnection((err, connection) => {
+		getWaterOpConfigs(request.params.siteId, connection).then(results => {
+			return yieldResults(response, results);
+		})
+		.then(() => {
+			connection.release();
+		})
+		.catch(err => {
+			if (connection) {
+				connection.release();
 			}
-
-			__pool.getConnection((err, connection) => {
-				getParametersAndSiteIds(connection ).then( () => {
-					getMostRecentReading(connection, request.query, endDate).then((newEndDate) => {
-						endDate = newEndDate;
-						results.latestDate = endDate;
-						beginDate = new Date(newEndDate.getFullYear(), newEndDate.getMonth(), 1);	// 	Default to start of previous month
-						beginDate.addMonths(-1);
-
-						getTotalOrFillProduction(connection, request.query, results.totalProduction, "AM: Product Line", "PM: Product Line", results).then(() => {
-							getTotalOrFillProduction(connection, request.query, results.fillStation, "Fill Station", "PM: Fill Station", results).then(() => {
-							getSitePressure(connection, request.query, "PRE-FILTER PRESSURE IN", results.sitePressureIn,  results).then(() => {
-								getSitePressure(connection, request.query, "PRE-FILTER PRESSURE OUT", results.sitePressureOut,  results).then(() => {
-									getSitePressure(connection, request.query, "MEMBRANE FEED PRESSURE", results.sitePressureMembrane,  results).then(() => {
-										getFlowRate(connection, request.query, "Feed Flow Rate", results.flowRateFeed, results).then(() => {
-										getFlowRate(connection, request.query, "Product Flow Rate", results.flowRateProduct, results).then(() => {
-										getProduction(connection, request.query, beginDate, endDate, results).then(() => {
-										getTotalChlorine(connection, request.query, beginDate, endDate, results).then(() => {
-										getTDS(connection, request.query, beginDate, endDate, results).then(() => {
-											yieldResults(response, results);
-										}).catch(err => {
-											yieldError(err, response, 500, results);
-										});
-										}).catch(err => {
-											yieldError(err, response, 500, results);
-										});
-										}).catch(err => {
-											yieldError(err, response, 500, results);
-										});
-										}).catch(err => {
-											yieldError(err, response, 500, results);
-										});
-										}).catch(err => {
-											yieldError(err, response, 500, results);
-										});
-									}).catch(err => {
-										yieldError(err, response, 500, results);
-									});
-								}).catch(err => {
-									yieldError(err, response, 500, results);
-								});
-							}).catch(err => {
-								yieldError(err, response, 500, results);
-							});
-							}).catch(err => {
-								yieldError(err, response, 500, results);
-							});
-						}).catch(err => {
-							yieldError(err, response, 500, results);
-						});
-					});
-				}).then(() => {
-					connection.release();
-				});
-			});
-		}
+			return yieldError(err, response, 500, []);
+		})
 	});
 });
 
@@ -371,39 +313,36 @@ const getSamplingSiteIdFromMap = ( parameter ) =>{
 	return (typeof sampling_site_id_map[parameter] === "undefined" ) ? -1 : sampling_site_id_map[parameter];
 };
 
-const getParametersAndSiteIds = (connection) => {
+// TODO: Turn the MySQL queries into promises to shorten this function
+// TODO: Actually, use Sequelize... Finally.
+const getWaterOpConfigs = (siteId, connection) => {
 	return new Promise((resolve ) => {
-		if ( Object.keys( parameter_id_map).length === 0 || Object.keys(sampling_site_id_map).length === 0){
-			parameter_id_map = {};
-			sampling_site_id_map= {};
-			connection.query(sqlParameter, (err, sqlResult) => {
-				if (err) {
-					semaLog.error("water-operations. Error resolving parameter ids ", err );
-					resolve();
-				} else {
-					if (Array.isArray(sqlResult)){
-						parameter_id_map = sqlResult.reduce( (map, item) => {
-							map[item.name] = item.id;
-							return map;
-						}, {});
+		connection.query(sqlParameter, (err, parameters) => {
+			if (err) {
+				semaLog.error("water-operations. Error resolving parameter ids ", err );
+				reject();
+			} else {
+				connection.query(sqlSamplingSite, (err, samplingSites) => {
+					if (err) {
+						semaLog.error("water-operations. Error resolving sampling site ids ", err );
+						reject();
+					} else {
+						connection.query(sqlSamplingSiteParameterMapping, [siteId], (err, samplingSiteParameterMapping) => {
+							if (err) {
+								semaLog.error("water-operations. Error resolving sampling site, kiosk and parameter mapping ", err );
+								reject();
+							} else {
+								resolve({
+									parameters,
+									samplingSites,
+									samplingSiteParameterMapping
+								})
+							}
+						});
 					}
-					connection.query(sqlSamplingSite, (err, sqlResult) => {
-						if (err) {
-							semaLog.error("water-operations. Error resolving sampling site ids ", err );
-							resolve();
-						}else{
-							sampling_site_id_map = sqlResult.reduce( (map, item) => {
-								map[item.name] = item.id;
-								return map;
-							}, {});
-						}
-						resolve();
-					});
-				}
-			})
-		}else{
-			resolve();
-		}
+				});
+			}
+		});
 	});
 
 };

@@ -5,7 +5,8 @@ import {
   FormGroup,
   HelpBlock,
   Col,
-  ControlLabel
+  ControlLabel,
+  Row
 } from 'react-bootstrap';
 
 const propTypes = {
@@ -38,18 +39,20 @@ const CheckboxField = ({
     validationState={meta.invalid && meta.touched ? 'error' : null}
     bsSize={size}
   >
-    {label && (
-      <Col componentClass={ControlLabel} sm={3}>
-        {label}
-        {required ? ' *' : ''}
+    <Row>
+      {label && (
+        <Col componentClass={ControlLabel} sm={3}>
+          {label}
+          {required ? ' *' : ''}
+        </Col>
+      )}
+      <Col sm={9}>
+        <Checkbox checked={input.value} {...input} {...rest} />
       </Col>
-    )}
-    <Col sm={9}>
-      <Checkbox checked={input.value} {...input} {...rest} />
-    </Col>
-    {meta.invalid &&
-      meta.touched &&
-      meta.error && <HelpBlock>{meta.error}</HelpBlock>}
+      {meta.invalid &&
+        meta.touched &&
+        meta.error && <HelpBlock>{meta.error}</HelpBlock>}
+    </Row>
   </FormGroup>
 );
 

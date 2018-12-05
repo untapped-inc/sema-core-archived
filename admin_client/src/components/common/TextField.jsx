@@ -4,7 +4,8 @@ import {
   ControlLabel,
   FormControl,
   HelpBlock,
-  Col
+  Col,
+  Row
 } from 'react-bootstrap';
 
 const TextField = ({
@@ -22,22 +23,24 @@ const TextField = ({
     validationState={meta.invalid && meta.touched ? 'error' : null}
     bsSize={size}
   >
-    {label && (
-      <Col componentClass={ControlLabel} sm={horizontal ? 3 : 12}>
-        {label}
-        {required ? ' *' : ''}
+    <Row>
+      {label && (
+        <Col componentClass={ControlLabel} sm={horizontal ? 3 : 12}>
+          {label}
+          {required ? ' *' : ''}
+        </Col>
+      )}
+
+      <Col sm={horizontal ? 9 : 12}>
+        <FormControl {...input} {...props} />
       </Col>
-    )}
 
-    <Col sm={horizontal ? 9 : 12}>
-      <FormControl {...input} {...props} />
-    </Col>
-
-    <Col smOffset={horizontal ? 3 : 0} sm={9}>
-      {meta.invalid &&
-        meta.touched &&
-        meta.error && <HelpBlock>{meta.error}</HelpBlock>}
-    </Col>
+      <Col smOffset={horizontal ? 3 : 0} sm={9}>
+        {meta.invalid &&
+          meta.touched &&
+          meta.error && <HelpBlock>{meta.error}</HelpBlock>}
+      </Col>
+    </Row>
   </FormGroup>
 );
 

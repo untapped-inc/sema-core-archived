@@ -15,6 +15,7 @@ import ProductCategoryDropdown from './ProductCategoryDropdown';
 import units from '../constants/units';
 import currency from '../constants/currency';
 import CheckboxField from './CheckboxField';
+import { required } from './validate';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired
@@ -81,6 +82,7 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             name="active"
             label="Active"
             component={CheckboxField}
+            validate={[required]}
           />
           <Field
             name="name"
@@ -88,6 +90,7 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             component={TextField}
             horizontal
             required
+            validate={[required]}
           />
           <Field
             name="sku"
@@ -95,6 +98,7 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             component={TextField}
             horizontal
             required
+            validate={[required]}
           />
           <Field
             name="description"
@@ -102,6 +106,7 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             component={TextField}
             horizontal
             required
+            validate={[required]}
           />
           <Field
             name="category"
@@ -109,6 +114,7 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             component={ProductCategoryDropdown}
             horizontal
             required
+            validate={[required]}
           />
           <Field
             name="priceAmount"
@@ -116,6 +122,7 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             component={TextField}
             horizontal
             required
+            validate={[required]}
           />
           <Field
             name="priceCurrency"
@@ -124,6 +131,7 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             horizontal
             options={currency}
             required
+            validate={[required]}
           />
           <Field
             name="costOfGoods"
@@ -131,6 +139,7 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             component={TextField}
             horizontal
             required
+            validate={[required]}
           />
           <Field
             name="minQuantity"
@@ -207,7 +216,12 @@ const ProductForm = ({ handleSubmit, ...props }) => (
         buttonText="Cancel"
         onClick={() => props.history.push('/products')}
       />
-      <Button buttonText="Save" buttonStyle="primary" />
+      <Button
+        onClick={handleSubmit}
+        type="submit"
+        buttonText="Save"
+        buttonStyle="primary"
+      />
     </ButtonToolbar>
   </Form>
 );

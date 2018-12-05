@@ -18,46 +18,29 @@ const SelectField = ({
     validationState={meta.invalid && meta.touched ? 'error' : null}
     bsSize={size}
   >
-    {horizontal ? (
-      label && (
-        <Col componentClass={ControlLabel} sm={3}>
-          {label}
-          {required ? ' *' : ''}
-        </Col>
-      )
-    ) : (
-      <Col componentClass={ControlLabel} sm={12}>
+    {label && (
+      <Col componentClass={ControlLabel} sm={horizontal ? 3 : 9}>
         {label}
         {required ? ' *' : ''}
       </Col>
     )}
-    {horizontal ? (
-      <Col sm={9}>
-        <FormControl componentClass="select" {...input} {...props}>
-          <option />
-          {options.map((option, index) => (
-            <option key={index} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </FormControl>
-      </Col>
-    ) : (
-      <Col sm={12}>
-        <FormControl componentClass="select" {...input} {...props}>
-          <option />
-          {options.map((option, index) => (
-            <option key={index} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </FormControl>
-      </Col>
-    )}
 
-    {meta.invalid &&
-      meta.touched &&
-      meta.error && <HelpBlock>{meta.error}</HelpBlock>}
+    <Col sm={horizontal ? 9 : 12}>
+      <FormControl componentClass="select" {...input} {...props}>
+        <option />
+        {options.map((option, index) => (
+          <option key={index} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </FormControl>
+    </Col>
+
+    <Col smOffset={horizontal ? 3 : 0} sm={9}>
+      {meta.invalid &&
+        meta.touched &&
+        meta.error && <HelpBlock>{meta.error}</HelpBlock>}
+    </Col>
   </FormGroup>
 );
 

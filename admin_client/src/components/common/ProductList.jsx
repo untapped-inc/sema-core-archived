@@ -62,7 +62,7 @@ class ProductList extends React.Component {
       },
       {
         Header: 'Category',
-        accessor: 'category'
+        accessor: 'category.name'
       },
       {
         Header: 'SKU',

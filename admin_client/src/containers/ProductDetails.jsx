@@ -6,7 +6,11 @@ import PageHeader from 'react-bootstrap/lib/PageHeader';
 import { RingLoader } from 'react-spinners';
 
 import ProductForm from '../components/common/ProductForm';
-import { getProduct, resetProduct } from '../actions/ProductActions';
+import {
+  getProduct,
+  resetProduct,
+  createProduct
+} from '../actions/ProductActions';
 import { createLoadingSelector } from '../reducers/selectors';
 
 const propTypes = {
@@ -37,7 +41,9 @@ class ProductDetails extends Component {
         {!loading && (
           <div>
             <PageHeader>{name || 'Create Product'}</PageHeader>
-            <ProductForm />
+            <ProductForm
+              onSubmit={values => this.props.createProduct(values)}
+            />
           </div>
         )}
       </div>
@@ -57,7 +63,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getProduct: bindActionCreators(getProduct, dispatch),
-  resetProduct: dispatch(resetProduct())
+  resetProduct: dispatch(resetProduct()),
+  createProduct: bindActionCreators(createProduct, dispatch)
 });
 
 export default connect(

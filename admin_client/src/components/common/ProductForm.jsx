@@ -123,6 +123,7 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             horizontal
             required
             validate={[required]}
+            type="number"
           />
           <Field
             name="priceCurrency"
@@ -140,24 +141,30 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             horizontal
             required
             validate={[required]}
+            type="number"
           />
           <Field
             name="minQuantity"
             label="Minimum Quantity"
             component={TextField}
             horizontal
+            type="number"
           />
           <Field
             name="maxQuantity"
             label="Maximum Quantity"
             component={TextField}
             horizontal
+            type="number"
           />
           <Field
             name="unitsPerProduct"
             label="Units per Product"
             component={TextField}
             horizontal
+            required
+            validators={[required]}
+            type="number"
           />
           <Field
             name="unitMeasurement"
@@ -165,6 +172,8 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             component={SelectField}
             options={units}
             horizontal
+            required
+            validators={[required]}
           />
         </Col>
         <Col md={4}>
@@ -172,13 +181,6 @@ const ProductForm = ({ handleSubmit, ...props }) => (
         </Col>
       </Row>
       <Row>
-        {/* <Col md={2}>
-          <FormGroup>
-            <ControlLabel style={{ width: '100%', paddingRight: '10px' }}>
-          Pricing
-            </ControlLabel>
-          </FormGroup>
-        </Col> */}
         <Col md={10}>
           <Row style={{ paddingBottom: '10px' }}>
             <Button
@@ -236,7 +238,7 @@ const mapStateToProps = state => ({
     name: get(state, 'selectedProduct.name', ''),
     sku: get(state, 'selectedProduct.sku', ''),
     description: get(state, 'selectedProduct.description', ''),
-    category: get(state, 'selectedProduct.category', ''),
+    category: get(state, 'selectedProduct.category.id', ''),
     priceAmount: get(state, 'selectedProduct.priceAmount', ''),
     priceCurrency: get(state, 'selectedProduct.priceCurrency', ''),
     minQuantity: get(state, 'selectedProduct.minQuantity', ''),

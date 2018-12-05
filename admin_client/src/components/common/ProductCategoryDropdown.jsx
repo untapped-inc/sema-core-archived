@@ -12,7 +12,7 @@ class ProductCategoryDropdown extends React.Component {
     const { categories, getProductCategories, ...rest } = this.props;
 
     const categoryOptions = categories.map(category => ({
-      value: category.name,
+      value: category.id,
       label: category.name
     }));
 

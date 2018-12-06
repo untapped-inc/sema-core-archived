@@ -185,7 +185,9 @@ const ProductForm = ({ handleSubmit, ...props }) => (
           <Row style={{ paddingBottom: '10px' }}>
             <Button
               onClick={() => {
-                props.addMrp('productForm', 'productMrp', {});
+                props.addMrp('productForm', 'productMrp', {
+                  productId: props.initialValues.id
+                });
               }}
               buttonText="Add MRP"
               buttonSize="small"

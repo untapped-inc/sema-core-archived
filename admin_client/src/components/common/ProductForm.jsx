@@ -5,6 +5,7 @@ import { Form, Grid, Row, Col, Table, ButtonToolbar } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Field, FieldArray, arrayPush, reduxForm } from 'redux-form';
 import get from 'lodash/get';
+import { history } from '../../utils/history';
 import TextField from './TextField';
 import SelectField from './SelectField';
 import KioskDropdown from './KioskDropdown';
@@ -82,7 +83,6 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             name="active"
             label="Active"
             component={CheckboxField}
-            validate={[required]}
           />
           <Field
             name="name"
@@ -258,7 +258,8 @@ export default withRouter(
   )(
     reduxForm({
       form: 'productForm',
-      enableReinitialize: true
+      enableReinitialize: true,
+      onSubmitSuccess: () => history.push('/products')
     })(ProductForm)
   )
 );

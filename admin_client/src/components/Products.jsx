@@ -21,7 +21,6 @@ class Products extends Component {
         <ProductList
           loading={this.props.loading}
           products={this.props.products}
-          // onEditClick={id => this.editUser(id)}
           {...this.props}
         />
       </div>

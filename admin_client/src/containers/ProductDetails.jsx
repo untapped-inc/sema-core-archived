@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PageHeader from 'react-bootstrap/lib/PageHeader';
+import { isEmpty } from 'lodash';
 import { RingLoader } from 'react-spinners';
 
 import ProductForm from '../components/common/ProductForm';
 import {
   getProduct,
   resetProduct,
-  createProduct
+  createProduct,
+  updateProduct
 } from '../actions/ProductActions';
 import { createLoadingSelector } from '../reducers/selectors';
 
@@ -27,10 +29,8 @@ class ProductDetails extends Component {
   }
 
   render() {
-    const {
-      loading,
-      selectedProduct: { name = '' }
-    } = this.props;
+    const { loading, selectedProduct } = this.props;
+    const { name = '' } = selectedProduct;
     return (
       <div>
         {loading && (
@@ -42,7 +42,11 @@ class ProductDetails extends Component {
           <div>
             <PageHeader>{name || 'Create Product'}</PageHeader>
             <ProductForm
-              onSubmit={values => this.props.createProduct(values)}
+              onSubmit={values =>
+                isEmpty(selectedProduct)
+                  ? this.props.createProduct(values)
+                  : this.props.updateProduct(values)
+              }
             />
           </div>
         )}
@@ -64,7 +68,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getProduct: bindActionCreators(getProduct, dispatch),
   resetProduct: dispatch(resetProduct()),
-  createProduct: bindActionCreators(createProduct, dispatch)
+  createProduct: bindActionCreators(createProduct, dispatch),
+  updateProduct: bindActionCreators(updateProduct, dispatch)
 });
 
 export default connect(

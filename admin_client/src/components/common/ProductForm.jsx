@@ -48,17 +48,6 @@ const renderPricing = ({ fields, meta: { error, submitFailed } }) => {
         <Field name={`${mrp}.priceAmount`} component={TextField} size="small" />
       </td>
       <td>
-        <Field
-          name={`${mrp}.priceCurrency`}
-          component={SelectField}
-          options={currency}
-          size="small"
-        />
-      </td>
-      <td>
-        <Field name={`${mrp}.costOfGoods`} component={TextField} size="small" />
-      </td>
-      <td>
         <Field name={`${mrp}.active`} component="input" type="checkbox" />
       </td>
     </tr>
@@ -186,7 +175,8 @@ const ProductForm = ({ handleSubmit, ...props }) => (
             <Button
               onClick={() => {
                 props.addMrp('productForm', 'productMrp', {
-                  productId: props.initialValues.id
+                  productId: props.initialValues.id,
+                  active: true
                 });
               }}
               buttonText="Add MRP"
@@ -202,8 +192,6 @@ const ProductForm = ({ handleSubmit, ...props }) => (
                   <th>Kiosk</th>
                   <th>Sales Channel</th>
                   <th>Amount</th>
-                  <th>Currency</th>
-                  <th>Cost of Goods</th>
                   <th>Active</th>
                 </tr>
               </thead>

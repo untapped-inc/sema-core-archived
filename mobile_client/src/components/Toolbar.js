@@ -28,10 +28,16 @@ class Toolbar extends Component {
 		this.state = {
 			isVisible: false,
 			datetime: null,
-			samplingSites: this.props.waterOpConfigs.samplingSites,
 			selectedSamplingSite: null
 		};
 
+		if (this.props.waterOpConfigs.samplingSites) {
+			this.setState({
+				selectedSamplingSite: this.props.waterOpConfigs.samplingSites[0]
+			});
+		}
+
+		this.getParametersForm = this.getParametersForm.bind(this);
 		this.closeWaterOpsModal = this.closeWaterOpsModal.bind(this);
 		this.onShowWaterQualityAndFlowmeter = this.onShowWaterQualityAndFlowmeter.bind(this);
 	}
@@ -118,7 +124,10 @@ class Toolbar extends Component {
 								null
 							} */}
 							<View style={styles.modal_content}>
+								{this.getParametersForm()}
 								<Text>
+									{/* TODO 1: Display list of parameter names for the selected sampling site */}
+									{/* TODO 2: Display list of parameters for the selected sampling site as a form of inputs */}
 									There will be a form here with the parameters for the selected sampling site
 								</Text>
 							</View>
@@ -127,15 +136,15 @@ class Toolbar extends Component {
 						<View style={styles.modal_footer}>
 							<View style={styles.modal_button_container}>
 								<TouchableHighlight
-								style={styles.modal_cancel_button}
+								style={[styles.modal_cancel_button, styles.modal_button]}
 								onPress={() => this.closeWaterOpsModal()}>
-									<Text>Cancel</Text>
+									<Text style={styles.modal_cancel_button_text}>Cancel</Text>
 								</TouchableHighlight>
 
 								<TouchableHighlight
-								style={styles.modal_submit_button}
+								style={[styles.modal_submit_button, styles.modal_button]}
 								onPress={() => this.onSubmitParameters()}>
-									<Text>Submit</Text>
+									<Text style={styles.modal_submit_button_text}>Submit</Text>
 								</TouchableHighlight>
 							</View>
 						</View>
@@ -145,6 +154,28 @@ class Toolbar extends Component {
 		);
 	};
 
+	getParametersForm() {
+		if (this.state.selectedSamplingSite) {
+			// TODO: Filter the mappings for the current sampling site first
+			const params = this.props.waterOpConfigs.idMapping.map((mapping, idx) => {
+				if (this.state.selectedSamplingSite.id !== mapping.sampling_site_id) return;
+	
+				const currentParameter = this.props.waterOpConfigs.parameters.reduce((curr, next) => {
+					if (next.id === mapping.parameter_id) return next;
+				}, null);
+	
+				if (!currentParameter) return;
+	
+				return (<Text key={idx}>{currentParameter.name}</Text>);
+			});
+
+			console.log(params);
+	
+			return params;
+		}
+		return null;
+	}
+
 	getRowStyles(isSelected) {
 		if(isSelected) {
 			return styles.selectedSamplingSiteRow;
@@ -153,6 +184,7 @@ class Toolbar extends Component {
 		}
 	}
 
+	// TODO 3: Send the parameters of the selected sampling site to the server
 	onSubmitParameters() {
 		console.log('lol');
 	}
@@ -313,7 +345,7 @@ const styles = StyleSheet.create({
 		color: '#fff'
 	},
 
-	selectedSamplingSiteText:{ 
+	selectedSamplingSiteText:{
 	},
 
 	baseItem:{
@@ -407,16 +439,30 @@ const styles = StyleSheet.create({
 	modal_button_container: {
 		flexDirection: 'row',
 		height: 40,
-		width: 250
+		width: 250,
+		justifyContent: 'space-around'
+	},
+
+	modal_cancel_button_text: {
+			fontSize: 20
+	},
+
+	modal_submit_button_text: {
+		fontSize: 20,
+		color: '#fff'
+	},
+
+	modal_button: {
+		width: 120,
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
 
 	modal_cancel_button: {
-		flex: 1,
 		backgroundColor: '#fff'
 	},
 
 	modal_submit_button: {
-		flex: 1,
 		backgroundColor: '#40d20c'
 	},
 

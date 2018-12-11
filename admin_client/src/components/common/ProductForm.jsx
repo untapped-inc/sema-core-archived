@@ -14,9 +14,8 @@ import ImageUpload from './ImageUpload';
 import Button from './Button';
 import ProductCategoryDropdown from './ProductCategoryDropdown';
 import units from '../constants/units';
-import currency from '../constants/currency';
 import CheckboxField from './CheckboxField';
-import { required } from './validate';
+import { required, exactLength3 } from './validate';
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired
@@ -117,11 +116,10 @@ const ProductForm = ({ handleSubmit, ...props }) => (
           <Field
             name="priceCurrency"
             label="Default Currency"
-            component={SelectField}
+            component={TextField}
             horizontal
-            options={currency}
             required
-            validate={[required]}
+            validate={[required, exactLength3]}
           />
           <Field
             name="costOfGoods"

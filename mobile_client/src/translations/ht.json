@@ -5,6 +5,9 @@
   "site": "Kyòsk",
   "logout": "Dekonekte",
 
+  "all": "tout",
+  "credit": "kredi",
+
   "sign-in": "Konekte",
   "signing-in": "Koneksyon an kou...",
   "invalid-credentials": "Non itilizatè avèk/oswa email envalid",

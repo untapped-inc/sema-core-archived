@@ -5,6 +5,9 @@
   "site": "Site",
   "logout": "Logout",
 
+  "all": "all",
+  "credit": "credit",
+
   "sign-in": "Sign In",
   "signing-in": "Signing in...",
   "invalid-credentials": "Invalid user name and/or password",

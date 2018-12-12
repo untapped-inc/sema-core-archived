@@ -5,6 +5,9 @@
   "site": "Site",
   "logout": "Déconnecter",
 
+  "all": "tout",
+  "credit": "crédit",
+
   "sign-in": "S'identifier",
   "signing-in": "Ouverture de session...",
   "invalid-credentials": "Nom d'utilisateur et/ou mot de passe invalide",

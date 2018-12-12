@@ -19,12 +19,12 @@ const defaultProps = {
   onSave: null
 };
 
-const Modal = ({ title, body, onSave, show, onClose }) => (
+const Modal = ({ title, onSave, show, onClose, ...rest }) => (
   <BModal show={show} onHide={onClose}>
     <BModal.Header closeButton>
       <BModal.Title>{title}</BModal.Title>
     </BModal.Header>
-    <BModal.Body>{body}</BModal.Body>
+    <BModal.Body>{rest.children}</BModal.Body>
     <BModal.Footer>
       <Button onClick={onClose}>Close</Button>
       {onSave && <Button onClick={onSave}>Save</Button>}

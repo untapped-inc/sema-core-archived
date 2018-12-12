@@ -1,7 +1,5 @@
 import React from 'react';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import HelpBlock from 'react-bootstrap/lib/HelpBlock';
+import { Col, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap';
 
 import Checkbox from './Checkbox';
 
@@ -12,6 +10,7 @@ const CheckboxGroup = ({
   label,
   meta,
   options,
+  required,
   ...rest
 }) => {
   const { onChange, onBlur } = input;
@@ -40,18 +39,23 @@ const CheckboxGroup = ({
   };
 
   return (
-    <FormGroup
-      controlId={name}
-      validationState={meta.invalid && meta.touched ? 'error' : null}
-    >
-      <ControlLabel>{label}</ControlLabel>
+    <Col sm={12}>
+      <FormGroup
+        controlId={name}
+        validationState={meta.invalid && meta.touched ? 'error' : null}
+      >
+        <ControlLabel>
+          {label}
+          {required ? ' *' : ''}
+        </ControlLabel>
 
-      {meta.invalid &&
-        meta.touched &&
-        meta.error && <HelpBlock>{meta.error}</HelpBlock>}
+        {meta.invalid &&
+          meta.touched &&
+          meta.error && <HelpBlock>{meta.error}</HelpBlock>}
 
-      {renderOptions(options)}
-    </FormGroup>
+        {renderOptions(options)}
+      </FormGroup>
+    </Col>
   );
 };
 

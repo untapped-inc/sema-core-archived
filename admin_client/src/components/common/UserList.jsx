@@ -89,7 +89,7 @@ class UserList extends React.Component {
       <ReactTable
         data={this.props.data}
         columns={userColumns}
-        className="-striped"
+        className="-striped -highlight"
         defaultPageSize={20}
         loading={this.props.loading}
       />

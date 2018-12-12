@@ -24,18 +24,25 @@ const validatePassword = (values, allValues, props) => {
 };
 const UserForm = ({ handleSubmit, editMode }) => (
   <form onSubmit={handleSubmit}>
-    <Field name="firstName" component={TextField} label="First Name" />
-    <Field name="lastName" component={TextField} label="Last Name" />
-    <Field name="email" component={TextField} label="Email" />
-    <Field name="username" component={TextField} label="Username" />
+    <Field name="firstName" component={TextField} label="First Name" required />
+    <Field name="lastName" component={TextField} label="Last Name" required />
+    <Field name="email" component={TextField} label="Email" required />
+    <Field name="username" component={TextField} label="Username" required />
     <Field
       name="password"
       component={TextField}
       label={editMode ? 'Change Password' : 'Password'}
+      required={!editMode}
       type="password"
       validate={validatePassword}
     />
-    <Field name="role" component={CheckboxGroup} label="Role" options={roles} />
+    <Field
+      name="role"
+      component={CheckboxGroup}
+      label="Role"
+      options={roles}
+      required
+    />
   </form>
 );
 

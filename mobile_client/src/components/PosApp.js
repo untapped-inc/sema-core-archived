@@ -109,6 +109,7 @@ class PosApp extends Component {
 	componentWillUnmount(){
 		Events.rm('CustomersUpdated', 'customerUpdate1');
 		Events.rm('ProductsUpdated', 'productUpdate1');
+		Events.rm('SalesChannelsUpdated', 'SalesChannelsUpdated1');
 		Events.rm('WaterOpConfigsUpdated', 'WaterOpConfigsUpdated1');
 		NetInfo.isConnected.removeEventListener( 'connectionChange',this.handleConnectivityChange );
 	}
@@ -124,7 +125,9 @@ class PosApp extends Component {
 	onSalesChannelUpdated() {
 		console.log('Update sales channels bar');
 		CustomerViews.buildNavigator().then(() => {
-			this.forceUpdate();
+			if (this._mounted) {
+				this.forceUpdate();
+			}
 		});
 	}
 

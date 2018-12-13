@@ -37,6 +37,15 @@ class CustomerViews {
 		this.buildNavigator();
 	}
 
+	componentDidMount() {
+		// Adding this so we can call forceUpdate on this component without getting a warning
+		this._mounted = true;
+	}
+
+	componentWillUnmount() {
+		this._mounted = false;
+	}
+
 	buildNavigator() {
 		return new Promise(resolve => {
 			console.log("buildNavigator");

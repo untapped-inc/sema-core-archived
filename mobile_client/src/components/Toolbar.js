@@ -6,7 +6,8 @@ import {
 	Image,
 	TouchableHighlight,
 	Modal,
-	FlatList
+	FlatList,
+	ScrollView
 } from 'react-native';
 import packageJson from '../../package.json';
 
@@ -19,21 +20,51 @@ import PosStorage from "../database/PosStorage";
 import * as SettingsActions from "../actions/SettingsActions";
 import DatePicker from 'react-native-datepicker';
 import Events from "react-native-simple-events";
+import { Table, Row } from 'react-native-table-component';
 
 import i18n from '../app/i18n';
 
 class Toolbar extends Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			isVisible: false,
 			datetime: null,
-			selectedSamplingSite: this.props.waterOpConfigs.samplingSites && this.props.waterOpConfigs.samplingSites[0]
+			selectedSamplingSite: null,
+			tableHead: ['Parameter', 'Value', 'Unit', 'Range'],
+			tableData: null
 		};
 
-		this.getParametersForm = this.getParametersForm.bind(this);
 		this.closeWaterOpsModal = this.closeWaterOpsModal.bind(this);
 		this.onShowWaterQualityAndFlowmeter = this.onShowWaterQualityAndFlowmeter.bind(this);
+	}
+
+	componentDidMount() {
+		Events.on('WaterOpsConfigReady', 'WaterOpsConfigReady1', (firstSamplingSite) => {
+
+			const tableData = this.getParameters(firstSamplingSite);
+
+			this.setState({
+				selectedSamplingSite: firstSamplingSite,
+				tableData
+			});
+		});
+	}
+
+	getParameters(samplingSite) {
+		return samplingSite.parameters.map(param => {
+			return [
+				param.name,
+				<Text>INPUT HERE</Text>,
+				param.unit,
+				<Text>{param.minimum} - {param.maximum}</Text>
+			];
+		});
+	}
+
+	componentWillUnmount() {
+		Events.rm('WaterOpsConfigReady', 'WaterOpsConfigReady1');
 	}
 
 	render() {
@@ -82,16 +113,15 @@ class Toolbar extends Component {
 
 						<View style={styles.modal_content_container}>
 							<View style={styles.modal_sidebar}>
-								{this.props.waterOpConfigs.samplingSites ?
+								{this.state.selectedSamplingSite ?
 									<FlatList
 										ref={(ref) => { this.flatListRef = ref; }}
-										data={this.props.waterOpConfigs.samplingSites}
+										data={this.props.waterOpConfigs.samplingSiteParameterMapping}
 										extraData={this.state}
 										renderItem={({ item, index, separators }) => (
 											<TouchableHighlight
 												onPress={() => this.onPressItem(item)}
-												onShowUnderlay={separators.highlight}
-												onHideUnderlay={separators.unhighlight}>
+												underlayColor="transparent">
 												{this.getRow(item, index, separators)}
 											</TouchableHighlight>
 										)}
@@ -102,8 +132,8 @@ class Toolbar extends Component {
 										styles.selectedSamplingSiteRow,
 										{
 											flexDirection: 'row',
-											height:50,
-											alignItems:'center',
+											height: 50,
+											alignItems: 'center',
 											justifyContent: 'center'
 										}
 									]}>
@@ -111,33 +141,44 @@ class Toolbar extends Component {
 									</View>
 								}
 							</View>
-
-							{/* {this.state.selectedSamplingSite ?
-
-								:
-								null
-							} */}
 							<View style={styles.modal_content}>
-								{this.getParametersForm()}
-								<Text>
-									{/* TODO 1: Display list of parameter names for the selected sampling site */}
-									{/* TODO 2: Display list of parameters for the selected sampling site as a form of inputs */}
-									There will be a form here with the parameters for the selected sampling site
-								</Text>
+								{ this.state.selectedSamplingSite ?
+									<View style={styles.table_container}>
+										<Table borderStyle={{ borderWidth: 0 }}>
+											<Row data={this.state.tableHead} style={styles.table_header} textStyle={styles.table_header_text} />
+										</Table>
+										<ScrollView style={styles.dataWrapper}>
+											<Table borderStyle={{ borderWidth: 0 }}>
+												{
+													this.state.tableData.map((rowData, index) => (
+														<Row
+															key={index}
+															data={rowData}
+															style={[styles.table_row, index % 2 && { backgroundColor: '#F0F8FF' }]}
+															textStyle={styles.table_row_text}
+														/>
+													))
+												}
+											</Table>
+										</ScrollView>
+									</View>
+								:
+									null
+								}
 							</View>
 						</View>
 
 						<View style={styles.modal_footer}>
 							<View style={styles.modal_button_container}>
 								<TouchableHighlight
-								style={[styles.modal_cancel_button, styles.modal_button]}
-								onPress={() => this.closeWaterOpsModal()}>
+									style={[styles.modal_cancel_button, styles.modal_button]}
+									onPress={() => this.closeWaterOpsModal()}>
 									<Text style={styles.modal_cancel_button_text}>Cancel</Text>
 								</TouchableHighlight>
 
 								<TouchableHighlight
-								style={[styles.modal_submit_button, styles.modal_button]}
-								onPress={() => this.onSubmitParameters()}>
+									style={[styles.modal_submit_button, styles.modal_button]}
+									onPress={() => this.onSubmitParameters()}>
 									<Text style={styles.modal_submit_button_text}>Submit</Text>
 								</TouchableHighlight>
 							</View>
@@ -148,30 +189,8 @@ class Toolbar extends Component {
 		);
 	};
 
-	getParametersForm() {
-		if (this.state.selectedSamplingSite) {
-			// TODO: Filter the mappings for the current sampling site first
-			const params = this.props.waterOpConfigs.idMapping.map((mapping, idx) => {
-				if (this.state.selectedSamplingSite.id !== mapping.sampling_site_id) return;
-	
-				const currentParameter = this.props.waterOpConfigs.parameters.reduce((curr, next) => {
-					if (next.id === mapping.parameter_id) return next;
-				}, null);
-	
-				if (!currentParameter) return;
-	
-				return (<Text key={idx}>{currentParameter.name}</Text>);
-			});
-
-			console.log(params);
-	
-			return params;
-		}
-		return null;
-	}
-
 	getRowStyles(isSelected) {
-		if(isSelected) {
+		if (isSelected) {
 			return styles.selectedSamplingSiteRow;
 		} else {
 			return styles.samplingSiteRow;
@@ -184,7 +203,7 @@ class Toolbar extends Component {
 	}
 
 	getRowTextStyles(isSelected) {
-		if(isSelected) {
+		if (isSelected) {
 			return styles.selectedSamplingSiteText;
 		} else {
 			return styles.samplingSiteText;
@@ -192,20 +211,18 @@ class Toolbar extends Component {
 	}
 
 	getRow(item, index) {
-		let selectedSamplingSite = this.state.selectedSamplingSite ||
-			this.props.waterOpConfigs.samplingSites[0];
 		return (
 			<View style={[
-				this.getRowStyles(selectedSamplingSite.id === item.id),
+				this.getRowStyles(this.state.selectedSamplingSite.id === item.id),
 				{
 					flex: 1,
 					flexDirection: 'row',
-					height:50,
-					alignItems:'center'
+					height: 50,
+					alignItems: 'center'
 				}
 			]}>
 				<Text style={[
-					this.getRowTextStyles(selectedSamplingSite.id === item.id),
+					this.getRowTextStyles(this.state.selectedSamplingSite.id === item.id),
 					styles.baseItem,
 					styles.leftMargin
 				]}>{item.name}</Text>
@@ -215,8 +232,12 @@ class Toolbar extends Component {
 
 	onPressItem(item) {
 		console.log("_onPressItemSamplingSitesList");
+
+		const tableData = this.getParameters(item);
+
 		this.setState({
-			selectedSamplingSite: item
+			selectedSamplingSite: item,
+			tableData
 		});
 	}
 
@@ -326,28 +347,51 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);
 
 const styles = StyleSheet.create({
-	samplingSiteRow:{
+	table_container: {
+		flex: 1,
+		backgroundColor: '#fff'
+	},
+
+	table_header: {
+		height: 40,
+		backgroundColor: '#ABC1DE'
+	},
+
+	table_header_text: {
+		fontWeight: 'bold',
+		alignSelf: 'center'
+	},
+
+	table_row: {
+		height: 70
+	},
+
+	table_row_text: {
+		marginLeft: 15
+	},
+
+	samplingSiteRow: {
 		opacity: .8,
 		backgroundColor: '#2858a7'
 	},
 
-	selectedSamplingSiteRow:{
+	selectedSamplingSiteRow: {
 		backgroundColor: '#fff'
 	},
 
-	samplingSiteText:{
+	samplingSiteText: {
 		color: '#fff'
 	},
 
-	selectedSamplingSiteText:{
+	selectedSamplingSiteText: {
 	},
 
-	baseItem:{
-		fontSize:18
+	baseItem: {
+		fontSize: 18
 	},
 
-	leftMargin:{
-		left:10
+	leftMargin: {
+		left: 10
 	},
 
 	toolbar: {
@@ -420,7 +464,7 @@ const styles = StyleSheet.create({
 	},
 
 	modal_content: {
-		flex: 2
+		flex: 4
 	},
 
 	modal_footer: {
@@ -438,7 +482,7 @@ const styles = StyleSheet.create({
 	},
 
 	modal_cancel_button_text: {
-			fontSize: 20
+		fontSize: 20
 	},
 
 	modal_submit_button_text: {

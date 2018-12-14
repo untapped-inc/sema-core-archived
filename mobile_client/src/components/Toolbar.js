@@ -7,7 +7,8 @@ import {
 	TouchableHighlight,
 	Modal,
 	FlatList,
-	ScrollView
+	ScrollView,
+	TextInput
 } from 'react-native';
 import packageJson from '../../package.json';
 
@@ -33,7 +34,8 @@ class Toolbar extends Component {
 			datetime: null,
 			selectedSamplingSite: null,
 			tableHead: ['Parameter', 'Value', 'Unit', 'Range'],
-			tableData: null
+			tableData: null,
+			finalData: {}
 		};
 
 		this.closeWaterOpsModal = this.closeWaterOpsModal.bind(this);
@@ -47,20 +49,37 @@ class Toolbar extends Component {
 
 			this.setState({
 				selectedSamplingSite: firstSamplingSite,
-				tableData
+				tableData,
+				finalData: {}
 			});
 		});
 	}
 
 	getParameters(samplingSite) {
-		return samplingSite.parameters.map(param => {
+		return samplingSite.parameters.map((param, idx) => {
 			return [
 				param.name,
-				<Text>INPUT HERE</Text>,
+				<View>
+					<TextInput
+						style={styles.table_input}
+						underlineColorAndroid="transparent"
+						placeholder={`${param.name} Placeholder`}
+						autoFocus={!idx}
+						keyboardType="numeric"
+						onChangeText={this.onUpdateParameter(samplingSite.id, param.id).bind(this)}/>
+				</View>,
 				param.unit,
-				<Text>{param.minimum} - {param.maximum}</Text>
+				`${param.minimum} - ${param.maximum}`
 			];
 		});
+	}
+	
+	onUpdateParameter(samplingSiteId, parameterId) {
+		const currentMapping = `${samplingSiteId}-${parameterId}`;
+
+		return (data) => {
+			this.state.finalData[currentMapping] = data;
+		}
 	}
 
 	componentWillUnmount() {
@@ -199,7 +218,7 @@ class Toolbar extends Component {
 
 	// TODO 3: Send the parameters of the selected sampling site to the server
 	onSubmitParameters() {
-		console.log('lol');
+		alert(JSON.stringify(this.state.finalData));
 	}
 
 	getRowTextStyles(isSelected) {
@@ -237,7 +256,8 @@ class Toolbar extends Component {
 
 		this.setState({
 			selectedSamplingSite: item,
-			tableData
+			tableData,
+			finalData: {}
 		});
 	}
 
@@ -347,6 +367,11 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);
 
 const styles = StyleSheet.create({
+	table_input: {
+		borderBottomWidth: 1,
+		borderBottomColor: '#2858a7'
+	},
+
 	table_container: {
 		flex: 1,
 		backgroundColor: '#fff'

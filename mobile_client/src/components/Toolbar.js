@@ -28,14 +28,8 @@ class Toolbar extends Component {
 		this.state = {
 			isVisible: false,
 			datetime: null,
-			selectedSamplingSite: null
+			selectedSamplingSite: this.props.waterOpConfigs.samplingSites && this.props.waterOpConfigs.samplingSites[0]
 		};
-
-		if (this.props.waterOpConfigs.samplingSites) {
-			this.setState({
-				selectedSamplingSite: this.props.waterOpConfigs.samplingSites[0]
-			});
-		}
 
 		this.getParametersForm = this.getParametersForm.bind(this);
 		this.closeWaterOpsModal = this.closeWaterOpsModal.bind(this);

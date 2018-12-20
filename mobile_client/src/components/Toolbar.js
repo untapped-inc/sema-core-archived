@@ -33,52 +33,77 @@ class Toolbar extends Component {
 			isVisible: false,
 			datetime: null,
 			selectedSamplingSite: null,
-			tableHead: ['Parameter', 'Value', 'Unit', 'Range'],
+			tableHead: ['', 'Value', 'Unit'],
 			tableData: null,
-			finalData: {}
+			finalData: {},
+			parameterRefs: []
 		};
 
 		this.closeWaterOpsModal = this.closeWaterOpsModal.bind(this);
 		this.onShowWaterQualityAndFlowmeter = this.onShowWaterQualityAndFlowmeter.bind(this);
+		this.onUpdateParameter = this.onUpdateParameter.bind(this);
+		this.getParamValue = this.getParamValue.bind(this);
 	}
 
 	componentDidMount() {
 		Events.on('WaterOpsConfigReady', 'WaterOpsConfigReady1', (firstSamplingSite) => {
+			if (!this.state.selectedSamplingSite) {
+				const tableData = this.getParameters(firstSamplingSite);
 
-			const tableData = this.getParameters(firstSamplingSite);
-
-			this.setState({
-				selectedSamplingSite: firstSamplingSite,
-				tableData,
-				finalData: {}
-			});
+				this.setState({
+					selectedSamplingSite: firstSamplingSite,
+					tableData
+				});
+			}
 		});
 	}
 
 	getParameters(samplingSite) {
+		this.state.parameterRefs.forEach(ref => {
+			if (ref) {
+				ref.clear();
+			}
+		});
+
 		return samplingSite.parameters.map((param, idx) => {
 			return [
-				param.name,
+				<Text style={styles.parameter_name}>{param.name}</Text>,
 				<View>
 					<TextInput
+						ref={ref => {
+							this.setState(prevState => ({
+								parameterRefs: [...prevState.parameterRefs, ref]
+							}));
+						}}
 						style={styles.table_input}
 						underlineColorAndroid="transparent"
-						placeholder={`${param.name} Placeholder`}
-						autoFocus={!idx}
+						placeholder={(param.minimum !== null && param.maximum !== null) ? `${param.minimum} - ${param.maximum}` : ''}
 						keyboardType="numeric"
-						onChangeText={this.onUpdateParameter(samplingSite.id, param.id).bind(this)}/>
+						value={this.getParamValue(samplingSite.id, param.id)}
+						onChangeText={this.onUpdateParameter(samplingSite.id, param.id)}/>
 				</View>,
-				param.unit,
-				`${param.minimum} - ${param.maximum}`
+				<Text style={styles.parameter_unit}>{param.unit || '-'}</Text>
 			];
 		});
+	}
+
+	getParamValue(samplingSiteId, parameterId) {
+		const currentMapping = `${samplingSiteId}-${parameterId}`;
+
+		console.log(JSON.stringify(this.state.finalData), samplingSiteId, parameterId);
+
+		return this.state.finalData[currentMapping];
 	}
 	
 	onUpdateParameter(samplingSiteId, parameterId) {
 		const currentMapping = `${samplingSiteId}-${parameterId}`;
 
 		return (data) => {
-			this.state.finalData[currentMapping] = data;
+			const finalData = this.state.finalData;
+			finalData[`${currentMapping}`] = data;
+			this.setState({
+				finalData
+			});
 		}
 	}
 
@@ -256,8 +281,7 @@ class Toolbar extends Component {
 
 		this.setState({
 			selectedSamplingSite: item,
-			tableData,
-			finalData: {}
+			tableData
 		});
 	}
 
@@ -367,6 +391,15 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);
 
 const styles = StyleSheet.create({
+	parameter_name: {
+		fontWeight: 'bold',
+		alignSelf: 'center'
+	},
+
+	parameter_unit: {
+		alignSelf: 'center'
+	},
+
 	table_input: {
 		borderBottomWidth: 1,
 		borderBottomColor: '#2858a7'

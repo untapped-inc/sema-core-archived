@@ -24,6 +24,7 @@ import Events from "react-native-simple-events";
 import { Table, Row } from 'react-native-table-component';
 
 import i18n from '../app/i18n';
+import FeedParameters from "./water-ops/FeedParameters";
 
 class Toolbar extends Component {
 	constructor(props) {
@@ -34,7 +35,7 @@ class Toolbar extends Component {
 			datetime: null,
 			selectedSamplingSite: null,
 			tableHead: ['', 'Value', 'Unit'],
-			tableData: null,
+			samplingSiteParameters: null,
 			finalData: {},
 			parameterRefs: []
 		};
@@ -48,11 +49,15 @@ class Toolbar extends Component {
 	componentDidMount() {
 		Events.on('WaterOpsConfigReady', 'WaterOpsConfigReady1', (firstSamplingSite) => {
 			if (!this.state.selectedSamplingSite) {
-				const tableData = this.getParameters(firstSamplingSite);
+				let samplingSiteParameters = null;
+
+				if (firstSamplingSite.name === 'A:Feed') {
+					samplingSiteParameters = <FeedParameters />
+				}
 
 				this.setState({
 					selectedSamplingSite: firstSamplingSite,
-					tableData
+					samplingSiteParameters
 				});
 			}
 		});
@@ -80,7 +85,7 @@ class Toolbar extends Component {
 						placeholder={(param.minimum !== null && param.maximum !== null) ? `${param.minimum} - ${param.maximum}` : ''}
 						keyboardType="numeric"
 						value={this.getParamValue(samplingSite.id, param.id)}
-						onChangeText={this.onUpdateParameter(samplingSite.id, param.id)}/>
+						onChangeText={this.onUpdateParameter(samplingSite.id, param.id)} />
 				</View>,
 				<Text style={styles.parameter_unit}>{param.unit || '-'}</Text>
 			];
@@ -94,7 +99,7 @@ class Toolbar extends Component {
 
 		return this.state.finalData[currentMapping];
 	}
-	
+
 	onUpdateParameter(samplingSiteId, parameterId) {
 		const currentMapping = `${samplingSiteId}-${parameterId}`;
 
@@ -186,27 +191,14 @@ class Toolbar extends Component {
 								}
 							</View>
 							<View style={styles.modal_content}>
-								{ this.state.selectedSamplingSite ?
+								{this.state.selectedSamplingSite ?
 									<View style={styles.table_container}>
 										<Table borderStyle={{ borderWidth: 0 }}>
 											<Row data={this.state.tableHead} style={styles.table_header} textStyle={styles.table_header_text} />
 										</Table>
-										<ScrollView style={styles.dataWrapper}>
-											<Table borderStyle={{ borderWidth: 0 }}>
-												{
-													this.state.tableData.map((rowData, index) => (
-														<Row
-															key={index}
-															data={rowData}
-															style={[styles.table_row, index % 2 && { backgroundColor: '#F0F8FF' }]}
-															textStyle={styles.table_row_text}
-														/>
-													))
-												}
-											</Table>
-										</ScrollView>
+										{this.state.samplingSiteParameters}
 									</View>
-								:
+									:
 									null
 								}
 							</View>
@@ -277,11 +269,15 @@ class Toolbar extends Component {
 	onPressItem(item) {
 		console.log("_onPressItemSamplingSitesList");
 
-		const tableData = this.getParameters(item);
+		let samplingSiteParameters = null;
+
+		if (item.name === 'A:Feed') {
+			samplingSiteParameters = <FeedParameters />
+		}
 
 		this.setState({
 			selectedSamplingSite: item,
-			tableData
+			samplingSiteParameters
 		});
 	}
 

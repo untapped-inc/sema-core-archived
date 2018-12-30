@@ -7,7 +7,6 @@ import {
 	TouchableHighlight,
 	Modal,
 	FlatList,
-	ScrollView,
 	TextInput
 } from 'react-native';
 import packageJson from '../../package.json';
@@ -25,6 +24,9 @@ import { Table, Row } from 'react-native-table-component';
 
 import i18n from '../app/i18n';
 import FeedParameters from "./water-ops/FeedParameters";
+import ProductParameters from "./water-ops/ProductParameters";
+import FillParameters from "./water-ops/FillParameters";
+import WaterTreatmentUnitParameters from "./water-ops/WaterTreatmentUnitParameters";
 
 class Toolbar extends Component {
 	constructor(props) {
@@ -53,6 +55,12 @@ class Toolbar extends Component {
 
 				if (firstSamplingSite.name === 'A:Feed') {
 					samplingSiteParameters = <FeedParameters />
+				} else if (firstSamplingSite.name === 'B:Product') {
+					samplingSiteParameters = <ProductParameters />
+				} else if (firstSamplingSite.name === 'D:Fill') {
+					samplingSiteParameters = <FillParameters />
+				} else if (firstSamplingSite.name === 'Water Treatment Unit') {
+					samplingSiteParameters = <WaterTreatmentUnitParameters />
 				}
 
 				this.setState({
@@ -273,6 +281,12 @@ class Toolbar extends Component {
 
 		if (item.name === 'A:Feed') {
 			samplingSiteParameters = <FeedParameters />
+		} else if (item.name === 'B:Product') {
+			samplingSiteParameters = <ProductParameters />
+		} else if (item.name === 'D:Fill') {
+			samplingSiteParameters = <FillParameters />
+		} else if (item.name === 'Water Treatment Unit') {
+			samplingSiteParameters = <WaterTreatmentUnitParameters />
 		}
 
 		this.setState({

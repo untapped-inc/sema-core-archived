@@ -42,7 +42,8 @@ class Receipt {
 				quantity:product.quantity,
 				receiptId:this.id,
 				productId: product.productId,
-				cogsTotal:product.cogsTotal
+				cogsTotal: product.cogsTotal,
+				active: product.active === 0 ? 0 : 1
 			}
 		});
 	}

@@ -1,44 +1,46 @@
 import React from 'react';
 import PosStorage from "../database/PosStorage";
+import moment from 'moment';
 
 class Communications {
-	constructor(  ){
+	constructor() {
 		this._url = "";
 		this._site = "";
 		this._user = "";
-		this._password= "";
+		this._password = "";
 		this._token = "";
-		this._siteId ="";
+		this._siteId = "";
 	}
-	initialize( url, site, user, password){
-		if( ! url.endsWith('/')){
+	initialize(url, site, user, password) {
+		if (!url.endsWith('/')) {
 			url = url + '/';
 		}
 		this._url = url;
 		this._site = site;
 		this._user = user;
-		this._password= password;
+		this._password = password;
 		this._token = "not set";
 	}
-	setToken( token ){
+	setToken(token) {
 		this._token = token;
 	}
-	setSiteId( siteId ){
+	setSiteId(siteId) {
 		this._siteId = siteId;
 	}
-	login(){
+	login() {
 		let options = {
 			method: 'POST',
 			headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-			body: JSON.stringify({ usernameOrEmail: this._user, password: this._password,
+			body: JSON.stringify({
+				usernameOrEmail: this._user, password: this._password,
 			}),
 		}
 
-		return new Promise( (resolve, reject ) => {
+		return new Promise((resolve, reject) => {
 			fetch(this._url + 'sema/login', options)
 				.then((response) => {
-					console.log( response.status);
-					if( response.status == 200 ) {
+					console.log(response.status);
+					if (response.status == 200) {
 						response.json()
 							.then((responseJson) => {
 								resolve({ status: response.status, response: responseJson });
@@ -47,37 +49,37 @@ class Communications {
 								console.log(error + " INNER " + JSON.stringify(error));
 								reject({ status: response.status, response: error });
 							})
-					}else{
+					} else {
 						let reason = "";
-						if(response.status === 401){
+						if (response.status === 401) {
 							reason = "- Invalid credentials "
-						}else if( response.status === 404 ){
+						} else if (response.status === 404) {
 							reason = "- Service URL not found "
 						}
-						reject({ status: response.status, response: {message:"Cannot connect to the Sema service. " + reason} });
+						reject({ status: response.status, response: { message: "Cannot connect to the Sema service. " + reason } });
 					}
 				})
 				.catch((error) => {
 					console.log(error + " OUTER " + JSON.stringify(error));
-					reject({status:418, response:error});	// This is the "I'm a teapot error"
+					reject({ status: 418, response: error });	// This is the "I'm a teapot error"
 				});
 		})
 	}
-	getSiteId( token, siteName){
-		let options = { method: 'GET', headers: { Authorization : 'Bearer ' + token } };
+	getSiteId(token, siteName) {
+		let options = { method: 'GET', headers: { Authorization: 'Bearer ' + token } };
 
-		return new Promise( (resolve, reject ) => {
+		return new Promise((resolve, reject) => {
 			fetch(this._url + 'sema/kiosks', options)
 				.then((response) => {
-					console.log( response.status);
+					console.log(response.status);
 					response.json()
 						.then((responseJson) => {
 							let result = -1;
-							for( let i = 0; i < responseJson.kiosks.length; i++){
-								if( responseJson.kiosks[i].name === siteName ){
-									if(responseJson.kiosks[i].hasOwnProperty("active") && ! responseJson.kiosks[i].active ){
+							for (let i = 0; i < responseJson.kiosks.length; i++) {
+								if (responseJson.kiosks[i].name === siteName) {
+									if (responseJson.kiosks[i].hasOwnProperty("active") && !responseJson.kiosks[i].active) {
 										result = -2;
-									}else{
+									} else {
 										result = responseJson.kiosks[i].id;
 									}
 									break;
@@ -85,7 +87,7 @@ class Communications {
 							}
 							resolve(result);
 						})
-						.catch( (error )=>{
+						.catch((error) => {
 							resolve(-1);
 						})
 				})
@@ -95,11 +97,11 @@ class Communications {
 		})
 
 	}
-	getCustomers( updatedSince ) {
+	getCustomers(updatedSince) {
 		let options = { method: 'GET', headers: { Authorization: 'Bearer ' + this._token } };
 		let url = 'sema/site/customers?site-id=' + this._siteId;
 
-		if( updatedSince ){
+		if (updatedSince) {
 			url = url + '&updated-date=' + updatedSince.toISOString();
 		}
 		return fetch(this._url + url, options)
@@ -109,11 +111,11 @@ class Communications {
 			})
 			.catch((error) => {
 				console.log("Communications:getCustomers: " + error);
-				throw( error );
+				throw (error);
 			});
 	}
 
-	createCustomer( customer ) {
+	createCustomer(customer) {
 		// TODO - Resolve customer type.... Is it needed, currently hardcoded...
 		customer.customerType = 128;		// FRAGILE
 		let options = {
@@ -123,10 +125,10 @@ class Communications {
 				'Content-Type': 'application/json',
 				Authorization: 'Bearer ' + this._token
 			},
-			body: JSON.stringify(customer )
+			body: JSON.stringify(customer)
 
 		}
-		return new Promise( (resolve, reject ) => {
+		return new Promise((resolve, reject) => {
 			fetch(this._url + 'sema/site/customers', options)
 				.then((response) => {
 					if (response.status === 200) {
@@ -138,7 +140,7 @@ class Communications {
 								console.log("createCustomer - Parse JSON: " + error.message);
 								reject();
 							});
-					}else {
+					} else {
 						console.log("createCustomer - Fetch status: " + response.status);
 						reject();
 					}
@@ -150,18 +152,18 @@ class Communications {
 		});
 	}
 	// Note that deleting a csutomer actually just deactivates the customer
-	deleteCustomer( customer ) {
+	deleteCustomer(customer) {
 		let options = {
 			method: 'PUT',
 			headers: { Accept: 'application/json', 'Content-Type': 'application/json', Authorization: 'Bearer ' + this._token },
-			body: JSON.stringify({active:false} )
+			body: JSON.stringify({ active: false })
 		}
-		return new Promise( (resolve, reject ) => {
+		return new Promise((resolve, reject) => {
 			fetch(this._url + 'sema/site/customers/' + customer.customerId, options)
 				.then((response) => {
-					if (response.status === 200 || response.status === 404 ) {
+					if (response.status === 200 || response.status === 404) {
 						resolve();
-					}else {
+					} else {
 						console.log("deleteCustomer - Fetch status: " + response.status);
 						reject();
 					}
@@ -172,7 +174,7 @@ class Communications {
 				});
 		});
 	}
-	updateCustomer( customer ) {
+	updateCustomer(customer) {
 		let options = {
 			method: 'PUT',
 			headers: {
@@ -180,10 +182,10 @@ class Communications {
 				'Content-Type': 'application/json',
 				Authorization: 'Bearer ' + this._token
 			},
-			body: JSON.stringify(customer )
+			body: JSON.stringify(customer)
 
 		}
-		return new Promise( (resolve, reject ) => {
+		return new Promise((resolve, reject) => {
 			fetch(this._url + 'sema/site/customers/' + customer.customerId, options)
 				.then((response) => {
 					if (response.status === 200) {
@@ -195,7 +197,7 @@ class Communications {
 								console.log("updateCustomer - Parse JSON: " + error.message);
 								reject();
 							});
-					}else {
+					} else {
 						console.log("updateCustomer - Fetch status: " + response.status);
 						reject();
 					}
@@ -206,11 +208,11 @@ class Communications {
 				});
 		});
 	}
-	getProducts( updatedSince ) {
+	getProducts(updatedSince) {
 		let options = { method: 'GET', headers: { Authorization: 'Bearer ' + this._token } };
 		let url = 'sema/products';
 
-		if( updatedSince ){
+		if (updatedSince) {
 			url = url + '?updated-date=' + updatedSince.toISOString();
 		}
 		return fetch(this._url + url, options)
@@ -220,11 +222,11 @@ class Communications {
 			})
 			.catch((error) => {
 				console.log("Communications:getProducts: " + error);
-				throw( error );
+				throw (error);
 			});
 	}
 
-	createReceipt( receipt ) {
+	createReceipt(receipt) {
 		let options = {
 			method: 'POST',
 			headers: {
@@ -232,10 +234,10 @@ class Communications {
 				'Content-Type': 'application/json',
 				Authorization: 'Bearer ' + this._token
 			},
-			body: JSON.stringify(this._remoteReceiptFromReceipt( receipt) )
+			body: JSON.stringify(this._remoteReceiptFromReceipt(receipt))
 
 		}
-		return new Promise( (resolve, reject ) => {
+		return new Promise((resolve, reject) => {
 			fetch(this._url + 'sema/site/receipts', options)
 				.then((response) => {
 					if (response.status === 200) {
@@ -247,11 +249,11 @@ class Communications {
 								console.log("createReceipt - Parse JSON: " + error.message);
 								reject();
 							});
-					}else if(response.status === 409 ){
+					} else if (response.status === 409) {
 						// Indicates this receipt has already been added
 						console.log("createReceipt - Receipt already exists");
 						resolve({})
-					}else {
+					} else {
 						console.log("createReceipt - Fetch status: " + response.status);
 						reject(response.status);
 					}
@@ -262,26 +264,26 @@ class Communications {
 				});
 		});
 	}
-	getSalesChannels( ) {
+	getSalesChannels() {
 		let options = { method: 'GET', headers: { Authorization: 'Bearer ' + this._token } }
 		let url = 'sema/sales-channels';
 		return fetch(this._url + url, options)
 			.then((response) => response.json())
-			.then((responseJson) => {return responseJson})
+			.then((responseJson) => { return responseJson })
 			.catch((error) => {
 				console.log("Communications:getSalesChannels: " + error);
-				throw( error );
+				throw (error);
 			});
 	}
-	getCustomerTypes( ) {
+	getCustomerTypes() {
 		let options = { method: 'GET', headers: { Authorization: 'Bearer ' + this._token } }
 		let url = 'sema/customer-types';
 		return fetch(this._url + url, options)
 			.then((response) => response.json())
-			.then((responseJson) => {return responseJson})
+			.then((responseJson) => { return responseJson })
 			.catch((error) => {
 				console.log("Communications:getCustomerTypes: " + error);
-				throw( error );
+				throw (error);
 			});
 	}
 
@@ -291,7 +293,7 @@ class Communications {
 		let options = { method: 'GET', headers: { Authorization: 'Bearer ' + this._token } };
 		let url = `sema/site/product-mrps?site-id=${getAll ? -1 : this._siteId}`;
 
-		if( updatedSince ){
+		if (updatedSince) {
 			url = url + '&updated-date=' + updatedSince.toISOString();
 		}
 		return fetch(this._url + url, options)
@@ -301,13 +303,56 @@ class Communications {
 			})
 			.catch((error) => {
 				console.log("Communications:getProductMrps: " + error);
-				throw( error );
+				throw (error);
 			});
 	}
 
-	_remoteReceiptFromReceipt( receipt ){
+	_remoteReceiptFromReceipt(receipt) {
 		return receipt;
 	}
+
+	getReceipts(siteId) {
+		let options = {
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+				Authorization: 'Bearer ' + this._token
+			}
+		};
+
+		let url = `sema/site/receipts/${siteId}?date=${moment(new Date()).format('YYYY-MM-DD')}`;
+
+		return fetch(this._url + url, options)
+			.then(async response => await response.json())
+			.catch(error => {
+				console.log("Communications:getReceipts: " + error);
+				throw (error);
+			});
+	}
+
+	// Sends the kiosk ID, the logged receipts and the list of IDs that the client already
+	// has to the API
+	sendLoggedReceipts(siteId, receipts, exceptionList) {
+		let options = {
+			method: 'PUT',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + this._token
+			},
+			body: JSON.stringify({receipts, exceptionList})
+		};
+
+		let url = `sema/site/receipts/${siteId}?date=${moment(new Date()).format('YYYY-MM-DD')}`;
+
+		return fetch(this._url + url, options)
+			.then(response => response.json())
+			.catch(error => {
+				console.log("Communications:sendUpdatedReceipts: " + error);
+				throw (error);
+			});
+	}
+
 	// let remoteReceipt = {
 	// 	receiptId: receipt.receiptId,
 	// 	customerId: receipt.customerId,

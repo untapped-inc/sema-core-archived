@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 5.6.35, for macos10.12 (x86_64)
 --
--- Host: 167.99.229.86    Database: sema_core
+-- Host: localhost    Database: sema_core
 -- ------------------------------------------------------
--- Server version	5.7.24-0ubuntu0.16.04.1
+-- Server version	5.6.35
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -140,6 +140,27 @@ CREATE TABLE `customer_account_sponsor` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Temporary view structure for view `customer_details`
+--
+
+DROP TABLE IF EXISTS `customer_details`;
+/*!50001 DROP VIEW IF EXISTS `customer_details`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `customer_details` AS SELECT 
+ 1 AS `active`,
+ 1 AS `created_at`,
+ 1 AS `customer_name`,
+ 1 AS `income_level`,
+ 1 AS `gender`,
+ 1 AS `distance`,
+ 1 AS `customer_consumer_base`,
+ 1 AS `kiosk_name`,
+ 1 AS `kiosk_id`,
+ 1 AS `kiosk_consumer_base`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `customer_type`
 --
 
@@ -228,6 +249,26 @@ CREATE TABLE `delivery_leg_receipt` (
   CONSTRAINT `delivery_leg_receipt_delivery_leg_id_fk` FOREIGN KEY (`delivery_leg_id`) REFERENCES `delivery_leg` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `delivery_leg_receipt_receipt_id_fk` FOREIGN KEY (`receipt_id`) REFERENCES `receipt` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Maps a delivery leg to a receipt.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `device`
+--
+
+DROP TABLE IF EXISTS `device`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `device` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL COMMENT 'The name of the device as manufactured.',
+  `serial_number` varchar(255) NOT NULL COMMENT 'The serial number of the device.',
+  `ip_address` varchar(255) NOT NULL COMMENT 'The IP address of the device.',
+  `firmware` varchar(255) NOT NULL COMMENT 'The firmware being used by the device.',
+  `kiosk_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `device_kiosk_id_fk_idx` (`kiosk_id`),
+  CONSTRAINT `device_kiosk_id_fk` FOREIGN KEY (`id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Stores information about devices for automated readings on water operations and quality.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -514,6 +555,7 @@ CREATE TABLE `receipt` (
   `total` decimal(19,2) NOT NULL COMMENT 'Total amount in currency.',
   `cogs` varchar(45) NOT NULL COMMENT 'Cost of goods sold. Net revenue for this receipt is total-cogs',
   `uuid` varchar(255) NOT NULL COMMENT 'For integration with other applications such as a receipt printer over Bluetooth connection.',
+  `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   KEY `receipt_kiosk_id_fk_idx` (`kiosk_id`),
   KEY `receipt_sales_channel_id_fk_idx` (`sales_channel_id`),
@@ -529,6 +571,34 @@ CREATE TABLE `receipt` (
   CONSTRAINT `receipt_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Temporary view structure for view `receipt_details`
+--
+
+DROP TABLE IF EXISTS `receipt_details`;
+/*!50001 DROP VIEW IF EXISTS `receipt_details`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `receipt_details` AS SELECT 
+ 1 AS `created_at`,
+ 1 AS `quantity`,
+ 1 AS `product_id`,
+ 1 AS `receipt_id`,
+ 1 AS `sales_channel_id`,
+ 1 AS `kiosk_id`,
+ 1 AS `amount_cash`,
+ 1 AS `amount_loan`,
+ 1 AS `amount_mobile`,
+ 1 AS `amount_card`,
+ 1 AS `customer_account_id`,
+ 1 AS `unit_per_product`,
+ 1 AS `volume`,
+ 1 AS `total`,
+ 1 AS `name`,
+ 1 AS `income_level`,
+ 1 AS `customer_type_id`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `receipt_line_item`
@@ -547,6 +617,7 @@ CREATE TABLE `receipt_line_item` (
   `receipt_id` varchar(255) NOT NULL COMMENT 'Receipt reference.',
   `product_id` bigint(20) NOT NULL COMMENT 'Product reference.',
   `cogs_total` decimal(19,2) NOT NULL,
+  `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   KEY `receipt_line_item_receipt_id_fk_idx` (`receipt_id`),
   KEY `receipt_line_item_product_id_fk_idx` (`product_id`),
@@ -678,6 +749,29 @@ CREATE TABLE `sampling_site` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `sensor`
+--
+
+DROP TABLE IF EXISTS `sensor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sensor` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL COMMENT 'The name of the sensor, as manufactured.',
+  `sampling_site_id` bigint(20) NOT NULL COMMENT 'The sampling site at which this sensor is sending data from.',
+  `parameter_id` bigint(20) NOT NULL COMMENT 'The parameter this sensor is sending data for.',
+  `device_id` bigint(20) NOT NULL COMMENT 'The device this sensor is attached to.',
+  PRIMARY KEY (`id`),
+  KEY `sensor_sampling_site_id_fk_idx` (`sampling_site_id`),
+  KEY `sensor_parameter_id_fk_idx` (`parameter_id`),
+  KEY `sensor_device_id_fk_idx` (`device_id`),
+  CONSTRAINT `sensor_device_id_fk` FOREIGN KEY (`device_id`) REFERENCES `device` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `sensor_parameter_id_fk` FOREIGN KEY (`parameter_id`) REFERENCES `parameter` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `sensor_sampling_site_id_fk` FOREIGN KEY (`sampling_site_id`) REFERENCES `sampling_site` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Stores information about sensors for automated readings on water operations and/or quality.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `sponsor`
 --
 
@@ -799,6 +893,42 @@ CREATE TABLE `vehicle` (
   CONSTRAINT `vehicle_kiosk_id_fk` FOREIGN KEY (`kiosk_id`) REFERENCES `kiosk` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='List of vehicles.';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Final view structure for view `customer_details`
+--
+
+/*!50001 DROP VIEW IF EXISTS `customer_details`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`::1` SQL SECURITY DEFINER */
+/*!50001 VIEW `customer_details` AS select `customer_account`.`active` AS `active`,`customer_account`.`created_at` AS `created_at`,`customer_account`.`name` AS `customer_name`,`customer_account`.`income_level` AS `income_level`,`customer_account`.`gender` AS `gender`,`customer_account`.`distance` AS `distance`,`customer_account`.`consumer_base` AS `customer_consumer_base`,`kiosk`.`name` AS `kiosk_name`,`kiosk`.`id` AS `kiosk_id`,`kiosk`.`consumer_base` AS `kiosk_consumer_base` from (`customer_account` join `kiosk` on((`customer_account`.`kiosk_id` = `kiosk`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `receipt_details`
+--
+
+/*!50001 DROP VIEW IF EXISTS `receipt_details`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`::1` SQL SECURITY DEFINER */
+/*!50001 VIEW `receipt_details` AS select `receipt_line_item`.`created_at` AS `created_at`,`receipt_line_item`.`quantity` AS `quantity`,`receipt_line_item`.`product_id` AS `product_id`,`receipt_line_item`.`receipt_id` AS `receipt_id`,`receipt`.`sales_channel_id` AS `sales_channel_id`,`receipt`.`kiosk_id` AS `kiosk_id`,`receipt`.`amount_cash` AS `amount_cash`,`receipt`.`amount_loan` AS `amount_loan`,`receipt`.`amount_mobile` AS `amount_mobile`,`receipt`.`amount_card` AS `amount_card`,`receipt`.`customer_account_id` AS `customer_account_id`,`product`.`unit_per_product` AS `unit_per_product`,(`receipt_line_item`.`quantity` * `product`.`unit_per_product`) AS `volume`,`receipt`.`total` AS `total`,`customer_account`.`name` AS `name`,`customer_account`.`income_level` AS `income_level`,`customer_account`.`customer_type_id` AS `customer_type_id` from (((`receipt_line_item` join `receipt` on((`receipt_line_item`.`receipt_id` = `receipt`.`id`))) join `product` on((`receipt_line_item`.`product_id` = `product`.`id`))) join `customer_account` on((`receipt`.`customer_account_id` = `customer_account`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -809,4 +939,4 @@ CREATE TABLE `vehicle` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-30 12:42:08
+-- Dump completed on 2019-01-16 22:10:00

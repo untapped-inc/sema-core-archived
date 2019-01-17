@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "SEMAPOS-tvOS.app"
-               BlueprintName = "SEMAPOS-tvOS"
-               ReferencedContainer = "container:SEMAPOS.xcodeproj">
+               BuildableName = "semapos-tvOS.app"
+               BlueprintName = "semapos-tvOS"
+               ReferencedContainer = "container:semapos.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "SEMAPOS-tvOSTests.xctest"
-               BlueprintName = "SEMAPOS-tvOSTests"
-               ReferencedContainer = "container:SEMAPOS.xcodeproj">
+               BuildableName = "semapos-tvOSTests.xctest"
+               BlueprintName = "semapos-tvOSTests"
+               ReferencedContainer = "container:semapos.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "SEMAPOS-tvOSTests.xctest"
-               BlueprintName = "SEMAPOS-tvOSTests"
-               ReferencedContainer = "container:SEMAPOS.xcodeproj">
+               BuildableName = "semapos-tvOSTests.xctest"
+               BlueprintName = "semapos-tvOSTests"
+               ReferencedContainer = "container:semapos.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "SEMAPOS-tvOS.app"
-            BlueprintName = "SEMAPOS-tvOS"
-            ReferencedContainer = "container:SEMAPOS.xcodeproj">
+            BuildableName = "semapos-tvOS.app"
+            BlueprintName = "semapos-tvOS"
+            ReferencedContainer = "container:semapos.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "SEMAPOS-tvOS.app"
-            BlueprintName = "SEMAPOS-tvOS"
-            ReferencedContainer = "container:SEMAPOS.xcodeproj">
+            BuildableName = "semapos-tvOS.app"
+            BlueprintName = "semapos-tvOS"
+            ReferencedContainer = "container:semapos.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "SEMAPOS-tvOS.app"
-            BlueprintName = "SEMAPOS-tvOS"
-            ReferencedContainer = "container:SEMAPOS.xcodeproj">
+            BuildableName = "semapos-tvOS.app"
+            BlueprintName = "semapos-tvOS"
+            ReferencedContainer = "container:semapos.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

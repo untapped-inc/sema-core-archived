@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
 import App from './src/app/App';
 
-AppRegistry.registerComponent('SEMAPOS', () => App);
+AppRegistry.registerComponent('semapos', () => App);

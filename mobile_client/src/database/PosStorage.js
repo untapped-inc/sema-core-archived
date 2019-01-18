@@ -535,7 +535,7 @@ class PosStorage {
 						if (error) {
 							console.log("error removing " + oldest.saleKey);
 						} else {
-							Events.trigger('RemoveLocalReceipt', saleItemKey + saleDateKey);
+							Events.trigger('RemoveLocalReceipt', saleDateKey);
 							console.log("Removed " + oldest.saleKey)
 						}
 					});
@@ -589,7 +589,7 @@ class PosStorage {
 		});
 	};
 
-	removePendingSale(saleKey) {
+	removePendingSale(saleKey, saleId) {
 		console.log("PostStorage:removePendingSale");
 		const index = this.pendingSales.indexOf(saleKey);
 		if (index > -1) {
@@ -600,7 +600,7 @@ class PosStorage {
 					return console.log("PosStorage:removePendingSale: Error: " + error);
 				}
 
-				Events.trigger('RemoveLocalReceipt', saleKey);
+				Events.trigger('RemoveLocalReceipt', saleId);
 			});
 
 		}

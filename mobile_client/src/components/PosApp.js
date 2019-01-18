@@ -121,14 +121,15 @@ class PosApp extends Component {
 		NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
 	}
 
-	onRemoveLocalReceipt(saleKey) {
-		this.props.receiptActions.removeLocalReceipt(saleKey);
+	onRemoveLocalReceipt(saleId) {
+		this.props.receiptActions.removeLocalReceipt(saleId);
 	}
 
 	onNewSaleAdded(receiptData) {
 		const newReceipt = {
 			active: 1,
-			id: receiptData.key,
+			id: receiptData.sale.id,
+			key: receiptData.key,
 			created_at: receiptData.sale.createdDate,
 			customer_account: this.getCustomer(receiptData.sale.customerId),
 			receipt_line_items: this.getProducts(receiptData.sale.products),

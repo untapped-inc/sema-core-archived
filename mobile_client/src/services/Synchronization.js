@@ -269,13 +269,13 @@ class Synchronization {
 						Communications.createReceipt(receipt.sale)
 							.then(result => {
 								console.log("Synchronization:synchronizeSales - success: ");
-								PosStorage.removePendingSale(receipt.key);
+								PosStorage.removePendingSale(receipt.key, receipt.sale.id);
 							})
 							.catch(error => {
 								console.log("Synchronization:synchronizeCustomers Create receipt failed: error-" + error);
 								if (error === 400) {
 									// This is unre-coverable... remove the pending sale
-									PosStorage.removePendingSale(receipt.key);
+									PosStorage.removePendingSale(receipt.key, receipt.sale.id);
 								}
 							});
 					})

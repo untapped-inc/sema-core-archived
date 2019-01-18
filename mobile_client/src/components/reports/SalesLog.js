@@ -15,7 +15,7 @@ import * as reportActions from "../../actions/ReportActions";
 import * as receiptActions from "../../actions/ReceiptActions";
 
 import i18n from '../../app/i18n';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import PosStorage from '../../database/PosStorage';
 import Events from 'react-native-simple-events';
 
@@ -184,7 +184,7 @@ class SalesLog extends Component {
                 </View>
                 <View style={styles.itemData}>
                     <Text style={styles.label}>Date Created: </Text>
-                    <Text>{moment.utc(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Text>
+                    <Text>{moment.tz(item.id, moment.tz.guess()).format('YYYY-MM-DD HH:mm:ss')}</Text>
                 </View>
                 <View style={styles.itemData}>
                     <Text style={styles.label}>Customer Name: </Text>
@@ -223,7 +223,7 @@ class SalesLog extends Component {
         if (!item.isLocal) {
             PosStorage.saveRemoteReceipts(this.props.remoteReceipts);
         } else {
-            PosStorage.updatePendingSale(item.id);
+            PosStorage.updatePendingSale(item.key);
         }
 
 		this.setState({refresh: !this.state.refresh});
@@ -238,12 +238,13 @@ class SalesLog extends Component {
                 customerAccount: receipt.customer_account,
                 receiptLineItems: receipt.receipt_line_items,
                 isLocal: receipt.isLocal || false,
+                key: receipt.isLocal ? receipt.key : null,
                 index
             };
         });
 
         remoteReceipts.sort((a, b) => {
-            return moment.utc(a.createdAt).isBefore(b.createdAt) ? 1 : -1;
+            return moment.tz(a.id, moment.tz.guess()).isBefore(moment.tz(b.id, moment.tz.guess())) ? 1 : -1;
         });
 
         // let localReceipts = this.props.localReceipts.map((receipt, index) => {

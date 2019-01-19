@@ -24,6 +24,13 @@ const receiptReducer = (state = initialState, action) => {
         case SET_REMOTE_RECEIPTS:
             let { remoteReceipts } = action.data;
             newState = { ...state };
+            remoteReceipts = remoteReceipts.map(receipt => {
+                // Make sure we don't sync a logged receipt for no reason on next sync
+                if (receipt.updated) {
+                    receipt.updated = false;
+                }
+                return receipt;
+            });
             newState.remoteReceipts = remoteReceipts;
             return newState;
         case ADD_REMOTE_RECEIPT:
@@ -71,11 +78,12 @@ const receiptReducer = (state = initialState, action) => {
                 receiptId
             } = action.data;
             newState = { ...state };
-            newState.remoteReceipts = newState.remoteReceipts.reduce((final, receipt) => {
-                if (receipt.id === receiptId) return final;
-                final.push(receipt);
-                return final;
-            }, []);
+            newState.remoteReceipts = newState.remoteReceipts.map(receipt => {
+                if (receipt.id === receiptId) {
+                    receipt.isLocal = false;
+                }
+                return receipt;
+            });
             return newState;
         default:
             return state;

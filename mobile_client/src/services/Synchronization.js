@@ -291,11 +291,12 @@ class Synchronization {
 		let settings = PosStorage.getSettings();
 		let remoteReceipts = await PosStorage.getRemoteReceipts();
 		const receiptIds = [];
-		remoteReceipts = remoteReceipts.filter(receipt => !receipt.isLocal).map(receipt => {
+		remoteReceipts = remoteReceipts.map(receipt => {
 			let receiptData = {
 					id: receipt.id,
 					active: receipt.active,
-					lineItems: []
+					lineItems: [],
+					isLocal: receipt.isLocal
 				};
 
 			if (receipt.updated) {
@@ -311,7 +312,11 @@ class Synchronization {
 
 			receiptIds.push(receipt.id);
 			return receiptData;
-		});
+		})
+		// Making sure we don't enter local receipts twice
+		// We do this after the map because we don't want to pull their remote equivalent from the DB,
+		// so we're sending their IDs too.
+		.filter(receipt => !receipt.isLocal);
 
 		return Communications.sendLoggedReceipts(settings.siteId, remoteReceipts, receiptIds)
 			.then(result => {

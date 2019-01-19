@@ -9,6 +9,8 @@ import {
     REMOVE_LOCAL_RECEIPT
 } from "../actions/ReceiptActions";
 
+import moment from 'moment-timezone';
+
 let initialState = {
     localReceipts: [],
     remoteReceipts: [],
@@ -31,6 +33,11 @@ const receiptReducer = (state = initialState, action) => {
                     receipt.updated = false;
                 }
                 return receipt;
+            })
+            // Take care of receipts that are not from today
+            .filter(receipt => {
+                let today = moment(Date.now()).format('YYYY-MM-DD');
+                return moment.tz(receipt.id, moment.tz.guess()).isSameOrAfter(moment.tz(today, moment.tz.guess()));
             });
             newState.remoteReceipts = remoteReceipts;
             return newState;

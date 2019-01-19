@@ -6,8 +6,7 @@ import {
     UPDATE_REMOTE_RECEIPT,
     UPDATE_LOCAL_RECEIPT,
     UPDATE_RECEIPT_LINE_ITEM,
-    REMOVE_LOCAL_RECEIPT,
-    UPDATE_SYNC_STATUS
+    REMOVE_LOCAL_RECEIPT
 } from "../actions/ReceiptActions";
 
 let initialState = {
@@ -25,6 +24,7 @@ const receiptReducer = (state = initialState, action) => {
         case SET_REMOTE_RECEIPTS:
             let { remoteReceipts } = action.data;
             newState = { ...state };
+            remoteReceipts = remoteReceipts || newState.remoteReceipts;
             remoteReceipts = remoteReceipts.map(receipt => {
                 // Make sure we don't sync a logged receipt for no reason on next sync
                 if (receipt.updated) {
@@ -82,15 +82,6 @@ const receiptReducer = (state = initialState, action) => {
             newState.remoteReceipts = newState.remoteReceipts.map(receipt => {
                 if (receipt.id === receiptId) {
                     receipt.isLocal = false;
-                }
-                return receipt;
-            });
-            return newState;
-        case UPDATE_SYNC_STATUS:
-            newState = { ...state };
-            newState.remoteReceipts = newState.remoteReceipts.map(receipt => {
-                if (receipt.updated) {
-                    receipt.updated = false;
                 }
                 return receipt;
             });

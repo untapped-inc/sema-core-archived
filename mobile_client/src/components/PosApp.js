@@ -105,7 +105,6 @@ class PosApp extends Component {
 		Events.on('SalesChannelsUpdated', 'SalesChannelsUpdated1', this.onSalesChannelUpdated.bind(this));
 		Events.on('UILanguageUpdated', 'UILanguageUpdated1', this.onLanguageUpdated.bind(this));
 		Events.on('ReceiptsFetched', 'ReceiptsFetched1', this.onReceiptsFetched.bind(this));
-		Events.on('ReceiptsSynced', 'ReceiptsSynced1', this.onReceiptsSynced.bind(this));
 		Events.on('NewSaleAdded', 'NewSaleAdded1', this.onNewSaleAdded.bind(this));
 		Events.on('RemoveLocalReceipt', 'RemoveLocalReceipt1', this.onRemoveLocalReceipt.bind(this));
 		console.log("PosApp = Mounted-Done");
@@ -117,14 +116,9 @@ class PosApp extends Component {
 		Events.rm('SalesChannelsUpdated', 'SalesChannelsUpdated1');
 		Events.rm('UILanguageUpdated', 'UILanguageUpdated1');
 		Events.rm('ReceiptsFetched', 'ReceiptsFetched1');
-		Events.rm('ReceiptsSynced', 'ReceiptsSynced1');
 		Events.rm('NewSaleAdded', 'NewSaleAdded1');
 		Events.rm('RemoveLocalReceipt', 'RemoveLocalReceipt1');
 		NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
-	}
-
-	onReceiptsSynced() {
-		this.props.receiptActions.updateSyncStatus();
 	}
 
 	onRemoveLocalReceipt(saleId) {

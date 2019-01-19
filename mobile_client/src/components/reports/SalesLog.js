@@ -177,7 +177,13 @@ class SalesLog extends Component {
                         <Text style={styles.receiptDeleteButtonText}>X</Text>
                     </TouchableOpacity>
                 </View>
-                { !item.active && <Text style={styles.receiptStatusText}>DELETED</Text> }
+                <View style={styles.receiptStats}>
+                    { !item.active && <Text style={styles.receiptStatusText}>{'Deleted'.toUpperCase()}</Text> }
+                    { (item.isLocal || item.updated) ?
+                        <View style={{flexDirection: 'row'}}>{!item.active && <Text> - </Text>}<Text style={styles.receiptPendingText}>{'Pending'.toLowerCase()}</Text></View> :
+                        <View style={{flexDirection: 'row'}}>{!item.active && <Text> - </Text>}<Text style={styles.receiptSyncedText}>{'Synced'.toLowerCase()}</Text></View>
+                    }
+                </View>
                 <View style={styles.itemData}>
                     <Text style={styles.label}>Receipt Id: </Text>
                     <Text>{item.id}</Text>
@@ -239,7 +245,8 @@ class SalesLog extends Component {
                 receiptLineItems: receipt.receipt_line_items,
                 isLocal: receipt.isLocal || false,
                 key: receipt.isLocal ? receipt.key : null,
-                index
+                index,
+                updated: receipt.updated
             };
         });
 
@@ -305,6 +312,19 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(SalesLog);
 
 const styles = StyleSheet.create({
+    receiptPendingText: {
+        color: 'orange'
+    },
+
+    receiptSyncedText: {
+        color: 'green'
+    },
+
+    receiptStats: {
+        flex: 1,
+        flexDirection: 'row'
+    },
+
     container: {
         flex: 1,
         backgroundColor: '#fff'

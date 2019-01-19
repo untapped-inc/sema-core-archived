@@ -7,6 +7,7 @@ export const UPDATE_REMOTE_RECEIPT = 'UPDATE_REMOTE_RECEIPT';
 export const UPDATE_LOCAL_RECEIPT = 'UPDATE_LOCAL_RECEIPT';
 export const UPDATE_RECEIPT_LINE_ITEM = 'UPDATE_RECEIPT_LINE_ITEM';
 export const REMOVE_LOCAL_RECEIPT = 'REMOVE_LOCAL_RECEIPT';
+export const UPDATE_SYNC_STATUS = 'UPDATE_SYNC_STATUS';
 
 export function setRemoteReceipts(remoteReceipts) {
     console.log("setRemoteReceipts - action");
@@ -26,6 +27,11 @@ export function setLocalReceipts(localReceipts) {
 export function removeLocalReceipt(receiptId) {
     console.log(`removeLocalReceipt - action ${receiptId}`);
     return dispatch => { dispatch({ type: REMOVE_LOCAL_RECEIPT, data: { receiptId } }) };
+}
+
+export function updateSyncStatus() {
+    console.log(`updateSyncStatus - action`);
+    return dispatch => { dispatch({ type: UPDATE_SYNC_STATUS, data: {} }) };
 }
 
 export function updateRemoteReceipt(receiptIndex, updatedFields) {

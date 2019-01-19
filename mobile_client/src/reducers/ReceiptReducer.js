@@ -6,7 +6,8 @@ import {
     UPDATE_REMOTE_RECEIPT,
     UPDATE_LOCAL_RECEIPT,
     UPDATE_RECEIPT_LINE_ITEM,
-    REMOVE_LOCAL_RECEIPT
+    REMOVE_LOCAL_RECEIPT,
+    UPDATE_SYNC_STATUS
 } from "../actions/ReceiptActions";
 
 let initialState = {
@@ -81,6 +82,15 @@ const receiptReducer = (state = initialState, action) => {
             newState.remoteReceipts = newState.remoteReceipts.map(receipt => {
                 if (receipt.id === receiptId) {
                     receipt.isLocal = false;
+                }
+                return receipt;
+            });
+            return newState;
+        case UPDATE_SYNC_STATUS:
+            newState = { ...state };
+            newState.remoteReceipts = newState.remoteReceipts.map(receipt => {
+                if (receipt.updated) {
+                    receipt.updated = false;
                 }
                 return receipt;
             });

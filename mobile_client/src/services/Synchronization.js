@@ -320,6 +320,7 @@ class Synchronization {
 
 		return Communications.sendLoggedReceipts(settings.siteId, remoteReceipts, receiptIds)
 			.then(result => {
+				Events.trigger('ReceiptsSynced');
 				// result.newReceipts is the list of today's receipts that we don't have in the local storage already
 				return new Promise(resolve => {
 					if (!result.newReceipts.length) return resolve();

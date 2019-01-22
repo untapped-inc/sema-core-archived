@@ -9,8 +9,10 @@
     "dateformat": "^3.0.3",
     "google-maps-react": "^2.0.2",
     "history": "^4.7.2",
+    "jquery": "^3.3.1",
     "jsonwebtoken": "^8.3.0",
     "moment": "^2.21.0",
+    "rc-progress": "~2.2.5",
     "react": "^16.3.2",
     "react-bootstrap": "^0.32.1",
     "react-chartjs-2": "^2.7.0",
@@ -22,7 +24,7 @@
     "redux": "^4.0.0",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.2.0",
-    "rc-progress":"~2.2.5"
+    "selectize": "^0.12.6"
   },
   "scripts": {
     "start": "react-scripts start",

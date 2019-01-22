@@ -1,0 +1,18 @@
+.DataExportContainer {
+	grid-column: 2;
+	grid-row:2;
+	display: grid;
+	grid-template-rows: 5px 220px auto;
+	background: rgb(171, 193,222);
+}
+
+.DataExportContent {
+    flex: 1;
+    padding: 30px;
+    width: 100%;
+}
+
+.DataExportWell {
+    flex: 1;
+    width: 50%;
+}

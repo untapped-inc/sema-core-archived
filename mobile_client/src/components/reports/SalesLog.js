@@ -228,9 +228,9 @@ class SalesLog extends Component {
 
         if (!item.isLocal) {
             PosStorage.saveRemoteReceipts(this.props.remoteReceipts);
-        } else {
-            PosStorage.updatePendingSale(item.key);
         }
+        
+        PosStorage.updatePendingSale(item.id);
 
 		this.setState({refresh: !this.state.refresh});
     }

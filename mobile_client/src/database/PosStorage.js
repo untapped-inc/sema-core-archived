@@ -610,7 +610,13 @@ class PosStorage {
 	// Update a pending sale
 	updatePendingSale(saleKey) {
 		console.log("PostStorage:updatePendingSale");
+
+		if (!saleKey.startsWith(saleItemKey)) {
+			saleKey = `${saleItemKey}${saleKey}`;
+		}
+
 		this.getKey(saleKey).then(receipt => {
+			if (!receipt) return;
 			receipt = JSON.parse(receipt);
 			receipt.active = 0;
 			receipt.products = receipt.products.map(rli => {

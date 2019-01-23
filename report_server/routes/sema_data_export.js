@@ -24,8 +24,8 @@ SELECT
     CASE
         WHEN LOWER(product.unit_measure) = 'liters' THEN receipt_line_item.quantity * product.unit_per_product
         ELSE 0
-    END as 'Total Gallons',
-    product.price_amount AS 'Unit Price',
+    END as 'Total Liters',
+    receipt_line_item.price_total / receipt_line_item.quantity AS 'Unit Price',
     receipt_line_item.price_total AS 'Total Revenue'
 FROM
     receipt

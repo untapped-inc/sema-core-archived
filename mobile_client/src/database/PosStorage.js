@@ -5,6 +5,7 @@ This class contains the persistence implementation of the tablet business object
 const { React, AsyncStorage } = require('react-native');
 import { capitalizeWord } from '../services/Utilities';
 import Events from "react-native-simple-events";
+import moment from 'moment-timezone'
 
 const uuidv1 = require('uuid/v1');
 
@@ -497,23 +498,18 @@ class PosStorage {
 		console.log("PosStorage: getSales. Count " + this.salesKeys.length);
 		return this.salesKeys;
 	}
+
 	getFilteredSales(beginDate, endDate) {
 		console.log("PosStorage: getFilteredSales. between " + beginDate.toString() + " and " + endDate.toString());
-		// Note that sales are order earliest to latest
-		let sales = [];
-		for (let index = 0; index < this.salesKeys.length; index++) {
-			const nextSale = new Date(this.salesKeys[index].saleDateTime);
-			if (nextSale > endDate) {
-				return sales;
-			} else {
-				if (nextSale >= beginDate && nextSale <= endDate) {
-					sales.push(this.salesKeys[index]);
-				}
-			}
-		}
-		return sales;
-
+		return this.salesKeys.filter(receipt => {
+            return moment.tz(
+				new Date(receipt.saleDateTime),
+				moment.tz.guess()
+			)
+			.isBetween(beginDate, endDate);
+		});
 	}
+
 	addSale(receipt) {
 		console.log("PosStorage: addSale");
 		return new Promise((resolve, reject) => {

@@ -289,7 +289,7 @@ class Synchronization {
 
 	async synchronizeReceipts() {
 		let settings = PosStorage.getSettings();
-		let remoteReceipts = await PosStorage.getRemoteReceipts();
+		let remoteReceipts = await PosStorage.loadRemoteReceipts();
 		const receiptIds = [];
 		remoteReceipts = remoteReceipts.map(receipt => {
 			let receiptData = {
@@ -313,7 +313,7 @@ class Synchronization {
 			receiptIds.push(receipt.id);
 			return receiptData;
 		})
-		// Making sure we don't enter local receipts twice
+		// Making sure we don't enter local receipts twice - synchronizeSales is already taking care of this
 		// We do this after the map because we don't want to pull their remote equivalent from the DB,
 		// so we're sending their IDs too.
 		.filter(receipt => !receipt.isLocal);
@@ -323,7 +323,7 @@ class Synchronization {
 				// result.newReceipts is the list of today's receipts that we don't have in the local storage already
 				return new Promise(resolve => {
 					if (!result.newReceipts.length) {
-						Events.trigger('ReceiptsFetched');
+						Events.trigger('ReceiptsFetched', []);
 						return resolve();
 					}
 					PosStorage.addRemoteReceipts(result.newReceipts).then(allReceipts => {

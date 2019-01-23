@@ -26,7 +26,7 @@ const receiptReducer = (state = initialState, action) => {
         case SET_REMOTE_RECEIPTS:
             let { remoteReceipts } = action.data;
             newState = { ...state };
-            remoteReceipts = remoteReceipts || newState.remoteReceipts;
+            remoteReceipts = remoteReceipts.length ? remoteReceipts : newState.remoteReceipts;
             remoteReceipts = remoteReceipts.map(receipt => {
                 // Make sure we don't sync a logged receipt for no reason on next sync
                 if (receipt.updated) {
@@ -36,8 +36,8 @@ const receiptReducer = (state = initialState, action) => {
             })
             // Take care of receipts that are not from today
             .filter(receipt => {
-                let today = moment(Date.now()).format('YYYY-MM-DD');
-                return moment.tz(receipt.id, moment.tz.guess()).isSameOrAfter(moment.tz(today, moment.tz.guess()));
+                let today = moment.tz(new Date(Date.now()), moment.tz.guess()).format('YYYY-MM-DD');
+                return moment.tz(receipt.id, moment.tz.guess()).isSameOrAfter(today);
             });
             newState.remoteReceipts = remoteReceipts;
             return newState;

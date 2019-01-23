@@ -137,6 +137,7 @@ class PosApp extends Component {
 		};
 
 		this.props.receiptActions.addRemoteReceipt(newReceipt);
+		PosStorage.saveRemoteReceipts(this.props.remoteReceipts);
 	}
 
 	getProducts(products) {
@@ -293,6 +294,7 @@ function mapStateToProps(state, props) {
 		showScreen: state.toolBarReducer.showScreen,
 		settings: state.settingsReducer.settings,
 		receipts: state.receiptReducer.receipts,
+		remoteReceipts: state.receiptReducer.remoteReceipts,
         products: state.productReducer.products
 	};
 }

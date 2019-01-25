@@ -226,9 +226,7 @@ class SalesLog extends Component {
     deleteReceipt(item, updatedFields) {
         this.props.receiptActions.updateRemoteReceipt(item.index, updatedFields);
 
-        if (!item.isLocal) {
-            PosStorage.saveRemoteReceipts(this.props.remoteReceipts);
-        }
+        PosStorage.saveRemoteReceipts(this.props.remoteReceipts);
         
         PosStorage.updatePendingSale(item.id);
 

@@ -277,6 +277,8 @@ class PosStorage {
 			});
 		}
 	}
+
+	// TODO: Only accept the new customer object
 	updateCustomer(customer, phone, name, address, salesChannelId, customerTypeId) {
 		let key = this.makeCustomerKey(customer);
 		customer.name = name;
@@ -513,10 +515,9 @@ class PosStorage {
 	addSale(receipt) {
 		console.log("PosStorage: addSale");
 		return new Promise((resolve, reject) => {
-			let saleDateTime = new Date(Date.now());
 			receipt.receiptId = uuidv1();
 
-			let saleDateKey = saleDateTime.toISOString();
+			let saleDateKey = receipt.id;
 			this.salesKeys.push({ saleDateTime: saleDateKey, saleKey: saleItemKey + saleDateKey });
 			if (this.salesKeys.length > 1) {
 				// When adding a sale, purge the top one if it is older than 30 days
@@ -611,16 +612,18 @@ class PosStorage {
 			saleKey = `${saleItemKey}${saleKey}`;
 		}
 
-		this.getKey(saleKey).then(receipt => {
-			if (!receipt) return;
-			receipt = JSON.parse(receipt);
-			receipt.active = 0;
-			receipt.products = receipt.products.map(rli => {
-				rli.active = 0;
-				return rli;
+		this.getKey(saleKey)
+			.then(receiptJSON => this.parseJson(receiptJSON))
+			.then(receipt => {
+				if (!receipt) return;
+	
+				receipt.active = 0;
+				receipt.products = receipt.products.map(rli => {
+					rli.active = 0;
+					return rli;
+				});
+				this.setKey(saleKey, this.stringify(receipt));
 			});
-			this.setKey(saleKey, this.stringify(receipt));
-		});
 	}
 
 	_loadPendingSale(saleKey) {
@@ -988,6 +991,41 @@ class PosStorage {
 			.then(receipts => {
 				this.receipts = JSON.parse(receipts);
 				return this.receipts;
+			});
+	}
+
+	updateLoggedReceipt(receiptId, updatedFields) {
+		this.getKey(remoteReceiptsKey)
+			.then(receiptsJSON => this.parseJson(receiptsJSON))
+			.then(receipts => {
+				if (!receipts) return;
+
+				receipts = receipts.map(receipt => {
+					console.log(receiptId, receipt.id);
+					if (receipt.id === receiptId) {
+						receipt = {...receipt, ...updatedFields};
+						receipt.receipt_line_items = receipt.receipt_line_items.map(rli => {
+							rli.active = updatedFields.active;
+							return rli;
+						});
+					}
+					return receipt;
+				});
+
+				this.receipts = receipts;
+				this.setKey(remoteReceiptsKey, this.stringify(this.receipts));
+			});
+	}
+
+	logReceipt(receipt) {
+		this.getKey(remoteReceiptsKey)
+			.then(receiptsJSON => this.parseJson(receiptsJSON))
+			.then(receipts => {
+				if (!receipts) return;
+
+				receipts.push(receipt);
+				this.receipts = receipts;
+				this.setKey(remoteReceiptsKey, this.stringify(this.receipts));
 			});
 	}
 

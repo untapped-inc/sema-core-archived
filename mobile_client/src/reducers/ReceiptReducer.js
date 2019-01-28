@@ -32,6 +32,7 @@ const receiptReducer = (state = initialState, action) => {
                 if (receipt.updated) {
                     receipt.updated = false;
                 }
+                receipt.isLocal = false;
                 return receipt;
             })
             // Take care of receipts that are not from today

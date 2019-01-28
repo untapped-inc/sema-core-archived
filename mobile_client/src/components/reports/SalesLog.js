@@ -34,16 +34,20 @@ class ReceiptLineItem extends Component {
                     style={styles.productImage}>
                 </Image>
                 <View style={{justifyContent: 'space-around'}}>
+                <View style={styles.itemData}>
+                        <Text style={styles.label}>Product Description: </Text>
+                        <Text>{this.props.item.product.description}</Text>
+                    </View>
                     <View style={styles.itemData}>
                         <Text style={styles.label}>Product SKU: </Text>
                         <Text>{this.props.item.product.sku}</Text>
                     </View>
                     <View style={styles.itemData}>
-                        <Text style={styles.label}>Quantity: </Text>
+                        <Text style={styles.label}>Quantity Purchased: </Text>
                         <Text>{this.props.item.quantity}</Text>
                     </View>
                     <View style={styles.itemData}>
-                        <Text style={styles.label}>Cost: </Text>
+                        <Text style={styles.label}>Total Cost: </Text>
                         <Text>{this.props.item.price_total}</Text>
                     </View>
                 </View>
@@ -177,6 +181,7 @@ class SalesLog extends Component {
                         <Text style={styles.receiptDeleteButtonText}>X</Text>
                     </TouchableOpacity>
                 </View>
+                <Text style={{fontSize: 17}}>#{item.totalCount - index}</Text>
                 <View style={styles.receiptStats}>
                     { !item.active && <Text style={styles.receiptStatusText}>{'Deleted'.toUpperCase()}</Text> }
                     { (item.isLocal || item.updated) ?
@@ -226,14 +231,30 @@ class SalesLog extends Component {
     deleteReceipt(item, updatedFields) {
         this.props.receiptActions.updateRemoteReceipt(item.index, updatedFields);
 
-        PosStorage.saveRemoteReceipts(this.props.remoteReceipts);
+        PosStorage.updateLoggedReceipt(item.id, updatedFields);
         
         PosStorage.updatePendingSale(item.id);
+
+        // Take care of customer due amount
+        if (item.amountLoan) {
+            item.customerAccount.dueAmount -= item.amountLoan;
+
+            PosStorage.updateCustomer(
+                item.customerAccount,
+                item.customerAccount.phoneNumber,
+                item.customerAccount.name,
+                item.customerAccount.address,
+                item.customerAccount.salesChannelId
+            );
+        }
 
 		this.setState({refresh: !this.state.refresh});
     }
 
     prepareData() {
+        // Used for enumerating receipts
+        const totalCount = this.props.remoteReceipts.length;
+
         let remoteReceipts = this.props.remoteReceipts.map((receipt, index) => {
             return {
                 active: receipt.active,
@@ -244,7 +265,9 @@ class SalesLog extends Component {
                 isLocal: receipt.isLocal || false,
                 key: receipt.isLocal ? receipt.key : null,
                 index,
-                updated: receipt.updated
+                updated: receipt.updated,
+                amountLoan: receipt.amount_loan,
+                totalCount
             };
         });
 

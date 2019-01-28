@@ -316,7 +316,8 @@ class Synchronization {
 		// Making sure we don't enter local receipts twice - synchronizeSales is already taking care of this
 		// We do this after the map because we don't want to pull their remote equivalent from the DB,
 		// so we're sending their IDs too.
-		.filter(receipt => !receipt.isLocal);
+		// Sending only remote receipts and local receipts that have been updated.
+		.filter(receipt => receipt.updated || !receipt.isLocal);
 
 		return Communications.sendLoggedReceipts(settings.siteId, remoteReceipts, receiptIds)
 			.then(result => {

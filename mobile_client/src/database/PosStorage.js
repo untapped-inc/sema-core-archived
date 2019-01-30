@@ -180,6 +180,7 @@ class PosStorage {
 
 		this.products = [];
 		this.productsKeys = [];
+		this.receipts = [];
 
 		let firstSyncDate = new Date('November 7, 1973');
 		this.lastCustomerSync = firstSyncDate;
@@ -199,7 +200,9 @@ class PosStorage {
 			[customerTypesKey, this.stringify(this.customerTypes)],
 			[salesChannelsKey, this.stringify(this.salesChannels)],
 			[productMrpsKey, this.stringify(this.productMrpDict)],
-			[inventoriesKey, this.stringify(this.inventoriesKeys)]];
+			[inventoriesKey, this.stringify(this.inventoriesKeys)],
+			[remoteReceiptsKey, this.stringify(this.receipts)]
+		];
 
 		AsyncStorage.multiSet(keyArray).then(error => {
 			if (error) {

@@ -6,7 +6,8 @@ import {
     UPDATE_REMOTE_RECEIPT,
     UPDATE_LOCAL_RECEIPT,
     UPDATE_RECEIPT_LINE_ITEM,
-    REMOVE_LOCAL_RECEIPT
+    REMOVE_LOCAL_RECEIPT,
+    CLEAR_LOGGED_RECEIPTS
 } from "../actions/ReceiptActions";
 
 import moment from 'moment-timezone';
@@ -93,6 +94,9 @@ const receiptReducer = (state = initialState, action) => {
                 }
                 return receipt;
             });
+            return newState;
+        case CLEAR_LOGGED_RECEIPTS:
+            newState = {...initialState};
             return newState;
         default:
             return state;

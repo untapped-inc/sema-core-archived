@@ -347,11 +347,8 @@ class Synchronization {
 			// Note that this won't scale too well with many productMrps
 			// Communications.getProductMrps(lastProductSync)
 			const savedProductMrps = await PosStorage.loadProductMrps();
-			// We're getting all product mappings instead of just the ones associated with the
-			// selected kiosk. We need this to be able to know if a product doesn't have a mapping
-			// with a different kiosk.
 			// TODO: Figure out a more scalable approach to this. As the product_mrp table may grow fast.
-			Communications.getProductMrps(null, true)
+			Communications.getProductMrps(null, false)
 				.then(productMrps => {
 					if (productMrps.hasOwnProperty("productMRPs")) {
 						console.log("Synchronization:synchronizeProductMrps. No of remote product MRPs: " + productMrps.productMRPs.length);

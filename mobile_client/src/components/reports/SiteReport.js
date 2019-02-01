@@ -4,6 +4,7 @@ import * as colors from '../../styles/sema_colors';
 import SalesReport from './SalesReport';
 import InventoryReport from './InventoryReport';
 import SalesLog from './SalesLog';
+import WaterOps from './WaterOps';
 import Sidebar from './Sidebar';
 
 export default class SiteReport extends Component {
@@ -25,6 +26,7 @@ class Report extends Component {
 				<SalesReport/>
 				<InventoryReport/>
 				<SalesLog/>
+				<WaterOps/>
 			</View>
 		);
 	}

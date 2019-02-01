@@ -22,6 +22,7 @@ import * as SettingsActions from '../actions/SettingsActions';
 import * as ProductActions from '../actions/ProductActions';
 import * as ToolbarActions from "../actions/ToolBarActions";
 import * as receiptActions from "../actions/ReceiptActions";
+import * as WaterOpActions from '../actions/WaterOpActions';
 
 import PosStorage from "../database/PosStorage";
 import Synchronization from "../services/Synchronization";
@@ -108,6 +109,7 @@ class PosApp extends Component {
 		Events.on('NewSaleAdded', 'NewSaleAdded1', this.onNewSaleAdded.bind(this));
 		Events.on('RemoveLocalReceipt', 'RemoveLocalReceipt1', this.onRemoveLocalReceipt.bind(this));
 		Events.on('ClearLoggedSales', 'ClearLoggedSales1', this.onClearLoggedSales.bind(this));
+		Events.on('WaterOpConfigsUpdated', 'WaterOpConfigsUpdated1', this.onWaterOpConfigsUpdated.bind(this));
 		console.log("PosApp = Mounted-Done");
 
 	}
@@ -120,7 +122,12 @@ class PosApp extends Component {
 		Events.rm('NewSaleAdded', 'NewSaleAdded1');
 		Events.rm('RemoveLocalReceipt', 'RemoveLocalReceipt1');
 		Events.rm('ClearLoggedSales', 'ClearLoggedSales1');
+		Events.rm('WaterOpConfigsUpdated', 'WaterOpConfigsUpdated1');
 		NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
+	}
+
+	onWaterOpConfigsUpdated(waterOpConfigs) {
+		this.props.waterOpActions.setWaterOpConfigs(waterOpConfigs);
 	}
 
 	onRemoveLocalReceipt(saleId) {
@@ -313,7 +320,8 @@ function mapDispatchToProps(dispatch) {
 		networkActions: bindActionCreators(NetworkActions, dispatch),
 		toolbarActions: bindActionCreators(ToolbarActions, dispatch),
 		settingsActions: bindActionCreators(SettingsActions, dispatch),
-		receiptActions: bindActionCreators(receiptActions, dispatch)
+		receiptActions: bindActionCreators(receiptActions, dispatch),
+		waterOpActions: bindActionCreators(WaterOpActions, dispatch)
 	};
 }
 

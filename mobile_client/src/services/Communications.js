@@ -115,6 +115,23 @@ class Communications {
 			});
 	}
 
+	getWaterOpConfigs() {
+		let options = { method: 'GET', headers: { Authorization: 'Bearer ' + this._token } };
+		let settings = PosStorage.getSettings();
+		let url = `sema/water-ops/configs/${settings.siteId}`;
+
+		return fetch(this._url + url, options)
+			.then((response) => response.json())
+			.then((responseJson) => {
+				console.log(JSON.stringify(responseJson));
+				return responseJson
+			})
+			.catch((error) => {
+				console.log("Communications:getWaterOpConfigs: " + error);
+				throw( error );
+			});
+	}
+
 	createCustomer(customer) {
 		// TODO - Resolve customer type.... Is it needed, currently hardcoded...
 		customer.customerType = 128;		// FRAGILE

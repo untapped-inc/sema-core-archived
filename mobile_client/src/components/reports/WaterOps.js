@@ -6,10 +6,9 @@ import {
     FlatList,
     SectionList,
     ScrollView,
-    Image,
     TouchableHighlight,
-    Alert,
     ToastAndroid,
+    TextInput,
     ActivityIndicator
 } from 'react-native';
 import { bindActionCreators } from "redux";
@@ -22,7 +21,7 @@ import moment from 'moment-timezone';
 import PosStorage from '../../database/PosStorage';
 import Events from 'react-native-simple-events';
 
-class SamplingSite extends Component {
+class Parameter extends Component {
     constructor(props) {
         super(props);
 
@@ -66,8 +65,13 @@ class WaterOps extends Component {
         super(props);
 
         this.state = {
-            dateTime: moment.tz(new Date(Date.now()), moment.tz.guess()).format('YYYY-MM-DD HH:mm:ss')
-        }
+            dateTime: moment.tz(new Date(Date.now()), moment.tz.guess()).format('YYYY-MM-DD HH:mm:ss'),
+            formData: []
+        };
+
+        this.getParamLabel = this.getParamLabel.bind(this);
+        this.updateState = this.updateState.bind(this);
+        this.renderParameter = this.renderParameter.bind(this);
     }
 
     render() {
@@ -83,22 +87,10 @@ class WaterOps extends Component {
                                 <SectionList
                                     contentContainerStyle={styles.samplingSiteList}
                                     scrollEnabled={false}
-                                    renderItem={({ item }) => {
-                                        console.log(item);
-                                        // We only get active and manually entered parameters
-                                        // TODO: use Sequelize on the backend
-                                        // We tried a mysql2 solution about getting BIT type columns as booleans
-                                        // but that didn't work out. Here's a tmp solution for this:
-                                        if (!item.active.data[0] || !item.manual.data[0]) {
-                                            return null;
-                                        }
-                                        return <Text key={item.id}>{item.name}</Text>
-                                    }}
-                                    renderSectionHeader={({ section: { name } }) => (
-                                        <Text style={{ fontWeight: 'bold' }}>{name}</Text>
-                                    )}
+                                    renderItem={this.renderParameter}
+                                    renderSectionHeader={this.renderSamplingSite}
                                     sections={this.props.waterOpConfigs.mapping}
-                                    keyExtractor={(item, index) => item.id}
+                                    keyExtractor={(item, index) => index}
                                 />
                             </ScrollView>
                         </View>
@@ -117,6 +109,54 @@ class WaterOps extends Component {
         }
 
         return null;
+    }
+
+    renderParameter({ item, index, section }) {
+        // We only get active and manually entered parameters
+        // TODO: use Sequelize on the backend
+        // We tried a mysql2 solution about getting BIT type columns as booleans
+        // but that didn't work out. Here's a tmp solution for this:
+        if (!item.active.data[0] || !item.manual.data[0]) {
+            return null;
+        }
+
+        return (
+            <View
+                key={index}
+                style={styles.paramContainer}
+            >
+                <Text style={styles.paramLabel}>{this.getParamLabel(item)}</Text>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.paramInput}
+                        placeholder={item.minimum !== null ? `${item.minimum} - ${item.maximum}` : ''}
+                        onChangeText={(text) => this.updateState(index, text)}
+                    />
+                </View>
+            </View>
+        );
+    }
+
+    getParamLabel(item) {
+        if (item.minimum === null && item.unit === null) {
+            return `${item.name}:`;
+        } else if (item.minimum === null && item.unit !== null) {
+            return `${item.name} (${item.unit}):`;
+        } else if (item.minimum !== null && item.unit === null) {
+            return `${item.name} (${item.minimum} - ${item.maximum}):`;
+        }
+
+        return `${item.name} (${item.minimum} - ${item.maximum} ${item.unit}):`;
+    }
+
+    updateState(index, text) {
+        const formData = [...this.state.formData];
+        formData[index] = text;
+        this.setState({ formData });
+    }
+
+    renderSamplingSite({ section: { name } }) {
+        return <Text style={styles.samplingSiteTitle}>{name}</Text>
     }
 
     onSubmit() {
@@ -147,12 +187,39 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(WaterOps);
 
 const styles = StyleSheet.create({
+    paramContainer: {
+        padding: 15
+    },
+
+    inputContainer: {
+        borderWidth: 2,
+        borderRadius: 10,
+        width: 450,
+		borderColor: "#2858a7",
+        backgroundColor: 'white',
+    },
+
+    paramLabel: {
+        color: '#111',
+        marginBottom: 5
+    },
+
+    paramInput: {
+		alignSelf: 'center',
+        width: 450
+    },
+
+    samplingSiteTitle: {
+        fontWeight: 'bold',
+        fontSize: 20
+    },
+
     samplingSiteListContainer: {
         flex: 1
     },
 
     samplingSiteList: {
-        padding: 20
+        padding: 15
     },
 
     container: {

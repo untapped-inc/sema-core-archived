@@ -5,6 +5,7 @@ import {
     StyleSheet,
     FlatList,
     SectionList,
+    ScrollView,
     Image,
     TouchableHighlight,
     Alert,
@@ -20,8 +21,6 @@ import i18n from '../../app/i18n';
 import moment from 'moment-timezone';
 import PosStorage from '../../database/PosStorage';
 import Events from 'react-native-simple-events';
-
-import DatePicker from 'react-native-datepicker';
 
 class SamplingSite extends Component {
     constructor(props) {
@@ -79,47 +78,30 @@ class WaterOps extends Component {
                         <ActivityIndicator size='large' />
                     </View> :
                     <View style={styles.container}>
-                        <DatePicker
-                            style={styles.datePicker}
-                            date={this.state.dateTime}
-                            mode="datetime"
-                            placeholder="select date"
-                            format="YYYY-MM-DD HH:mm:ss"
-                            confirmBtnText="Confirm"
-                            cancelBtnText="Cancel"
-                            iconSource={require('../../images/calendar-icon.png')}
-                            customStyles={{
-                                dateIcon: {
-                                    position: 'absolute',
-                                    left: 0,
-                                    top: 4,
-                                    marginLeft: 0
-                                },
-                                dateInput: {
-                                    marginLeft: 36
-                                }
-                            }}
-                            onDateChange={(dateTime) => { this.setState({ dateTime }) }}
-                        />
-
-                        <SectionList
-                            renderItem={({ item }) => {
-                                console.log(item);
-                                // We only get active and manually entered parameters
-                                // TODO: use Sequelize on the backend
-                                // We tried a mysql2 solution about getting BIT type columns as booleans
-                                // but that didn't work out. Here's a tmp solution for this:
-                                if (!item.active.data[0] || !item.manual.data[0]) {
-                                    return null;
-                                }
-                                return <Text key={item.id}>{item.name}</Text>
-                            }}
-                            renderSectionHeader={({ section: { name } }) => (
-                                <Text style={{ fontWeight: 'bold' }}>{name}</Text>
-                            )}
-                            sections={this.props.waterOpConfigs.mapping}
-                            keyExtractor={(item, index) => item.id}
-                        />
+                        <View style={styles.samplingSiteListContainer}>
+                            <ScrollView>
+                                <SectionList
+                                    contentContainerStyle={styles.samplingSiteList}
+                                    scrollEnabled={false}
+                                    renderItem={({ item }) => {
+                                        console.log(item);
+                                        // We only get active and manually entered parameters
+                                        // TODO: use Sequelize on the backend
+                                        // We tried a mysql2 solution about getting BIT type columns as booleans
+                                        // but that didn't work out. Here's a tmp solution for this:
+                                        if (!item.active.data[0] || !item.manual.data[0]) {
+                                            return null;
+                                        }
+                                        return <Text key={item.id}>{item.name}</Text>
+                                    }}
+                                    renderSectionHeader={({ section: { name } }) => (
+                                        <Text style={{ fontWeight: 'bold' }}>{name}</Text>
+                                    )}
+                                    sections={this.props.waterOpConfigs.mapping}
+                                    keyExtractor={(item, index) => item.id}
+                                />
+                            </ScrollView>
+                        </View>
 
                         <View style={styles.submitButtonBar}>
                             <TouchableHighlight
@@ -165,6 +147,14 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(WaterOps);
 
 const styles = StyleSheet.create({
+    samplingSiteListContainer: {
+        flex: 1
+    },
+
+    samplingSiteList: {
+        padding: 20
+    },
+
     container: {
         backgroundColor: '#fff',
         flex: 1

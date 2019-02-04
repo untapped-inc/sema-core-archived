@@ -355,15 +355,77 @@ class Synchronization {
 		return new Promise((resolve, reject) => {
 			console.log("Synchronization:synchronizeWaterOpConfigs - Begin");
 			Communications.getWaterOpConfigs()
-				.then(waterOpConfigs => {
-					Events.trigger('WaterOpConfigsUpdated', waterOpConfigs);
+				.then(this.parseWaterOpConfigs)
+				.then(mapping => {
+					Events.trigger('WaterOpConfigsUpdated', mapping);
 					// TODO: Also save them in POSStorage for offline use
-					resolve(waterOpConfigs);
+					resolve(mapping);
 				})
 				.catch(err => {
 					reject(err);
 				});
 		});
+	}
+
+
+	// Creates an array looking like this
+
+	// [
+	// 	{
+	// 		name: 'A:Feed',
+	//		id: 2,
+	// 		parameters: [
+	// 			{
+	//				// Only add active parameters
+	// 				active: 1,
+	// 				id: 1,
+	// 				is_ok_not_ok: 1,
+	// 				...
+	// 			}
+	// 		]
+	// 	}
+	// ]
+	parseWaterOpConfigs(waterOpConfigs) {
+		const samplingSites = waterOpConfigs.samplingSites || [];
+		const parameters = waterOpConfigs.parameters || [];
+		const idMapping = waterOpConfigs.samplingSiteParameterMapping || [];
+
+		// Go through each mapping set on the kiosk_parameter table
+		return idMapping
+			.reduce((finalMapping, next) => {
+				// Get current sampling site
+				let currentSamplingSite = samplingSites.reduce((final, nextSamplingSite) => {
+					if (nextSamplingSite.id === next.sampling_site_id) return nextSamplingSite;
+					return final;
+				}, {});
+
+				// Get current parameter
+				let currentParameter = parameters.reduce((final, nextParameter) => {
+					if(nextParameter.id === next.parameter_id) return nextParameter;
+					return final;
+				}, {});
+
+				// Check if samplingSite is already in finalMapping
+				let currentMappingIndex = finalMapping.reduce((final, next, index) => {
+					if (next.id === currentSamplingSite.id) return index;
+					return final;
+				}, -1);
+
+				// If it is in finalMapping, push current parameter into its data array
+				// We use the name data here because that's what the SectionList component
+				// expects when rendering the parameters in the WaterOps component
+				if (currentMappingIndex !== -1) {
+					finalMapping[currentMappingIndex].data.push(currentParameter);
+				} else {
+					// If it's not in finalMapping, create a new object for this sampling site
+					finalMapping.push({
+						name: currentSamplingSite.name,
+						id: currentSamplingSite.id,
+						data: [{...currentParameter}]
+					});
+				}
+				return finalMapping;
+			}, []);
 	}
 
 	synchronizeProductMrps(lastProductSync) {

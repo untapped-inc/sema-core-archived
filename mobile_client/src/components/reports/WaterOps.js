@@ -66,11 +66,11 @@ class WaterOps extends Component {
 
         this.state = {
             dateTime: moment.tz(new Date(Date.now()), moment.tz.guess()).format('YYYY-MM-DD HH:mm:ss'),
-            formData: []
+            formData: new Map()
         };
 
         this.getParamLabel = this.getParamLabel.bind(this);
-        this.updateState = this.updateState.bind(this);
+        this.updateParamValue = this.updateParamValue.bind(this);
         this.renderParameter = this.renderParameter.bind(this);
     }
 
@@ -130,7 +130,7 @@ class WaterOps extends Component {
                     <TextInput
                         style={styles.paramInput}
                         placeholder={item.minimum !== null ? `${item.minimum} - ${item.maximum}` : ''}
-                        onChangeText={(text) => this.updateState(index, text)}
+                        onChangeText={(text) => this.updateParamValue(section.id, item.id, text)}
                     />
                 </View>
             </View>
@@ -149,9 +149,12 @@ class WaterOps extends Component {
         return `${item.name} (${item.minimum} - ${item.maximum} ${item.unit}):`;
     }
 
-    updateState(index, text) {
-        const formData = [...this.state.formData];
-        formData[index] = text;
+    updateParamValue(samplingSiteId, parameterId, newValue) {
+        const formData = new Map(this.state.formData);
+        const newParameterMap = new Map([[parameterId, newValue]]);
+
+        formData.set(samplingSiteId, newParameterMap);
+
         this.setState({ formData });
     }
 

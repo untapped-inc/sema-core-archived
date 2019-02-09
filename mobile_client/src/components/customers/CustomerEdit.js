@@ -84,10 +84,10 @@ class CustomerEdit extends Component {
 				</View>
 
 				<KeyboardAwareScrollView
-						style={{flex:1}}
+						contentContainerStyle={{flex: 1}}
 						resetScrollToCoords={{ x: 0, y: 0 }}
 						scrollEnabled={false}>
-						<View style ={{flex:1, alignItems:'center' }}>
+						<View style ={{flex:1, alignItems:'center'}}>
 							<CustomerProperty
 								reference = 'customerNumber'
 								marginTop = {0}

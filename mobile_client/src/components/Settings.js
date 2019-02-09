@@ -133,6 +133,7 @@ class Settings extends Component {
 				<KeyboardAwareScrollView
 					style={{ flex: 1 }}
 					resetScrollToCoords={{ x: 0, y: 0 }}
+					contentContainerStyle={{flex: 1}}
 					scrollEnabled={false}>
 					<View style={{ flex: 1, alignItems: 'center' }}>
 						<SettingsProperty
@@ -168,7 +169,7 @@ class Settings extends Component {
 							valueFn={this.getPassword.bind(this)}
 							ref={this.password} />
 
-						<View style={[{ marginTop: "1%", flexDirection: 'row', alignItems: 'center' }]}>
+						<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
 							<ModalDropdown
 								style={{ width: 250 }}
 								textStyle={styles.dropdownText}
@@ -186,7 +187,7 @@ class Settings extends Component {
 							</TouchableHighlight>
 						</View>
 
-						<View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
+						<View style={{ flexDirection: 'row', flex: 1, alignItems: 'center'}}>
 							<SettingsButton
 								pressFn={this.onSaveSettings}
 								enableFn={this.enableSaveSettings.bind(this)}
@@ -483,9 +484,7 @@ const styles = StyleSheet.create({
 	},
 	submit: {
 		backgroundColor: "#2858a7",
-		borderRadius: 20,
-		marginTop: "1%",
-
+		borderRadius: 20
 	},
 	inputContainer: {
 		borderWidth: 2,

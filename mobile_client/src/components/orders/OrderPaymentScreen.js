@@ -494,6 +494,11 @@ const styles = StyleSheet.create({
 		borderTopColor:'black',
 		borderTopWidth:5
 	},
+
+	container: {
+		flex: 1
+	},
+
 	checkBoxRow: {
 		flex: 1,
 		flexDirection:"row",

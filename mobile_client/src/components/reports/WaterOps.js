@@ -78,25 +78,27 @@ import { Button } from 'react-native-elements';
                     <View style={styles.loadingContainer}>
                         <ActivityIndicator size='large' />
                     </View> :
-                    <View style={styles.container}>]
-                         <SectionList
-                            renderItem={({ item }) => {
-                                console.log(item);
-                                // We only get active and manually entered parameters
-                                // TODO: use Sequelize on the backend
-                                // We tried a mysql2 solution about getting BIT type columns as booleans
-                                // but that didn't work out. Here's a tmp solution for this:
-                                if (!item.active.data[0] || !item.manual.data[0]) {
-                                    return null;
-                                }
-                                return <Text key={item.id}>{item.name}</Text>
-                            }}
-                            renderSectionHeader={({ section: { name } }) => (
-                                <Text style={{ fontWeight: 'bold' }}>{name}</Text>
-                            )}
-                            sections={this.props.waterOpConfigs.mapping}
-                            keyExtractor={(item, index) => item.id}
-                        />
+                    <View style={styles.container}>
+                         <View style={styles.listContainer}>
+                            <SectionList
+                                renderItem={({ item }) => {
+                                    console.log(item);
+                                    // We only get active and manually entered parameters
+                                    // TODO: use Sequelize on the backend
+                                    // We tried a mysql2 solution about getting BIT type columns as booleans
+                                    // but that didn't work out. Here's a tmp solution for this:
+                                    if (!item.active.data[0] || !item.manual.data[0]) {
+                                        return null;
+                                    }
+                                    return <Text key={item.id}>{item.name}</Text>
+                                }}
+                                renderSectionHeader={({ section: { name } }) => (
+                                    <Text style={{ fontWeight: 'bold' }}>{name}</Text>
+                                )}
+                                sections={this.props.waterOpConfigs.mapping}
+                                keyExtractor={(item, index) => item.id}
+                            />
+                         </View>
 
                          <View style={styles.submitButtonBar}>
                             <TouchableHighlight
@@ -144,7 +146,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(WaterOps);
  const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        flex: 1
+        flex: 1,
+        padding: 20
     },
 
      loadingContainer: {

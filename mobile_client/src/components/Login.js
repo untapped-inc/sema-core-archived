@@ -35,8 +35,8 @@ class Login extends Component {
 					resizeMode ='cover'
 					style = {styles.imgBackground}>
 					<KeyboardAwareScrollView
-						style={{flex:1}}
 						resetScrollToCoords={{ x: 0, y: 0 }}
+						contentContainerStyle={{flex: 1}}
 						scrollEnabled={false}>
 						<View style ={{flex:1, alignItems:'center' }}>
 								<View style ={{marginTop:'1.5%'}}>

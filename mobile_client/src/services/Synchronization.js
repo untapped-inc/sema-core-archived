@@ -358,7 +358,7 @@ class Synchronization {
 				.then(this.parseWaterOpConfigs)
 				.then(mapping => {
 					Events.trigger('WaterOpConfigsUpdated', mapping);
-					// TODO: Also save them in POSStorage for offline use
+					PosStorage.saveWaterOpConfigs(mapping);
 					resolve(mapping);
 				})
 				.catch(err => {

@@ -69,10 +69,66 @@ const sqlTDS =
     ORDER BY reading.created_date';
 
 const sqlParameter=
-	'SELECT id, name FROM parameter LIMIT 100';
+	'SELECT id, name, unit, minimum, maximum, active, is_used_in_totalizer FROM parameter';
 
 const sqlSamplingSite=
-	'SELECT id, name FROM sampling_site LIMIT 100';
+	'SELECT id, name, is_used_for_totalizer FROM sampling_site';
+
+const sqlSamplingSiteParameterMapping =
+	'SELECT * from kiosk_parameter where kiosk_id = ?';
+
+/* GET configurations - parameters and site IDs */
+router.get('/configs/:siteId', function(request, response) {
+   semaLog.info('water-operations Entry');
+   __pool.getConnection((err, connection) => {
+	   getWaterOpConfigs(request.params.siteId, connection).then(results => {
+		   return yieldResults(response, results);
+	   })
+	   .then(() => {
+		   connection.release();
+	   })
+	   .catch(err => {
+		   if (connection) {
+			   connection.release();
+		   }
+		   return yieldError(err, response, 500, []);
+	   })
+   });
+});
+
+// TODO: Turn the MySQL queries into promises to shorten this function
+// TODO: Actually, use Sequelize... Finally.
+const getWaterOpConfigs = (siteId, connection) => {
+   return new Promise((resolve ) => {
+	   connection.query(sqlParameter, (err, parameters) => {
+		   if (err) {
+			   semaLog.error("water-operations. Error resolving parameter ids ", err );
+			   reject();
+		   } else {
+			   connection.query(sqlSamplingSite, (err, samplingSites) => {
+				   if (err) {
+					   semaLog.error("water-operations. Error resolving sampling site ids ", err );
+					   reject();
+				   } else {
+					   connection.query(sqlSamplingSiteParameterMapping, [siteId], (err, samplingSiteParameterMapping) => {
+						   if (err) {
+							   semaLog.error("water-operations. Error resolving sampling site, kiosk and parameter mapping ", err );
+							   reject();
+						   } else {
+							   resolve({
+								   parameters,
+								   samplingSites,
+								   samplingSiteParameterMapping
+							   })
+						   }
+					   });
+				   }
+			   });
+		   }
+	   });
+   });
+
+};
 
 /* GET water operations. */
 

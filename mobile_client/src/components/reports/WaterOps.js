@@ -5,6 +5,7 @@ import {
     StyleSheet,
     FlatList,
     SectionList,
+    ScrollView,
     Image,
     TouchableHighlight,
     Alert,
@@ -79,25 +80,29 @@ import { Button } from 'react-native-elements';
                         <ActivityIndicator size='large' />
                     </View> :
                     <View style={styles.container}>
-                         <View style={styles.listContainer}>
-                            <SectionList
-                                renderItem={({ item }) => {
-                                    console.log(item);
-                                    // We only get active and manually entered parameters
-                                    // TODO: use Sequelize on the backend
-                                    // We tried a mysql2 solution about getting BIT type columns as booleans
-                                    // but that didn't work out. Here's a tmp solution for this:
-                                    if (!item.active.data[0] || !item.manual.data[0]) {
-                                        return null;
-                                    }
-                                    return <Text key={item.id}>{item.name}</Text>
-                                }}
-                                renderSectionHeader={({ section: { name } }) => (
-                                    <Text style={{ fontWeight: 'bold' }}>{name}</Text>
-                                )}
-                                sections={this.props.waterOpConfigs.mapping}
-                                keyExtractor={(item, index) => item.id}
-                            />
+                         <View style={styles.samplingSiteListContainer}>
+                            <ScrollView>
+                                <SectionList
+                                    contentContainerStyle={styles.samplingSiteList}
+                                    scrollEnabled={false}
+                                    renderItem={({ item }) => {
+                                        console.log(item);
+                                        // We only get active and manually entered parameters
+                                        // TODO: use Sequelize on the backend
+                                        // We tried a mysql2 solution about getting BIT type columns as booleans
+                                        // but that didn't work out. Here's a tmp solution for this:
+                                        if (!item.active.data[0] || !item.manual.data[0]) {
+                                            return null;
+                                        }
+                                        return <Text key={item.id}>{item.name}</Text>
+                                    }}
+                                    renderSectionHeader={({ section: { name } }) => (
+                                        <Text style={{ fontWeight: 'bold' }}>{name}</Text>
+                                    )}
+                                    sections={this.props.waterOpConfigs.mapping}
+                                    keyExtractor={(item, index) => item.id}
+                                />
+                            </ScrollView>
                          </View>
 
                          <View style={styles.submitButtonBar}>
@@ -144,10 +149,17 @@ import { Button } from 'react-native-elements';
 export default connect(mapStateToProps, mapDispatchToProps)(WaterOps);
 
  const styles = StyleSheet.create({
+    samplingSiteListContainer: {
+        flex: 1
+    },
+
+     samplingSiteList: {
+        padding: 20
+    },
+
     container: {
         backgroundColor: '#fff',
-        flex: 1,
-        padding: 20
+        flex: 1
     },
 
      loadingContainer: {

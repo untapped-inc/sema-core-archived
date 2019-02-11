@@ -69,7 +69,7 @@ const sqlTDS =
     ORDER BY reading.created_date';
 
 const sqlParameter=
-	'SELECT id, name, unit, minimum, maximum, active, is_used_in_totalizer FROM parameter';
+	'SELECT id, name, manual, unit, minimum, maximum, active, is_used_in_totalizer FROM parameter';
 
 const sqlSamplingSite=
 	'SELECT id, name, is_used_for_totalizer FROM sampling_site';

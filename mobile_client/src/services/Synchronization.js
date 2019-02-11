@@ -101,8 +101,21 @@ class Synchronization {
 									return results;
 								});
 
+							const promiseWaterOpConfigs = this.synchronizeWaterOpConfigs()
+								.then(results => {
+									syncResult.waterOpConfigs = results;
+									return results;
+								});
+
 							// This will make sure they run synchronously
-							[promiseCustomers, promiseProducts, promiseSales, promiseProductMrps, promiseReceipts]
+							[
+								promiseCustomers,
+								promiseProducts,
+								promiseSales,
+								promiseProductMrps,
+								promiseReceipts,
+								promiseWaterOpConfigs
+							]
 								.reduce((promiseChain, currentTask) => {
 									return promiseChain.then(chainResults =>
 										currentTask.then(currentResult =>
@@ -336,6 +349,21 @@ class Synchronization {
 					});
 				});
 			});
+	}
+
+	synchronizeWaterOpConfigs() {
+		return new Promise((resolve, reject) => {
+			console.log("Synchronization:synchronizeWaterOpConfigs - Begin");
+			Communications.getWaterOpConfigs()
+				.then(waterOpConfigs => {
+					Events.trigger('WaterOpConfigsUpdated', waterOpConfigs);
+					// TODO: Also save them in POSStorage for offline use
+					resolve(waterOpConfigs);
+				})
+				.catch(err => {
+					reject(err);
+				});
+		});
 	}
 
 	synchronizeProductMrps(lastProductSync) {

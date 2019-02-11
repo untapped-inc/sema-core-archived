@@ -2,9 +2,7 @@ import { SET_WATER_OP_CONFIGS } from "../actions/WaterOpActions"
 
   let initialState = {
     configs: {
-        idMapping: null,
-        parameters: null,
-        samplingSites: null
+        mapping: []
     }
 };
 

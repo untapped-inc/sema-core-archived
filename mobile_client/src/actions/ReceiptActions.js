@@ -19,11 +19,6 @@ export function addRemoteReceipt(receipt) {
     return dispatch => { dispatch({ type: ADD_REMOTE_RECEIPT, data: { receipt } }) };
 }
 
-export function clearLoggedReceipts(receipt) {
-    console.log('clearLoggedReceipts - action');
-    return dispatch => { dispatch({ type: CLEAR_LOGGED_RECEIPTS, data: {} }) };
-}
-
 export function setLocalReceipts(localReceipts) {
     console.log('setLocalReceipts - action');
     return dispatch => { dispatch({ type: SET_LOCAL_RECEIPTS, data: { localReceipts } }) };

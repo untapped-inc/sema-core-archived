@@ -11,6 +11,8 @@ import PosStorage from "../database/PosStorage";
 import * as SettingsActions from "../actions/SettingsActions";
 import * as ToolbarActions from "../actions/ToolBarActions";
 import * as CustomerActions from "../actions/CustomerActions";
+import * as receiptActions from "../actions/ReceiptActions";
+import * as waterOpActions from "../actions/WaterOpActions";
 import ModalDropdown from 'react-native-modal-dropdown';
 
 import Events from "react-native-simple-events";
@@ -324,9 +326,10 @@ ${syncResult.productMrps.remoteProductMrps} ${i18n.t('product-sales-channel-pric
 	}
 	_clearDataAndSync() {
 		PosStorage.clearDataOnly();
-		Events.trigger('ClearLoggedSales', {});
 		this.props.settingsActions.setSettings(PosStorage.getSettings());
 		this.props.customerActions.setCustomers(PosStorage.getCustomers());
+		this.props.waterOpActions.setWaterOpConfigs(PosStorage.getWaterOpConfigs());
+		this.props.receiptActions.setRemoteReceipts(PosStorage.getRemoteReceipts());
 		const saveConnected = Synchronization.isConnected;
 		Synchronization.initialize(
 			PosStorage.getLastCustomerSync(),
@@ -470,7 +473,9 @@ function mapDispatchToProps(dispatch) {
 	return {
 		toolbarActions: bindActionCreators(ToolbarActions, dispatch),
 		settingsActions: bindActionCreators(SettingsActions, dispatch),
-		customerActions: bindActionCreators(CustomerActions, dispatch)
+		customerActions: bindActionCreators(CustomerActions, dispatch),
+		receiptActions: bindActionCreators(receiptActions, dispatch),
+		waterOpActions: bindActionCreators(waterOpActions, dispatch),
 	};
 }
 

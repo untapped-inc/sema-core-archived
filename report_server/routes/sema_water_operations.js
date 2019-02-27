@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 require('datejs');
 const semaLog = require('../seama_services/sema_logger');
+const Reading = require(`${__basedir}/models`).reading;
+const User = require(`${__basedir}/models`).user;
+const { Sequelize } = require(`${__basedir}/models`);
+const { Op } = Sequelize;
+const moment = require('moment');
 
 let parameter_id_map = {};
 let sampling_site_id_map = {};
@@ -76,6 +81,102 @@ const sqlSamplingSite=
 
 const sqlSamplingSiteParameterMapping =
 	'SELECT * from kiosk_parameter where kiosk_id = ?';
+
+const parseReadings = (readings, userId, siteId) => {
+	return Object.keys(readings).reduce((final, key) => {
+		let [sampling_site_id, parameter_id] = key.split('-');
+
+		let instance = {
+			kiosk_id: siteId,
+			parameter_id,
+			sampling_site_id,
+			value: readings[key],
+			user_id: userId
+		}
+
+		final.push(instance);
+
+		return final;
+	}, []);
+}
+
+/* POST reading values from manual entry */
+router.post('/:siteId', async (req, res) => {
+	semaLog.info('water-operations Entry');
+
+	let err;
+	let currentUser = {};
+	let todayReadingCount = 0;
+
+	const {
+		waterOps
+	} = req.body;
+
+	const {
+		date,
+		username
+	} = req.query;
+
+	const {
+		siteId
+	} = req.params;
+
+	// Count the amount of entries found for the day
+	[err, todayReadingCount] = await __hp(Reading.count({
+		where: {
+			created_at: {
+				[Op.between]: [
+					date,
+					moment(date).add(1,'days').format('YYYY-MM-DD')
+				]
+			},
+			kiosk_id: siteId
+		}
+	}));
+	
+	// On error, return a generic error message and log the error
+	if (err) {
+		semaLog.warn(`sema_water_operations - Error: ${JSON.stringify(err)}`);
+		return res.status(500).json({ msg: "Internal Server Error"});
+	}
+
+	// If there's already data for the current day and current kiosk, do nothing
+	if (todayReadingCount >= Object.keys(waterOps).length) {
+		return res.json({
+			status: 'failure',
+			msg: 'Readings already sent for the day'
+		});
+	}
+
+	// Find the user ID from the username
+	// TODO: send the full user object (omitting the password) on login
+	[err, currentUser] = await __hp(User.findOne({
+		where: {
+			username
+		}
+	}));
+
+	// On error, return a generic error message and log the error
+	if (err) {
+		semaLog.warn(`sema_water_operations - Error: ${JSON.stringify(err)}`);
+		return res.status(500).json({ msg: "Internal Server Error"});
+	}
+
+	// Turn the client generated object into one that MySQL will understand
+	const parsedReadings = parseReadings(waterOps, currentUser.id, siteId);
+
+	console.log();
+	console.dir(parsedReadings);
+	console.log();
+
+	// Insert readings in bulk
+	await Reading.bulkCreate(parsedReadings);
+
+	res.json({
+		status: 'success',
+		msg: 'Successfully entered readings for the day'
+	});
+ });
 
 /* GET configurations - parameters and site IDs */
 router.get('/configs/:siteId', function(request, response) {

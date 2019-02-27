@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
-    View
+    View,
+    Text
 } from 'react-native';
-import { Input } from 'react-native-elements';
+import {
+    Input,
+    CheckBox
+} from 'react-native-elements';
 import { connect } from "react-redux";
-import { Checkbox, Text } from 'react-native-paper';
 
 class ParameterInputs extends Component {
     constructor(props) {
@@ -32,7 +35,9 @@ class ParameterInputs extends Component {
         return (
             <View style={styles.container}>
                 {
-                    this.props.parameters.map((parameter, idx) => {
+                    this.props.parameters
+                        .filter(param => param.manual.data[0]) // only manually entered parameters
+                        .map((parameter, idx) => {
                         let paramValue = this.state.values[`${this.props.samplingSiteId}-${parameter.id}`];
 
                         if (this.booleanInputParamNames.includes(parameter.name)) {
@@ -42,8 +47,9 @@ class ParameterInputs extends Component {
                                     style={styles.checkboxInput}
                                 >
                                     <Text style={styles.parameterLabel}>{parameter.name}:</Text>
-                                    <Checkbox
-                                        status={paramValue ? 'checked' : 'unchecked'}
+                                    <CheckBox
+                                        title={paramValue ? 'OK' : 'NOT OK'}
+                                        checked={paramValue}
                                         onPress={() => { this.props.setFieldValue(`${this.props.samplingSiteId}-${parameter.id}`, !paramValue) }}
                                     />
                                 </View>

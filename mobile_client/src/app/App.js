@@ -13,7 +13,6 @@ import store from './store';
 import PosApp from '../components/PosApp';
 import PosStorage from '../database/PosStorage';
 import { isEmptyObj } from '../services/Utilities';
-import { Provider as PaperProvider } from 'react-native-paper';
 
 export default class App extends Component {
   async componentWillMount() {
@@ -35,9 +34,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <PaperProvider>
-          <PosApp />
-        </PaperProvider>
+        <PosApp />
       </Provider>
     );
   }

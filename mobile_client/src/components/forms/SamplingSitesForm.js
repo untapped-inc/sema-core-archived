@@ -10,6 +10,7 @@ import * as Yup from 'yup';
 import { Button } from 'react-native-elements';
 import { connect } from "react-redux";
 import ParameterInputs from './inputs/ParameterInputs';
+import PosStorage from '../../database/PosStorage';
 
 class SamplingSitesForm extends Component {
     constructor(props) {
@@ -37,7 +38,9 @@ class SamplingSitesForm extends Component {
         ];
 
         return this.props.waterOpConfigs.mapping.reduce((finalObject, samplingSite) => {
-            samplingSite.data.forEach(parameter => {
+            samplingSite.data
+                .filter(param => param.manual.data[0]) // only manually entered parameters
+                .forEach(parameter => {
                 if (limitlessParamNames.includes(parameter.name)) {
                     if (this.booleanInputParamNames.includes(parameter.name)) {
                         finalObject[`${samplingSite.id}-${parameter.id}`] = Yup.boolean();
@@ -49,8 +52,11 @@ class SamplingSitesForm extends Component {
                 } else {
                     finalObject[`${samplingSite.id}-${parameter.id}`] = Yup.number()
                         .typeError(`${parameter.name} must be a number`)
-                        .lessThan(parameter.maximum + 1, `${parameter.name} must be less than ${parameter.maximum + 1}`)
-                        .moreThan(parameter.minimum - 1, `${parameter.name} must be greater than ${parameter.minimum - 1}`)
+                        // We added those initially, thinking it was a good idea to enforce the minimum and maximum
+                        // values of the parameters, but it doesn't make sense to do so because it's about logging
+                        // the data, not about entering the RIGHT data
+                        // .lessThan(parameter.maximum + 1, `${parameter.name} must be less than ${parameter.maximum + 1}`)
+                        // .moreThan(parameter.minimum - 1, `${parameter.name} must be greater than ${parameter.minimum - 1}`)
                         .required(`${parameter.name} is a required parameter`);
                 }
             });
@@ -60,7 +66,9 @@ class SamplingSitesForm extends Component {
 
     _getInitialValues() {
         return this.props.waterOpConfigs.mapping.reduce((finalObject, samplingSite) => {
-            samplingSite.data.forEach(parameter => {
+            samplingSite.data
+                .filter(param => param.manual.data[0])
+                .forEach(parameter => {
                 if (this.booleanInputParamNames.includes(parameter.name)) {
                     finalObject[`${samplingSite.id}-${parameter.id}`] = false;
                 } else {
@@ -78,6 +86,14 @@ class SamplingSitesForm extends Component {
         return name;
     }
 
+    _handleSubmit(values, actions) {
+        PosStorage
+            .saveWaterOps(values)
+            .then(() => {
+              actions.resetForm();
+            });
+    }
+
     render() {
         return (
             <View style={{flex: 1}}>
@@ -86,7 +102,7 @@ class SamplingSitesForm extends Component {
                     validationSchema={Yup.object().shape(this._getValidationSchema())}
                     onSubmit={this._handleSubmit}>
                     {
-                        ({ values, handleSubmit, setFieldValue, errors, touched, handleBlur, isValid }) => (
+                        ({ values, handleSubmit, setFieldValue, errors, touched, handleBlur, isValid, isSubmitting }) => (
                             <React.Fragment>
                                 <ScrollView contentContainerStyle={styles.samplingSiteListContainer}>
                                     {
@@ -112,11 +128,14 @@ class SamplingSitesForm extends Component {
                                 <View style={styles.submitButtonBar}>
                                     <Button
                                         title={"Submit".toUpperCase()}
+                                        mode="contained"
                                         underlayColor="lime"
-                                        disabled={!isValid}
                                         buttonStyle={styles.submitButton}
-                                        textStyle={styles.submitButtonText}
-                                        disabledTextStyle={styles.disabledSubmitButtonText}
+                                        loading={isSubmitting}
+                                        disabled={!isValid}
+                                        style={styles.submitButton}
+                                        disabledTitleStyle={styles.disabledSubmitButtonText}
+                                        titleStyle={styles.submitButtonText}
                                         onPress={handleSubmit}
                                     />
                                 </View>

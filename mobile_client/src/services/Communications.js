@@ -370,6 +370,28 @@ class Communications {
 			});
 	}
 
+	// Sends the kiosk ID and the water operations and quality data for the day
+	sendWaterOps(siteId, username, waterOps) {
+		let options = {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + this._token
+			},
+			body: JSON.stringify({waterOps})
+		};
+
+		let url = `sema/water-ops/${siteId}?date=${moment.tz(new Date(Date.now()), moment.tz.guess()).format('YYYY-MM-DD')}&username=${username}`;
+
+		return fetch(this._url + url, options)
+			.then(response => response.json())
+			.catch(error => {
+				console.log("Communications:sendUpdatedReceipts: " + error);
+				throw (error);
+			});
+	}
+
 	// let remoteReceipt = {
 	// 	receiptId: receipt.receiptId,
 	// 	customerId: receipt.customerId,

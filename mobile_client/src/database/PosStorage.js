@@ -31,6 +31,7 @@ const customerTypesKey = '@Sema:CustomerTypesKey';
 const productMrpsKey = '@Sema:ProductMrpsKey';
 const remoteReceiptsKey = '@Sema:remoteReceiptsKey';
 const waterOpConfigsKey = '@Sema:waterOpConfigsKey';
+const waterOpsKey = '@Sema:waterOpsKey';
 
 const syncIntervalKey = '@Sema:SyncIntervalKey';
 
@@ -77,6 +78,7 @@ class PosStorage {
 		this.receipts = [];
 		this.productMrpDict = {};
 		this.opConfigs = [];
+		this.waterOps = {};
 
 		this.syncInterval = { interval: 2 * 60 * 1000 };
 		this.inventoriesKeys = [];	// 30 days of inventories
@@ -108,7 +110,8 @@ class PosStorage {
 							[syncIntervalKey, this.stringify(this.syncInterval)],
 							[inventoriesKey, this.stringify(this.inventoriesKeys)],
 							[remoteReceiptsKey, this.stringify(this.receipts)],
-							[waterOpConfigsKey, this.stringify(this.opConfigs)]
+							[waterOpConfigsKey, this.stringify(this.opConfigs)],
+							[waterOpsKey, this.stringify(this.waterOps)]
 						];
 						AsyncStorage.multiSet(keyArray).then(error => {
 							console.log("PosStorage:initialize: Error: " + error);
@@ -122,7 +125,7 @@ class PosStorage {
 							lastSalesSyncKey, lastProductsSyncKey,
 							pendingCustomersKey, pendingSalesKey,
 							settingsKey, tokenExpirationKey, salesChannelsKey,
-							customerTypesKey, productMrpsKey, syncIntervalKey, inventoriesKey, remoteReceiptsKey, waterOpConfigsKey];
+							customerTypesKey, productMrpsKey, syncIntervalKey, inventoriesKey, remoteReceiptsKey, waterOpConfigsKey, waterOpsKey];
 						AsyncStorage.multiGet(keyArray).then(function (results) {
 							console.log("PosStorage Multi-Key" + results.length);
 							for (let i = 0; i < results.length; i++) {
@@ -145,6 +148,7 @@ class PosStorage {
 							this.inventoriesKeys = this.parseJson(results[14][1]); // inventoriesKey
 							this.receipts = this.parseJson(results[15][1]); // remoteReceiptsKey
 							this.opConfigs = this.parseJson(results[16][1]); // waterOpConfigsKey
+							this.waterOps = this.parseJson(results[17][1]); // waterOpsKey
 							this.loadCustomersFromKeys()
 								.then(() => {
 									this.loadProductsFromKeys()
@@ -187,6 +191,7 @@ class PosStorage {
 		this.productsKeys = [];
 		this.receipts = [];
 		this.opConfigs = [];
+		this.waterOps = {};
 
 		let firstSyncDate = new Date('November 7, 1973');
 		this.lastCustomerSync = firstSyncDate;
@@ -208,7 +213,8 @@ class PosStorage {
 			[productMrpsKey, this.stringify(this.productMrpDict)],
 			[inventoriesKey, this.stringify(this.inventoriesKeys)],
 			[remoteReceiptsKey, this.stringify(this.receipts)],
-			[waterOpConfigsKey, this.stringify(this.opConfigs)]
+			[waterOpConfigsKey, this.stringify(this.opConfigs)],
+			[waterOpsKey, this.stringify(this.waterOps)]
 		];
 
 		AsyncStorage.multiSet(keyArray).then(error => {
@@ -999,6 +1005,19 @@ class PosStorage {
 	getWaterOpConfigs() {
 		console.log("PosStorage: getWaterOpConfigs. Count " + this.opConfigs.length, JSON.stringify(this.opConfigs));
 		return this.opConfigs;
+	}
+
+	saveWaterOps(waterOps = {}) {
+		this.waterOps = waterOps;
+		return this.setKey(waterOpsKey, this.stringify(this.waterOps));
+	}
+
+	loadWaterOps() {
+		return this.getKey(waterOpsKey)
+			.then(waterOps => {
+				this.waterOps = JSON.parse(waterOps);
+				return this.waterOps;
+			});
 	}
 
 	addRemoteReceipts(receipts) {

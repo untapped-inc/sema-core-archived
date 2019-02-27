@@ -107,6 +107,12 @@ class Synchronization {
 									return results;
 								});
 
+							const promiseWaterOps = this.synchronizeWaterOps()
+								.then(results => {
+									syncResult.waterOps = results;
+									return results;
+								});
+
 							// This will make sure they run synchronously
 							[
 								promiseCustomers,
@@ -114,7 +120,8 @@ class Synchronization {
 								promiseSales,
 								promiseProductMrps,
 								promiseReceipts,
-								promiseWaterOpConfigs
+								promiseWaterOpConfigs,
+								promiseWaterOps
 							]
 								.reduce((promiseChain, currentTask) => {
 									return promiseChain.then(chainResults =>
@@ -360,6 +367,28 @@ class Synchronization {
 					Events.trigger('WaterOpConfigsUpdated', mapping);
 					PosStorage.saveWaterOpConfigs(mapping);
 					resolve(mapping);
+				})
+				.catch(err => {
+					reject(err);
+				});
+		});
+	}
+
+	async synchronizeWaterOps() {
+		let settings = PosStorage.getSettings();
+
+		let waterOps = await PosStorage.loadWaterOps();
+
+		if (!Object.keys(waterOps).length) {
+			return Promise.resolve();
+		}
+
+		return new Promise((resolve, reject) => {
+			console.log("Synchronization:synchronizeWaterOps - Begin");
+			Communications.sendWaterOps(settings.siteId, settings.user, waterOps)
+				.then(result => {
+					Events.trigger('WaterOpsSynchronized', result);
+					resolve(resolve);
 				})
 				.catch(err => {
 					reject(err);

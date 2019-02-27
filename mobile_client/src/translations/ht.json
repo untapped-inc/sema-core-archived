@@ -64,13 +64,12 @@
 
   "order-summary": "Kòmand",
   "cart": "Charyo",
+  "pay": "Peye",
 
   "order-total": "Total Kòmand",
   "item": "Pwodui senkronizeui",
   "quantity": "Kantite",
-
   "charge": "Fakti",
-  "pay": "Peye",
 
   "cash": "Kach",
   "loan": "Prè",
@@ -83,6 +82,8 @@
 
   "sales": "Vant",
   "inventory": "Envantè",
+  "sales-log": "Jounal Vant",
+  "water-quality-and-flowmeter": "Debimèt & Kalite Dlo",
 
   "cancel-this-order": "anile vant sa",
   "cancel-order": "Anile Kòmand",
@@ -105,9 +106,16 @@
   "total-production": "Prodiksyon Total",
   "wastage": "Gaspiyaj",
 
+  "must-be-a-number": "{{what}} dwe yon nonb",
+  "is-a-required-parameter": "{{what}} se yon paramèt obligatwa",
+
+  "submit": "Soumèt",
+
+  "data-saved-successfully": "Done yo anrejistre avèk siksè",
   "are-you-sure": "Èske ou si ou vle {{doThat}}?",
   "cancel": "Anile",
   "ok": "OK",
+  "not-ok": "PA OK",
   "no": "Non",
   "yes": "Wi"
 }

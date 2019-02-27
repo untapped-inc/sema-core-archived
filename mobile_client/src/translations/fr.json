@@ -82,6 +82,8 @@
 
   "sales": "Ventes",
   "inventory": "Inventaire",
+  "sales-log": "Journal Des Ventes",
+  "water-quality-and-flowmeter": "Débitmètre & Qualité de l'Eau",
 
   "cancel-this-order": "annuler cette commande",
   "cancel-order": "Annuler Commande",
@@ -104,9 +106,16 @@
   "total-production": "Total Production",
   "wastage": "Gaspillage",
 
+  "must-be-a-number": "{{what}} doit être un nombre",
+  "is-a-required-parameter": "{{what}} est un paramètre obligatoire",
+
+  "submit": "Soumettre",
+
+  "data-saved-successfully": "Données sauvegardées avec succès",
   "are-you-sure": "Etes-vous sûr de vouloir {{doThat}}?",
   "cancel": "Annuler",
   "ok": "OK",
+  "not-ok": "PAS OK",
   "no": "Non",
   "yes": "Oui"
 }

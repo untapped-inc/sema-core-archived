@@ -9,6 +9,7 @@ import {
     CheckBox
 } from 'react-native-elements';
 import { connect } from "react-redux";
+import i18n from '../../../app/i18n';
 
 class ParameterInputs extends Component {
     constructor(props) {
@@ -31,6 +32,17 @@ class ParameterInputs extends Component {
         });
     }
 
+    __getParamLabel(param) {
+        if (param.minimum === null) {
+            return `${param.name}${param.unit ? ` (${param.unit})` : ':'}:`;
+        } else {
+            if (param.unit) {
+                return `${param.name} (${param.minimum} - ${param.maximum} ${param.unit}):`;
+            }
+            return `${param.name} (${param.minimum} - ${param.maximum})`;
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -48,7 +60,7 @@ class ParameterInputs extends Component {
                                 >
                                     <Text style={styles.parameterLabel}>{parameter.name}:</Text>
                                     <CheckBox
-                                        title={paramValue ? 'OK' : 'NOT OK'}
+                                        title={paramValue ? i18n.t('ok') : i18n.t('not-ok')}
                                         checked={paramValue}
                                         onPress={() => { this.props.setFieldValue(`${this.props.samplingSiteId}-${parameter.id}`, !paramValue) }}
                                     />
@@ -58,7 +70,7 @@ class ParameterInputs extends Component {
                             return (
                                 <Input
                                     key={idx}
-                                    label={`${parameter.name}:`}
+                                    label={this.__getParamLabel(parameter)}
                                     labelStyle={styles.parameterLabel}
                                     containerStyle={styles.parameterInputContainer}
                                     inputStyle={styles.parameterInput}

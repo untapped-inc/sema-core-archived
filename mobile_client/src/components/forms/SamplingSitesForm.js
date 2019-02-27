@@ -3,7 +3,8 @@ import {
     View,
     StyleSheet,
     ScrollView,
-    Text
+    Text,
+    ToastAndroid
 } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -11,6 +12,7 @@ import { Button } from 'react-native-elements';
 import { connect } from "react-redux";
 import ParameterInputs from './inputs/ParameterInputs';
 import PosStorage from '../../database/PosStorage';
+import i18n from '../../app/i18n';
 
 class SamplingSitesForm extends Component {
     constructor(props) {
@@ -46,18 +48,18 @@ class SamplingSitesForm extends Component {
                         finalObject[`${samplingSite.id}-${parameter.id}`] = Yup.boolean();
                     } else {
                         finalObject[`${samplingSite.id}-${parameter.id}`] = Yup.number()
-                            .typeError(`${parameter.name} must be a number`)
-                            .required(`${parameter.name} is a required parameter`);
+                            .typeError(i18n.t('must-be-a-number', {what: parameter.name}))
+                            .required(i18n.t('is-a-required-parameter', {what: parameter.name}))
                     }
                 } else {
                     finalObject[`${samplingSite.id}-${parameter.id}`] = Yup.number()
-                        .typeError(`${parameter.name} must be a number`)
+                        .typeError(i18n.t('must-be-a-number', {what: parameter.name}))
+                        .required(i18n.t('is-a-required-parameter', {what: parameter.name}));
                         // We added those initially, thinking it was a good idea to enforce the minimum and maximum
                         // values of the parameters, but it doesn't make sense to do so because it's about logging
                         // the data, not about entering the RIGHT data
                         // .lessThan(parameter.maximum + 1, `${parameter.name} must be less than ${parameter.maximum + 1}`)
                         // .moreThan(parameter.minimum - 1, `${parameter.name} must be greater than ${parameter.minimum - 1}`)
-                        .required(`${parameter.name} is a required parameter`);
                 }
             });
             return finalObject;
@@ -91,6 +93,7 @@ class SamplingSitesForm extends Component {
             .saveWaterOps(values)
             .then(() => {
               actions.resetForm();
+              return ToastAndroid.show(i18n.t('data-saved-successfully'), ToastAndroid.LONG);
             });
     }
 
@@ -127,7 +130,7 @@ class SamplingSitesForm extends Component {
 
                                 <View style={styles.submitButtonBar}>
                                     <Button
-                                        title={"Submit".toUpperCase()}
+                                        title={i18n.t('submit').toUpperCase()}
                                         mode="contained"
                                         underlayColor="lime"
                                         buttonStyle={styles.submitButton}

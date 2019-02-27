@@ -82,6 +82,8 @@
 
   "sales": "Ventes",
   "inventory": "Inventaire",
+  "sales-log": "Journal Des Ventes",
+  "water-quality-and-flowmeter": "Débitmètre & Qualité de l'Eau",
 
   "cancel-this-order": "annuler cette commande",
   "cancel-order": "Annuler Commande",
@@ -104,9 +106,30 @@
   "total-production": "Total Production",
   "wastage": "Gaspillage",
 
+  "product-description": "Description Produit",
+  "product-sku": "SKU Produit",
+  "quantity-purchased": "Quantité Achetée",
+  "total-cost": "Coût total",
+  "deleted": "Supprimé",
+  "pending": "En attente",
+  "synced": "Synchronisé",
+  "receipt-id": "ID Reçu",
+  "date-created": "Date de Création",
+  "customer-name": "Nom Client",
+  "receipt-already-deleted": "Reçu déjà supprimé",
+  "confirm-receipt-deletion": "Confirmer la suppression d'un reçu",
+  "delete-this-receipt": "effacer ce reçu",
+
+  "must-be-a-number": "{{what}} doit être un nombre",
+  "is-a-required-parameter": "{{what}} est un paramètre obligatoire",
+
+  "submit": "Soumettre",
+
+  "data-saved-successfully": "Données sauvegardées avec succès",
   "are-you-sure": "Etes-vous sûr de vouloir {{doThat}}?",
   "cancel": "Annuler",
   "ok": "OK",
+  "not-ok": "PAS OK",
   "no": "Non",
   "yes": "Oui"
 }

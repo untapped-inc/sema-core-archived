@@ -1,6 +1,6 @@
 {
   "name": "semapos",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -9,6 +9,7 @@
     "buildapk": "sh build_sema_apk.sh"
   },
   "dependencies": {
+    "formik": "^1.5.0",
     "i18n-js": "^3.0.11",
     "intl": "~1.2.5",
     "moment": "^2.23.0",
@@ -16,18 +17,19 @@
     "random-material-color": "^1.0.3",
     "react": "16.6.3",
     "react-native": "0.58.4",
-    "react-native-elements": "~0.19.1",
+    "react-native-elements": "^1.0.0",
     "react-native-keyboard-aware-scroll-view": "~0.5.0",
     "react-native-languages": "^3.0.0",
     "react-native-modal-dropdown": "~0.6.2",
     "react-native-simple-events": "~1.0.1",
     "react-native-table-component": "^1.2.0",
-    "react-native-vector-icons": "~4.6.0",
+    "react-native-vector-icons": "^6.2.0",
     "react-navigation": "2.0.2",
     "react-redux": "~5.0.7",
     "redux": "~4.0.0",
     "redux-thunk": "~2.2.0",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "yup": "^0.26.10"
   },
   "devDependencies": {
     "babel-core": "^7.0.0-bridge.0",

@@ -82,6 +82,8 @@
 
   "sales": "Sales",
   "inventory": "Inventory",
+  "sales-log": "Sales Log",
+  "water-quality-and-flowmeter": "Water Quality & Flowmeter",
 
   "cancel-this-order": "cancel this order",
   "cancel-order": "Cancel Order",
@@ -104,9 +106,30 @@
   "total-production": "Total Production",
   "wastage": "Wastage",
 
+  "product-description": "Product Description",
+  "product-sku": "Product SKU",
+  "quantity-purchased": "Quantity Purchased",
+  "total-cost": "Total Cost",
+  "deleted": "Deleted",
+  "pending": "Pending",
+  "synced": "Synced",
+  "receipt-id": "Receipt ID",
+  "date-created": "Date Created",
+  "customer-name": "Customer Name",
+  "receipt-already-deleted": "Receipt already deleted",
+  "confirm-receipt-deletion": "Confirm Receipt Deletion",
+  "delete-this-receipt": "delete this receipt",
+
+  "must-be-a-number": "{{what}} must be a number",
+  "is-a-required-parameter": "{{what}} is a required parameter",
+
+  "submit": "Submit",
+
+  "data-saved-successfully": "Data saved successfully",
   "are-you-sure": "Are you sure you want to {{doThat}}?",
   "cancel": "Cancel",
   "ok": "OK",
+  "not-ok": "NOT OK",
   "no": "No",
   "yes": "Yes"
 }

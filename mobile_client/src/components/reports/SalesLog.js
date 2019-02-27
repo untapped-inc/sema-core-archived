@@ -35,19 +35,19 @@ class ReceiptLineItem extends Component {
                 </Image>
                 <View style={{justifyContent: 'space-around'}}>
                 <View style={styles.itemData}>
-                        <Text style={styles.label}>Product Description: </Text>
+                        <Text style={styles.label}>{i18n.t('product-description')}: </Text>
                         <Text>{this.props.item.product.description}</Text>
                     </View>
                     <View style={styles.itemData}>
-                        <Text style={styles.label}>Product SKU: </Text>
+                        <Text style={styles.label}>{i18n.t('product-sku')}: </Text>
                         <Text>{this.props.item.product.sku}</Text>
                     </View>
                     <View style={styles.itemData}>
-                        <Text style={styles.label}>Quantity Purchased: </Text>
+                        <Text style={styles.label}>{i18n.t('quantity-purchased')}: </Text>
                         <Text>{this.props.item.quantity}</Text>
                     </View>
                     <View style={styles.itemData}>
-                        <Text style={styles.label}>Total Cost: </Text>
+                        <Text style={styles.label}>{i18n.t('total-cost')}: </Text>
                         <Text>{this.props.item.price_total}</Text>
                     </View>
                 </View>
@@ -183,22 +183,22 @@ class SalesLog extends Component {
                 </View>
                 <Text style={{fontSize: 17}}>#{item.totalCount - index}</Text>
                 <View style={styles.receiptStats}>
-                    { !item.active && <Text style={styles.receiptStatusText}>{'Deleted'.toUpperCase()}</Text> }
+                    { !item.active && <Text style={styles.receiptStatusText}>{i18n.t('deleted').toUpperCase()}</Text> }
                     { (item.isLocal || item.updated) ?
-                        <View style={{flexDirection: 'row'}}>{!item.active && <Text> - </Text>}<Text style={styles.receiptPendingText}>{'Pending'.toLowerCase()}</Text></View> :
-                        <View style={{flexDirection: 'row'}}>{!item.active && <Text> - </Text>}<Text style={styles.receiptSyncedText}>{'Synced'.toLowerCase()}</Text></View>
+                        <View style={{flexDirection: 'row'}}>{!item.active && <Text> - </Text>}<Text style={styles.receiptPendingText}>{i18n.t('pending').toLowerCase()}</Text></View> :
+                        <View style={{flexDirection: 'row'}}>{!item.active && <Text> - </Text>}<Text style={styles.receiptSyncedText}>{i18n.t('synced').toLowerCase()}</Text></View>
                     }
                 </View>
                 <View style={styles.itemData}>
-                    <Text style={styles.label}>Receipt Id: </Text>
+                    <Text style={styles.label}>{i18n.t('receipt-id')}: </Text>
                     <Text>{item.id}</Text>
                 </View>
                 <View style={styles.itemData}>
-                    <Text style={styles.label}>Date Created: </Text>
+                    <Text style={styles.label}>{i18n.t('date-created')}: </Text>
                     <Text>{moment.tz(item.id, moment.tz.guess()).format('YYYY-MM-DD HH:mm:ss')}</Text>
                 </View>
                 <View style={styles.itemData}>
-                    <Text style={styles.label}>Customer Name: </Text>
+                    <Text style={styles.label}>{i18n.t('customer-name')}: </Text>
                     <Text>{item.customerAccount.name}</Text>
                 </View>
                 {receiptLineItems}
@@ -209,12 +209,13 @@ class SalesLog extends Component {
     onDeleteReceipt(item) {
         return () => {
             if (!item.active) {
-                return ToastAndroid.show('Receipt already deleted', ToastAndroid.SHORT);
+                return ToastAndroid.show(i18n.t('receipt-already-deleted'), ToastAndroid.SHORT);
             }
 
             Alert.alert(
-                'Confirm Receipt Deletion',
-                'Are you sure you want to delete this receipt? (this cannot be undone)',
+                i18n.t('confirm-receipt-deletion'),
+                i18n.t('are-you-sure', { doThat: i18n.t('delete-this-receipt')}),
+                // 'Are you sure you want to delete this receipt? (this cannot be undone)',
                 [
                     { text: i18n.t('no'), onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
                     {

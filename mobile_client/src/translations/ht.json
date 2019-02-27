@@ -106,6 +106,20 @@
   "total-production": "Prodiksyon Total",
   "wastage": "Gaspiyaj",
 
+  "product-description": "Deskripsyon Pwodui",
+  "product-sku": "SKU Pwodui",
+  "quantity-purchased": "Kantite Achte",
+  "total-cost": "Pri Total",
+  "deleted": "Efase",
+  "pending": "Annatant",
+  "synced": "Senkronize",
+  "receipt-id": "ID Resi",
+  "date-created": "Dat Kreasyon",
+  "customer-name": "Non Kliyan",
+  "receipt-already-deleted": "Resi sa efase deja",
+  "confirm-receipt-deletion": "Konfime Efasman Resi A",
+  "delete-this-receipt": "efase resi sa",
+
   "must-be-a-number": "{{what}} dwe yon nonb",
   "is-a-required-parameter": "{{what}} se yon paramèt obligatwa",
 

@@ -7,11 +7,11 @@ import { PrivateRoute, SemaNotFound } from '.';
 
 const Routes = props => (
   <Switch>
-    <PrivateRoute exact path="/" component={SemaUsers} />
+    <PrivateRoute allowed={['admin']} exact path="/" component={SemaUsers} />
 
-    <PrivateRoute exact path="/products" component={ProductList} />
-    <PrivateRoute exact path="/products/create" component={ProductDetails} />
-    <PrivateRoute path="/products/:id" component={ProductDetails} />
+    <PrivateRoute allowed={['admin']} exact path="/products" component={ProductList} />
+    <PrivateRoute allowed={['admin']} exact path="/products/create" component={ProductDetails} />
+    <PrivateRoute allowed={['admin']} path="/products/:id" component={ProductDetails} />
 
     <PrivateRoute component={SemaNotFound} />
   </Switch>

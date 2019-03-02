@@ -12,6 +12,15 @@ class SeamaSidebar extends Component {
     return `${route.path === currentPath && 'active'}`;
   }
 
+  // Currently, users can have multiple roles at the same time
+  _isUserAllowed (currentUser, allowedRoles) {
+    const roles = currentUser.role;
+
+    return roles.reduce((final, role) => {
+      return allowedRoles.includes(role.code) || final;
+    }, false);
+  };
+
   renderLinks() {
     const currentPath = this.props.location.pathname;
 
@@ -41,7 +50,7 @@ class SeamaSidebar extends Component {
         {dashboardRoutes.map(route => {
 
           if (route.isAdminFeature) {
-            if (this.props.currentUser.role[0].code !== 'admin') {
+            if (this._isUserAllowed(this.props.currentUser, ['admin'])) {
               return null;
             }
           }

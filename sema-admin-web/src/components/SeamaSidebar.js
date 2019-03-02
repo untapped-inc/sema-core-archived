@@ -19,36 +19,48 @@ class SeamaSidebar extends Component {
       {
         path: '/',
         name: 'Users',
-        icon: 'glyphicon-user'
+        icon: 'glyphicon-user',
+        isAdminFeature: true
       },
       {
         path: '/products',
         name: 'Products',
-        icon: 'glyphicon-shopping-cart'
+        icon: 'glyphicon-shopping-cart',
+        isAdminFeature: true
       },
       {
         path: '#',
         name: 'Kiosks',
-        icon: 'glyphicon-home'
+        icon: 'glyphicon-home',
+        isAdminFeature: true
       }
     ];
 
     return (
       <ul className="nav nav-sidebar">
-        {dashboardRoutes.map(route => (
-          <li
-            key={route.name}
-            className={this._getClassNames(route, currentPath)}
-          >
-            <Link to={route.path}>
-              <i
-                className={`glyphicon ${route.icon}`}
-                style={{ paddingRight: '20px' }}
-              />
-              {route.name}
-            </Link>
-          </li>
-        ))}
+        {dashboardRoutes.map(route => {
+
+          if (route.isAdminFeature) {
+            if (this.props.currentUser.role[0].code !== 'admin') {
+              return null;
+            }
+          }
+
+          return (
+            <li
+              key={route.name}
+              className={this._getClassNames(route, currentPath)}
+            >
+              <Link to={route.path}>
+                <i
+                  className={`glyphicon ${route.icon}`}
+                  style={{ paddingRight: '20px' }}
+                />
+                {route.name}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     );
   }

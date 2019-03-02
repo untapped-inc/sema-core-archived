@@ -3,10 +3,18 @@ import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import logo from 'images/swe-logo.png';
 import 'App.css';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { authActions, healthCheckActions } from 'actions';
 
 class SeamaSidebar extends Component {
+  _getClassNames(route, currentPath) {
+    return `${route.path === currentPath && 'active'}`;
+  }
+
   renderLinks() {
     const currentPath = this.props.location.pathname;
+
     const dashboardRoutes = [
       {
         path: '/',
@@ -24,12 +32,13 @@ class SeamaSidebar extends Component {
         icon: 'glyphicon-home'
       }
     ];
+
     return (
       <ul className="nav nav-sidebar">
         {dashboardRoutes.map(route => (
           <li
             key={route.name}
-            className={route.path === currentPath ? 'active' : ''}
+            className={this._getClassNames(route, currentPath)}
           >
             <Link to={route.path}>
               <i
@@ -54,4 +63,22 @@ class SeamaSidebar extends Component {
   }
 }
 
-export default withRouter(SeamaSidebar);
+function mapStateToProps(state) {
+  return {
+    currentUser: state.auth.currentUser
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    authActions: bindActionCreators(authActions, dispatch),
+    healthCheckActions: bindActionCreators(healthCheckActions, dispatch)
+  };
+}
+
+const connectedSidebar = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SeamaSidebar);
+
+export default withRouter(connectedSidebar);

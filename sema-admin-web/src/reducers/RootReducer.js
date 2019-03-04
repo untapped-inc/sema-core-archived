@@ -13,12 +13,25 @@ import alertReducer from './AlertReducer';
 import productCategoryReducer from './ProductCategory';
 import kioskReducer from './Kiosk';
 import salesChannelReducer from './SalesChannel';
+import waterOperations from './WaterOperationsReducer';
+import kiosk from './KioskReducer';
+import volume from './VolumeReducer';
+import sales from './SalesReducer';
+import customer from './CustomerReducer';
+import dateFilter from './DateFilterReducer';
 
 const rootPersistConfig = {
   key: 'root',
   storage,
   stateReconciler: autoMergeLevel2,
   whitelist: ['auth', 'healthCheck']
+};
+
+const kioskPersistConfig = {
+	key: 'kiosk',
+	storage,
+	stateReconciler: autoMergeLevel2,
+	blacklist: ['selectedKiosk']
 };
 
 const rootReducer = combineReducers({
@@ -32,7 +45,13 @@ const rootReducer = combineReducers({
   alert: alertReducer,
   productCategories: productCategoryReducer,
   kiosks: kioskReducer,
-  salesChannels: salesChannelReducer
+  kiosk: persistReducer(kioskPersistConfig, kiosk),
+  volume,
+	customer,
+	sales,
+  waterOperations,
+  salesChannels: salesChannelReducer,
+  dateFilter
 });
 
 export default persistReducer(rootPersistConfig, rootReducer);

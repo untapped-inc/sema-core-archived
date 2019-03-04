@@ -27,6 +27,11 @@ class SeamaSidebar extends Component {
     const dashboardRoutes = [
       {
         path: '/',
+        name: 'Water Operations',
+        icon: 'glyphicon-map-marker'
+      },
+      {
+        path: '/users',
         name: 'Users',
         icon: 'glyphicon-user',
         isAdminFeature: true
@@ -50,7 +55,7 @@ class SeamaSidebar extends Component {
         {dashboardRoutes.map(route => {
 
           if (route.isAdminFeature) {
-            if (this._isUserAllowed(this.props.currentUser, ['admin'])) {
+            if (!this._isUserAllowed(this.props.currentUser, ['admin'])) {
               return null;
             }
           }

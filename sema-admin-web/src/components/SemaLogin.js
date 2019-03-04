@@ -12,7 +12,11 @@ import 'css/SemaLogin.css';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { authActions, healthCheckActions } from 'actions';
+import {
+  authActions,
+  healthCheckActions,
+  kioskActions
+} from 'actions';
 
 class SemaLogin extends Component {
   constructor(props, context) {
@@ -31,6 +35,7 @@ class SemaLogin extends Component {
 
   componentWillUnmount() {
     this.props.healthCheckActions.fetchHealthCheck();
+    this.props.kioskActions.fetchKiosks();
   }
 
   render() {
@@ -154,7 +159,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     authActions: bindActionCreators(authActions, dispatch),
-    healthCheckActions: bindActionCreators(healthCheckActions, dispatch)
+    healthCheckActions: bindActionCreators(healthCheckActions, dispatch),
+    kioskActions: bindActionCreators(kioskActions, dispatch)
   };
 }
 

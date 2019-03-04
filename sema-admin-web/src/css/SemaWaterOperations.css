@@ -7,9 +7,10 @@
 }
 
 .WaterSummaryProgress {
-	grid-column: 1;
-	grid-row:1;
-	display: flex;
+	position: fixed;
+	left: 0;
+	top: 40px;
+	width: 100%;
 }
 .WaterSummaryContainer {
 	grid-column: 1;

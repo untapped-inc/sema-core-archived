@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getKiosks } from '../../actions/KioskActions';
+import { kioskActions } from '../../actions/KioskActions';
 import SelectField from './SelectField';
 
 class KioskDropdown extends React.Component {
@@ -23,5 +23,5 @@ export default connect(
   state => ({
     kiosks: state.kiosks
   }),
-  { getKiosks }
+  { getKiosks: kioskActions.getKiosks }
 )(KioskDropdown);

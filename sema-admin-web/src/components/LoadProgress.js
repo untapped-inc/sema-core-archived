@@ -23,7 +23,14 @@ class LoadProgress extends Component {
 
 	render() {
         return (
-			<Line percent={this.state.percent} strokeWidth="2" strokeColor="#18376A" strokeLinecap="square" style = {{width:'100%'}} />
+			<Line
+				percent={this.state.percent}
+				strokeColor="#18376A"
+				strokeLinecap="square"
+				style = {{
+					width:'100%',
+					height: 5
+				}}/>
         );
     }
 }

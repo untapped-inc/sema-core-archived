@@ -26,7 +26,6 @@ body {
     overflow-x: hidden;
     overflow-y: auto;
     background-color: rgb(24, 55, 106);
-    border-right: 1px solid #eee;
   }
 }
 

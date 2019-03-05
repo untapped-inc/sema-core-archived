@@ -1,6 +1,6 @@
 import * as allActions from './ActionTypes';
-import { axiosService } from 'services';
-import { utilService } from 'services';
+import { axiosService } from '../services';
+import { utilService } from '../services';
 
 function receiveSales(data) {
 	data = updateSales(data);

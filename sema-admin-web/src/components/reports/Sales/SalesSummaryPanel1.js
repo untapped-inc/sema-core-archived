@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Panel } from 'react-bootstrap';
-import 'css/SemaSales.css';
+import '../../../css/SemaSales.css';
 import PropTypes from 'prop-types';
 // let dateFormat = require('dateformat');
 

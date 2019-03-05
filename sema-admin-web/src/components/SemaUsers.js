@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { submit } from 'redux-form';
-import * as healthCheckActions from 'actions/healthCheckActions';
+import * as healthCheckActions from '../actions/healthCheckActions';
 import { withRouter } from 'react-router';
 import {
   fetchUsers,
@@ -10,7 +10,7 @@ import {
   createUser,
   updateUser,
   toggleUser
-} from 'actions/UserActions';
+} from '../actions/UserActions';
 import UserList from './common/UserList';
 import Button from './common/Button';
 import Modal from './common/Modal';

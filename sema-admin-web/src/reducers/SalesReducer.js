@@ -1,7 +1,7 @@
 import {
 	RECEIVE_SALES,
 	salesActions
-} from 'actions'
+} from '../actions'
 
 export default function sales(state =init(), action) {
 	let newState;

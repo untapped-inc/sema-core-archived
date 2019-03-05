@@ -1,4 +1,4 @@
-import { axiosService } from 'services';
+import { axiosService } from '../services';
 import get from 'lodash/get';
 import * as a from './ActionTypes';
 

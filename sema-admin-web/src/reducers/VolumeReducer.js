@@ -1,7 +1,7 @@
 import {
 	RECEIVE_VOLUME,
 	volumeActions
-} from 'actions'
+} from '../actions'
 
 export default function volume(state =init(), action) {
 	let newState;

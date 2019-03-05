@@ -1,4 +1,4 @@
-import { RECEIVE_KIOSKS, SELECT_KIOSK} from 'actions/ActionTypes';
+import { RECEIVE_KIOSKS, SELECT_KIOSK} from '../actions/ActionTypes';
 
 export default function kiosk(state = {kiosks:[], selectedKiosk:null}, action) {
 	let newState;

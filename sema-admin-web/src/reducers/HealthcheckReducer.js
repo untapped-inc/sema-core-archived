@@ -1,4 +1,4 @@
-import {FETCH_HEALTHCHECK, RECEIVE_HEALTHCHECK} from 'actions/ActionTypes';
+import {FETCH_HEALTHCHECK, RECEIVE_HEALTHCHECK} from '../actions/ActionTypes';
 
 export default function healthCheck(state = {server: "Ok", database: "Ok"}, action) {
     let newState;

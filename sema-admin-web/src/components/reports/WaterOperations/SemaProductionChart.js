@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {Bar} from 'react-chartjs-2';
 import moment from "moment/moment";
-import { utilService } from 'services';
-import 'css/SemaChart.css';
+import { utilService } from '../../../services';
+import '../../../css/SemaChart.css';
 
 
 class SemaProductionChart extends Component {

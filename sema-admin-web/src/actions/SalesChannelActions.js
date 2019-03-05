@@ -1,4 +1,4 @@
-import { axiosService } from 'services';
+import { axiosService } from '../services';
 import { createActions } from 'redux-actions';
 
 export const LOAD_SALES_CHANNELS = 'LOAD_SALES_CHANNELS';

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Panel } from 'react-bootstrap';
 import 'App.css';
-import 'css/SemaSales.css';
+import '../../../css/SemaSales.css';
 import PropTypes from 'prop-types';
 
 

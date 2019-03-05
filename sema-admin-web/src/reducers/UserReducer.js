@@ -4,7 +4,7 @@ import {
   UPDATE_USER_SUCCESS,
   DELETE_USER_SUCCESS,
   TOGGLE_USER_SUCCESS
-} from 'actions';
+} from '../actions';
 
 const userReducer = (state = [], action) => {
   let user;

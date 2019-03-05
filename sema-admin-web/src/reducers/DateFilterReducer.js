@@ -1,4 +1,4 @@
-import { SET_DATE_RANGE} from 'actions/ActionTypes';
+import { SET_DATE_RANGE} from '../actions/ActionTypes';
 
 export default function dateFilter(state = {startDate:new Date(), endDate:new Date()}, action) {
 	let newState;

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import 'App.css';
+import '../App.css';
 import SemaServiceError from "./SeamaServiceError";
 import SemaDatabaseError from "./SeamaDatabaseError";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as healthCheckActions from 'actions/healthCheckActions';
+import * as healthCheckActions from '../actions/healthCheckActions';
 import { withRouter } from 'react-router';
 import '../css/DataExport.css';
 import '../css/glyphicon-spinner.css';
-import { axiosService } from 'services';
+import { axiosService } from '../services';
 import { CSVLink } from 'react-csv';
 import { ToastContainer, ToastStore } from 'react-toasts';
 

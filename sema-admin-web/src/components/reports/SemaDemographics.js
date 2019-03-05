@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import 'App.css';
-import 'css/SemaDemographics.css';
+import '../../App.css';
+import '../../css/SemaDemographics.css';
 import LoadProgress from "../LoadProgress";
 import SemaServiceError from "../SeamaServiceError";
 import SemaDatabaseError from "../SeamaDatabaseError";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import * as customerActions from 'actions/CustomerActions';
-import * as healthCheckActions from 'actions/healthCheckActions';
+import * as customerActions from '../../actions/CustomerActions';
+import * as healthCheckActions from '../../actions/healthCheckActions';
 import { withRouter } from 'react-router'
 import CustomerSummaryPanel from "./Demographics/CustomerSummaryPanel";
 import CustomersByIncomeLevelChart from "./Demographics/CustomersByIncomeLevelChart";

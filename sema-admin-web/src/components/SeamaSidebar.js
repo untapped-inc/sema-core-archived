@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import logo from 'images/swe-logo.png';
-import 'App.css';
+import logo from '../images/swe-logo.png';
+import '../App.css';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { authActions, healthCheckActions } from 'actions';
+import { authActions, healthCheckActions } from '../actions';
 
 class SeamaSidebar extends Component {
   _getClassNames(route, currentPath) {

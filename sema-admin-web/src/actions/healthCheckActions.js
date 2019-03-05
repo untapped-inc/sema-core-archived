@@ -1,5 +1,5 @@
-import { RECEIVE_HEALTHCHECK } from 'actions';
-import { axiosService } from 'services';
+import { RECEIVE_HEALTHCHECK } from './index';
+import { axiosService } from '../services';
 
 const receiveHealthCheck = data => {
 	console.log("receiveHealthCheck - ", data.toString())

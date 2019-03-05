@@ -1,7 +1,7 @@
 import * as allActions from './ActionTypes';
 // import moment from "moment/moment";
-import { axiosService } from 'services';
-import { utilService } from 'services';
+import { axiosService } from '../services';
+import { utilService } from '../services';
 
 function receiveWaterOperations(data) {
 	console.log("receiveWaterOperations ");

@@ -8,7 +8,7 @@ import {
   Alert
 } from 'react-bootstrap';
 import { BounceLoader } from 'react-spinners';
-import 'css/SemaLogin.css';
+import '../css/SemaLogin.css';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -16,7 +16,7 @@ import {
   authActions,
   healthCheckActions,
   kioskActions
-} from 'actions';
+} from '../actions';
 
 class SemaLogin extends Component {
   constructor(props, context) {

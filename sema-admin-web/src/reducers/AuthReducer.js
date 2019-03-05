@@ -2,7 +2,7 @@ import {
 	FETCH_LOGIN,
 	RECEIVE_LOGIN,
 	LOGOUT
-} from 'actions';
+} from '../actions';
 import jwt from 'jsonwebtoken';
 
 /*

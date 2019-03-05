@@ -1,7 +1,7 @@
 import {
 	RECEIVE_WATER_OPERATIONS,
 	waterOperationsActions
-} from 'actions'
+} from '../actions'
 
 export default function waterOperations(state =init(), action) {
 	let newState;

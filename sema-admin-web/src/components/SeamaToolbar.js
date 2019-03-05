@@ -8,7 +8,7 @@ import {
   NavDropdown,
   MenuItem
 } from 'react-bootstrap';
-import 'App.css';
+import '../App.css';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
@@ -19,7 +19,7 @@ import {
 	customerActions,
   salesActions,
   waterOperationsActions
-} from 'actions';
+} from '../actions';
 import { withRouter } from 'react-router';
 import SemaDateFilter from "./SemaDateFilter";
 

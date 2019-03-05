@@ -1,4 +1,4 @@
-import { axiosService } from 'services';
+import { axiosService } from '../services';
 import { createActions } from 'redux-actions';
 import * as allActions from './ActionTypes';
 export const LOAD_KIOSKS = 'LOAD_KIOSKS';

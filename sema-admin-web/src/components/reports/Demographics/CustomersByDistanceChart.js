@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Pie} from 'react-chartjs-2';
-import { utilService } from 'services';
+import { utilService } from '../../../services';
 
 class CustomersByDistanceChart extends Component {
     render() {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import 'App.css';
+import '../../App.css';
 import SemaSummaryPanel1 from "./WaterOperations/SemaSummaryPanel1";
 import SemaProductionChart from "./WaterOperations/SemaProductionChart";
 import SemaChlorineChart from "./WaterOperations/SemaChlorineChart";
 import SemaTDSChart from "./WaterOperations/SemaTDSChart";
-import 'css/SemaWaterOperations.css';
+import '../../css/SemaWaterOperations.css';
 // import SeamaWaterQualityNavigation from "./WaterQuality/SeamaWaterQualityNavigation";
 import SemaServiceError from "../SeamaServiceError";
 import SemaDatabaseError from "../SeamaDatabaseError";
@@ -13,7 +13,7 @@ import { bindActionCreators } from "redux";
 import {
 waterOperationsActions,
 healthCheckActions
-} from 'actions';
+} from '../../actions';
 import { withRouter } from 'react-router'
 import SemaSummaryPanel2 from "./WaterOperations/SemaSummaryPanel2";
 import LoadProgress from "../LoadProgress";

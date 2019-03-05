@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Nav,NavDropdown,MenuItem } from 'react-bootstrap';
-import 'App.css';
+import '../App.css';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import { dateFilterActions} from 'actions';
+import { dateFilterActions} from '../actions';
 import { withRouter } from 'react-router'
 
 const menuStyle = {};
@@ -26,13 +26,13 @@ const ImageStyleDisabled = {
 
 class PrevDate extends Component {
 	render() {
-		return (<div><img src={require('images/left-arrow.png')} alt={""} style={this.props.getStyle(true)} onClick={()=> this.props.clickFn()} /></div>);
+		return (<div><img src={require('../images/left-arrow.png')} alt={""} style={this.props.getStyle(true)} onClick={()=> this.props.clickFn()} /></div>);
 	}
 }
 
 class NextDate extends Component {
 	render() {
-		return (<div><img src={require('images/right-arrow.png')} alt={""} style={this.props.getStyle(false)} onClick={()=> this.props.clickFn()} /></div>);
+		return (<div><img src={require('../images/right-arrow.png')} alt={""} style={this.props.getStyle(false)} onClick={()=> this.props.clickFn()} /></div>);
 	}
 }
 

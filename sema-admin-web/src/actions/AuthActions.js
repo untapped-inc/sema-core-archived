@@ -1,4 +1,4 @@
-import { authService } from "services";
+import { authService } from "../services";
 import { RECEIVE_LOGIN, FETCH_LOGIN, LOGOUT } from ".";
 
 const receiveLogin = data => {

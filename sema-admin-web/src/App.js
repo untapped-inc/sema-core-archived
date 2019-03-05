@@ -10,9 +10,9 @@ import {
   customerActions,
   salesActions,
   waterOperationsActions
-} from 'actions';
+} from './actions';
 import { Router } from 'react-router-dom';
-import { Page, SemaLogin } from 'components';
+import { Page, SemaLogin } from './components';
 import { history } from './utils';
 
 class App extends Component {

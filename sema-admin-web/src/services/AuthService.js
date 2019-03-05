@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { axiosService } from 'services';
+import { axiosService } from '../services';
 
 const login = (usernameOrEmail, password) =>
 	axiosService.post('/sema/login',

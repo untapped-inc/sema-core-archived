@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import 'App.css';
+import '../../App.css';
 import WaterVolumeChannelAndIncomeChart from "./WaterVolume/WaterVolumeChannelAndIncomeChart";
 import WaterVolumeChannelChart from "./WaterVolume/WaterVolumeChannelChart"
 import WaterVolumeChannelAndPaymentTypeChart from "./WaterVolume/WaterVolumeChannelAndPaymentTypeChart"
 import CustomerSummaryPanel from "./Demographics/CustomerSummaryPanel";
-import 'css/SemaVolume.css';
+import '../../css/SemaVolume.css';
 import SemaServiceError from "../SeamaServiceError";
 import SemaDatabaseError from "../SeamaDatabaseError";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import * as volumeActions from 'actions/VolumeActions';
-import * as healthCheckActions from 'actions/healthCheckActions';
+import * as volumeActions from '../../actions/VolumeActions';
+import * as healthCheckActions from '../../actions/healthCheckActions';
 import { withRouter } from 'react-router'
 import LoadProgress from "../LoadProgress";
 

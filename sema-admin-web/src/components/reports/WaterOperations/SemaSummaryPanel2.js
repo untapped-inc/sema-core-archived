@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
 import { Panel } from 'react-bootstrap';
-import 'App.css';
-import 'css/SemaWaterOperations.css';
+import '../../../App.css';
+import '../../../css/SemaWaterOperations.css';
 import {Table } from 'react-bootstrap';
 
 let dateFormat = require('dateformat');

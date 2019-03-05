@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
 import { Panel } from 'react-bootstrap';
-import 'App.css';
-import 'css/SemaCustomer.css';
+import '../../../App.css';
+import '../../../css/SemaCustomer.css';
 
 class CustomerSummaryPanel extends Component {
     render() {

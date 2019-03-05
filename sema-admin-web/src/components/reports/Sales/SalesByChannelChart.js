@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Doughnut} from 'react-chartjs-2';
-import { utilService } from 'services';
-import 'css/SemaChart.css';
+import { utilService } from '../../../services';
+import '../../../css/SemaChart.css';
 
 class SalesByChannelChart extends Component {
     render() {

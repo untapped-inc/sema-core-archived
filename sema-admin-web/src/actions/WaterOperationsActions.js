@@ -48,7 +48,7 @@ const fetchWaterOperationsData = ( params) => {
 		waterInfo.waterOperationsInfo.beginDate = params.startDate;
 		waterInfo.waterOperationsInfo.endDate = params.endDate;
 		try {
-			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:0}} ));
+			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:15}} ));
 			let summary = await fetchSummary(params );
 			waterInfo.waterOperationsInfo.waterMeasureUnits = summary.productionUnit;
 			waterInfo.waterOperationsInfo.waterFlowrateUnits = summary.flowrateUnit;

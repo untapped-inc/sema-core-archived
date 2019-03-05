@@ -42,7 +42,7 @@ class SemaSales extends Component {
 	showSales(){
 		return (
 			<React.Fragment>
-				<div className="WaterSummaryProgress">
+				<div className="SalesProgress">
 					<LoadProgress/>
 				</div>
 

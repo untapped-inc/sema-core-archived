@@ -24,7 +24,7 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
 				return (<Component {...props} />);
 			} else {
 				console.log('ever?');
-				return (<Redirect to={{ pathname: '/404', state: { from: props.location } }} />);
+				return (<Redirect to={{ pathname: '/', state: { from: props.location } }} />);
 			}
 		}}
 	/>

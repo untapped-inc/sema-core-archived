@@ -41,6 +41,11 @@ class SeamaSidebar extends Component {
         icon: 'glyphicon-tint'
       },
       {
+        path: '/demographics',
+        name: 'Demographics',
+        icon: 'glyphicon-stats'
+      },
+      {
         path: '/users',
         name: 'Users',
         icon: 'glyphicon-user',
@@ -53,11 +58,17 @@ class SeamaSidebar extends Component {
         isAdminFeature: true
       },
       {
-        path: '#',
-        name: 'Kiosks',
-        icon: 'glyphicon-home',
+        path: '/data-export',
+        name: 'Data Export',
+        icon: 'glyphicon-download',
         isAdminFeature: true
-      }
+      },
+      // {
+      //   path: '#',
+      //   name: 'Kiosks',
+      //   icon: 'glyphicon-home',
+      //   isAdminFeature: true
+      // }
     ];
 
     return (

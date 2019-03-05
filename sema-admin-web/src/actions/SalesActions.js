@@ -43,7 +43,7 @@ const fetchSalesData = ( params) => {
 	return new Promise(async (resolve, reject) => {
 		let salesInfo = initializeSales();
 		try {
-			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:0}} ));
+			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:20}} ));
 			salesInfo = await fetchSalesSummary(params);
 			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:25}} ));
 

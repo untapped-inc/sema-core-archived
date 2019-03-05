@@ -42,8 +42,7 @@ class App extends Component {
 						this.props.volumeActions.fetchVolume(params);
 					}
 					break;
-				case "/Demographics":
-
+				case "/demographics":
 					if( ! this.props.customer.loaded && this.props.kiosk.selectedKiosk && this.props.kiosk.selectedKiosk.kioskID ) {
 						this.props.customerActions.fetchCustomer(params);
 					}

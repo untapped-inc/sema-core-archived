@@ -32,7 +32,7 @@ class SemaVolume extends Component {
     showWaterOperations( ){
         return (
 			<React.Fragment>
-				<div className="WaterSummaryProgress">
+				<div className="WaterVolumeProgress">
 					<LoadProgress/>
 				</div>
 

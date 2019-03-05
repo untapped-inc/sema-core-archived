@@ -37,7 +37,7 @@ const fetchCustomerData = ( params) => {
 		let result = initializeCustomer();
 		try {
 			let tick = 10;	// Approximate no of API calls - determined empirically
-			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:0}} ));
+			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:15}} ));
 
 			let tickPct = 100/tick;		// Percentage increase per api call
 

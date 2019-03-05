@@ -38,11 +38,11 @@ const fetchVolumeData = ( params) => {
 		let result = initializeVolume();
 		try {
 			let tick = 9;	// approx number of REST calls
-			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:0}} ));
+			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:15}} ));
 			// let types = await fetchCustomerTypes();
 			let units = await fetchMeasureUnits();
 			result.volumeInfo.volumeWaterMeasureUnits = units.waterUnits;
-			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:10}} ));
+			window.dispatchEvent(new CustomEvent("progressEvent", {detail: {progressPct:15}} ));
 			// if( types ){
 			// 	tick = 5 + types.customerTypes.length + 1; // approximate number of api calls
 			// }

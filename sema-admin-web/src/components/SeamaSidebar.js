@@ -31,9 +31,14 @@ class SeamaSidebar extends Component {
         icon: 'glyphicon-map-marker'
       },
       {
-        path: '/Sales',
+        path: '/sales',
         name: 'Sales',
         icon: 'glyphicon-shopping-cart'
+      },
+      {
+        path: '/volumes',
+        name: 'Volumes',
+        icon: 'glyphicon-tint'
       },
       {
         path: '/users',

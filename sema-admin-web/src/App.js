@@ -37,7 +37,7 @@ class App extends Component {
 						this.props.waterOperationsActions.fetchWaterOperations(params);
 					}
 					break;
-				case "/Volumes":
+				case "/volumes":
 					if( ! this.props.volume.loaded && this.props.kiosk.selectedKiosk && this.props.kiosk.selectedKiosk.kioskID  ){
 						this.props.volumeActions.fetchVolume(params);
 					}
@@ -48,7 +48,7 @@ class App extends Component {
 						this.props.customerActions.fetchCustomer(params);
 					}
 					break;
-				case "/Sales":
+				case "/sales":
 					if( ! this.props.sales.loaded && this.props.kiosk.selectedKiosk && this.props.kiosk.selectedKiosk.kioskID ) {
 						this.props.salesActions.fetchSales(params);
 					}

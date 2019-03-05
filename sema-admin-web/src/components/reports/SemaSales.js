@@ -7,13 +7,13 @@ import * as healthCheckActions from 'actions/healthCheckActions';
 import { withRouter } from 'react-router'
 import SemaServiceError from "../SeamaServiceError";
 import SemaDatabaseError from "../SeamaDatabaseError";
-import SalesSummaryPanel1 from "../Sales/SalesSummaryPanel1";
+import SalesSummaryPanel1 from "./Sales/SalesSummaryPanel1";
 // import SalesSummaryPanel2 from "./Sales/SalesSummaryPanel2";
-import SalesMapContainer from '../Sales/SalesMapContainer';
-import SalesRetailerList from '../Sales/SalesRetailerList';
+import SalesMapContainer from './Sales/SalesMapContainer';
+import SalesRetailerList from './Sales/SalesRetailerList';
 import * as salesActions from 'actions/SalesActions';
-import SalesByChannelChart from "../Sales/SalesByChannelChart";
-import SalesByChannelTimeChart from "../Sales/SalesByChannelTimeChart";
+import SalesByChannelChart from "./Sales/SalesByChannelChart";
+import SalesByChannelTimeChart from "./Sales/SalesByChannelTimeChart";
 import LoadProgress from "../LoadProgress";
 import { utilService } from 'services';
 

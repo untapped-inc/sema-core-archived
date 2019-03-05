@@ -97,13 +97,13 @@ class SeamaToolbar extends Component {
     this.props.water.loaded = false;
 
     switch (this.props.location.pathname) {
-      case "/Volumes":
+      case "/volumes":
         this.props.volumeActions.fetchVolume(params);
         break;
       case "/Demographics":
         this.props.customerActions.fetchCustomer(params);
         break;
-      case "/Sales":
+      case "/sales":
         this.props.salesActions.fetchSales(params);
         break;
       case "/":

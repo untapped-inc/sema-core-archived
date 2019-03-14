@@ -1,4 +1,0 @@
-#Wed Mar 13 14:13:05 EDT 2019
-base.0=/Users/nick/work/untapped/sema-core/android/app/build/intermediates/transforms/dexMerger/debug/0
-path.0=classes.dex
-renamed.0=classes.dex
